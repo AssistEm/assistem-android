@@ -1,19 +1,44 @@
 package seniorproject.caretakers.caretakersapp.actvities;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import seniorproject.caretakers.caretakersapp.R;
+import seniorproject.caretakers.caretakersapp.fragments.LoginFragment;
+import seniorproject.caretakers.caretakersapp.handlers.AccountHandler;
 
 
 public class LoginActivity extends ActionBarActivity {
+
+    AccountHandler.AccountListener mAccountListener = new AccountHandler.AccountListener() {
+        @Override
+        public void onLoggedIn() {
+            Log.i("LOGGED IN", "LOGGED IN");
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+
+        @Override
+        public void onRegistered() {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        AccountHandler.getInstance().addAccountListener(mAccountListener);
+        if(savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_holder, new LoginFragment(), "login_fragment")
+                    .commit();
+        }
     }
 
 
@@ -34,5 +59,12 @@ public class LoginActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        AccountHandler.getInstance().removeAccountListener(mAccountListener);
     }
 }

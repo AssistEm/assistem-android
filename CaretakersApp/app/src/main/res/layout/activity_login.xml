@@ -16,32 +16,14 @@
         android:paddingBottom="@dimen/login_element_vertical_margin"
         android:textSize="24sp"
         android:text="Caretaker's App"/>
-    <EditText
-        android:id="@+id/user_email"
+
+    <LinearLayout
+        android:id="@+id/fragment_holder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/login_element_vertical_margin"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"/>
-    <EditText
-        android:id="@+id/user_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/login_element_vertical_margin"
-        android:text="@string/password"
-        android:inputType="textPassword"/>
-    <EditText
-        android:id="@+id/user_confirm_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/login_element_vertical_margin"
-        android:hint="@string/confirm_password"
-        android:inputType="textPassword"
-        android:visibility="gone"/>
-    <Button
-        android:id="@+id/user_login_submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/login"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+    </LinearLayout>
 
 </LinearLayout>
