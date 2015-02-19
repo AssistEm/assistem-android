@@ -1,17 +1,38 @@
 package seniorproject.caretakers.caretakersapp.actvities;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
 import seniorproject.caretakers.caretakersapp.R;
 
 public class MainActivity extends ActionBarActivity {
+
+    TextView mType;
+    TextView mFirstName;
+    TextView mLastName;
+    TextView mEmail;
+    TextView mPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mType = (TextView) findViewById(R.id.type);
+        mFirstName = (TextView) findViewById(R.id.first_name);
+        //mLastName = (TextView) findViewById(R.id.last_name);
+        mEmail = (TextView) findViewById(R.id.email);
+        mPhone = (TextView) findViewById(R.id.phone);
+        Intent intent = getIntent();
+        String type = intent.getStringExtra("type");
+        type = type.substring(0,1).toUpperCase() + type.substring(1, type.length());
+        mType.setText(type + " Settings");
+        mFirstName.setText(intent.getStringExtra("first_name") + " " + intent.getStringExtra("last_name"));
+        mEmail.setText(intent.getStringExtra("email"));
+        mPhone.setText(intent.getStringExtra("phone"));
     }
 
 

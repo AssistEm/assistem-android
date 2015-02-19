@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import seniorproject.caretakers.caretakersapp.R;
+import seniorproject.caretakers.caretakersapp.apiservices.BaseRestClient;
 import seniorproject.caretakers.caretakersapp.fragments.LoginFragment;
 import seniorproject.caretakers.caretakersapp.handlers.AccountHandler;
 
@@ -16,9 +17,14 @@ public class LoginActivity extends ActionBarActivity {
 
     AccountHandler.AccountListener mAccountListener = new AccountHandler.AccountListener() {
         @Override
-        public void onLoggedIn() {
+        public void onLoggedIn(String firstName, String lastName, String email, String phone, String type) {
             Log.i("LOGGED IN", "LOGGED IN");
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.putExtra("type", type);
+            intent.putExtra("first_name", firstName);
+            intent.putExtra("last_name", lastName);
+            intent.putExtra("email", email);
+            intent.putExtra("phone", phone);
             startActivity(intent);
         }
 
@@ -31,6 +37,7 @@ public class LoginActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        BaseRestClient.init();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         AccountHandler.getInstance().addAccountListener(mAccountListener);
@@ -38,6 +45,10 @@ public class LoginActivity extends ActionBarActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_holder, new LoginFragment(), "login_fragment")
                     .commit();
+        }
+        if(AccountHandler.getInstance().getLocalLoggedIn()) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
         }
     }
 

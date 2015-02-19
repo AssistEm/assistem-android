@@ -25,7 +25,7 @@ public class LoginFragment extends Fragment {
                     String username = mUsernameEdit.getText().toString();
                     String password = mPasswordEdit.getText().toString();
                     if(!username.isEmpty() && !password.isEmpty()) {
-                        AccountHandler.getInstance().login(username, password);
+                        AccountHandler.getInstance().login(getActivity(), username, password);
                     }
                     break;
                 case R.id.user_register:

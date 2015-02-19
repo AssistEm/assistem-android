@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.handlers.AccountHandler;
 
@@ -30,7 +32,11 @@ public class RegisterFragment extends Fragment {
                 Toast.makeText(getActivity(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            AccountHandler.getInstance().patientRegister(username, password);
+            try {
+                AccountHandler.getInstance().patientRegister(username, password);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     };
 
