@@ -1,4 +1,4 @@
-package seniorproject.caretakers.caretakersapp.views;
+package seniorproject.caretakers.caretakersapp.ui.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;

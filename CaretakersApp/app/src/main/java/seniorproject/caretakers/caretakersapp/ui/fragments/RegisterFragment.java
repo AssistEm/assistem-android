@@ -1,4 +1,4 @@
-package seniorproject.caretakers.caretakersapp.fragments;
+package seniorproject.caretakers.caretakersapp.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,7 +12,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 
 import seniorproject.caretakers.caretakersapp.R;
-import seniorproject.caretakers.caretakersapp.handlers.AccountHandler;
+import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 
 public class RegisterFragment extends Fragment {
 

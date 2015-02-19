@@ -1,8 +1,7 @@
-package seniorproject.caretakers.caretakersapp.fragments;
+package seniorproject.caretakers.caretakersapp.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import seniorproject.caretakers.caretakersapp.R;
-import seniorproject.caretakers.caretakersapp.handlers.AccountHandler;
+import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 
 public class LoginFragment extends Fragment {
 

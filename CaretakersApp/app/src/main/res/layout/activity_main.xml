@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="seniorproject.caretakers.caretakersapp.actvities.MainActivity">
+    tools:context="seniorproject.caretakers.caretakersapp.ui.actvities.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,6 +23,6 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:name="seniorproject.caretakers.caretakersapp.fragments.DrawerFragment" />
+        android:name="seniorproject.caretakers.caretakersapp.ui.fragments.DrawerFragment" />
 
 </android.support.v4.widget.DrawerLayout>

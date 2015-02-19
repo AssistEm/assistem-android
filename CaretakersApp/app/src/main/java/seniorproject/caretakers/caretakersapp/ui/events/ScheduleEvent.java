@@ -1,4 +1,4 @@
-package seniorproject.caretakers.caretakersapp.events;
+package seniorproject.caretakers.caretakersapp.ui.events;
 
 import android.graphics.Color;
 
@@ -6,7 +6,7 @@ import com.alamkanak.weekview.WeekViewEvent;
 
 import java.util.Calendar;
 
-import seniorproject.caretakers.caretakersapp.handlers.AccountHandler;
+import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 import seniorproject.caretakers.caretakersapp.objects.Caretaker;
 import seniorproject.caretakers.caretakersapp.objects.User;
 

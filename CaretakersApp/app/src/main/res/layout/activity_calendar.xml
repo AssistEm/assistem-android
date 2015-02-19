@@ -13,7 +13,7 @@
         app:xScrollingSpeed=".35"
         app:columnGap="8dp" />
 
-    <seniorproject.caretakers.caretakersapp.views.AddFloatingActionButton
+    <seniorproject.caretakers.caretakersapp.ui.views.AddFloatingActionButton
         android:id="@+id/add_event_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

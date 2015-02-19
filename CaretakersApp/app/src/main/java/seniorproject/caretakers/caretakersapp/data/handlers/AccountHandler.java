@@ -1,4 +1,4 @@
-package seniorproject.caretakers.caretakersapp.handlers;
+package seniorproject.caretakers.caretakersapp.data.handlers;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,7 +6,6 @@ import android.util.Log;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

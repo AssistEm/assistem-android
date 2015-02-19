@@ -1,4 +1,4 @@
-package seniorproject.caretakers.caretakersapp.actvities;
+package seniorproject.caretakers.caretakersapp.ui.actvities;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -9,8 +9,8 @@ import android.view.MenuItem;
 
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.apiservices.BaseRestClient;
-import seniorproject.caretakers.caretakersapp.fragments.LoginFragment;
-import seniorproject.caretakers.caretakersapp.handlers.AccountHandler;
+import seniorproject.caretakers.caretakersapp.ui.fragments.LoginFragment;
+import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 
 
 public class LoginActivity extends ActionBarActivity {

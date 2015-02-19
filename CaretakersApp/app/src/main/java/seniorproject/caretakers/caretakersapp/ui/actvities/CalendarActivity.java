@@ -1,6 +1,5 @@
-package seniorproject.caretakers.caretakersapp.actvities;
+package seniorproject.caretakers.caretakersapp.ui.actvities;
 
-import android.graphics.Color;
 import android.graphics.RectF;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;

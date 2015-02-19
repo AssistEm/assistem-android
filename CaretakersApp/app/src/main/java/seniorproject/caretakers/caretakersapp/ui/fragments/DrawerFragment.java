@@ -1,4 +1,4 @@
-package seniorproject.caretakers.caretakersapp.fragments;
+package seniorproject.caretakers.caretakersapp.ui.fragments;
 
 import android.support.v4.app.Fragment;
 

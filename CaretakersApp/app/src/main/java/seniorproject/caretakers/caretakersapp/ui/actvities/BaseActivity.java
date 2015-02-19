@@ -1,4 +1,4 @@
-package seniorproject.caretakers.caretakersapp.actvities;
+package seniorproject.caretakers.caretakersapp.ui.actvities;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;

@@ -1,4 +1,4 @@
-package seniorproject.caretakers.caretakersapp.actvities;
+package seniorproject.caretakers.caretakersapp.ui.actvities;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;

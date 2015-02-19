@@ -1,4 +1,4 @@
-package seniorproject.caretakers.caretakersapp.views;
+package seniorproject.caretakers.caretakersapp.ui.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
