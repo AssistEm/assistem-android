@@ -6,13 +6,13 @@ import com.alamkanak.weekview.WeekViewEvent;
 
 import java.util.Calendar;
 
-import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
-import seniorproject.caretakers.caretakersapp.objects.Caretaker;
-import seniorproject.caretakers.caretakersapp.objects.User;
+//import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
+//import seniorproject.caretakers.caretakersapp.objects.Caretaker;
+//import seniorproject.caretakers.caretakersapp.objects.User;
 
 public class ScheduleEvent extends WeekViewEvent {
 
-    private String mLocation;
+    /*private String mLocation;
     private String mCategory;
     private String mDescription;
     private int mPriority;
@@ -60,5 +60,5 @@ public class ScheduleEvent extends WeekViewEvent {
                 return super.getColor();
             }
         }
-    }
+    }*/
 }

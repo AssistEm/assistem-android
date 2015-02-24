@@ -1,5 +1,6 @@
 package seniorproject.caretakers.caretakersapp.ui.actvities;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -8,24 +9,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import seniorproject.caretakers.caretakersapp.R;
-import seniorproject.caretakers.caretakersapp.apiservices.BaseRestClient;
 import seniorproject.caretakers.caretakersapp.ui.fragments.LoginFragment;
 import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 
 
 public class LoginActivity extends ActionBarActivity {
 
+    public final static int LOGGED_IN_REQUEST = 1;
+
+    public final static int EXIT_APP_RESULT = 10;
+    public final static int AUTHENTICATION_ERROR = 20;
+
+    AccountHandler mAccountHandler;
+
     AccountHandler.AccountListener mAccountListener = new AccountHandler.AccountListener() {
         @Override
-        public void onLoggedIn(String firstName, String lastName, String email, String phone, String type) {
-            Log.i("LOGGED IN", "LOGGED IN");
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra("type", type);
-            intent.putExtra("first_name", firstName);
-            intent.putExtra("last_name", lastName);
-            intent.putExtra("email", email);
-            intent.putExtra("phone", phone);
-            startActivity(intent);
+        public void onLoggedIn() {
+            loggedIn();
         }
 
         @Override
@@ -37,21 +37,19 @@ public class LoginActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        BaseRestClient.init();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        AccountHandler.getInstance().addAccountListener(mAccountListener);
+        mAccountHandler = AccountHandler.getInstance(this);
+        mAccountHandler.addAccountListener(mAccountListener);
         if(savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_holder, new LoginFragment(), "login_fragment")
                     .commit();
         }
-        if(AccountHandler.getInstance().getLocalLoggedIn()) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
+        if(mAccountHandler.getLocalLoggedIn()) {
+            loggedIn();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,10 +70,27 @@ public class LoginActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        if(mAccountHandler != null) {
+            mAccountHandler.clearAccountListeners();
+        }
+    }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        AccountHandler.getInstance().removeAccountListener(mAccountListener);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == LOGGED_IN_REQUEST) {
+            switch(resultCode) {
+                case EXIT_APP_RESULT:
+                    finish();
+                    break;
+            }
+        }
+    }
+
+    private void loggedIn() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivityForResult(intent, LOGGED_IN_REQUEST);
     }
 }

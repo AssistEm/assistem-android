@@ -14,10 +14,13 @@ import java.util.Calendar;
 import java.util.List;
 
 import seniorproject.caretakers.caretakersapp.R;
+import seniorproject.caretakers.caretakersapp.ui.views.AddFloatingActionButton;
 
 public class CalendarActivity extends ActionBarActivity {
 
     WeekView mWeekView;
+
+    AddFloatingActionButton mAddEventButton;
 
     WeekView.MonthChangeListener mMonthChangeListener = new WeekView.MonthChangeListener() {
         @Override
@@ -36,6 +39,13 @@ public class CalendarActivity extends ActionBarActivity {
         }
     };
 
+    WeekView.EmptyViewClickListener mEmptyClickListener = new WeekView.EmptyViewClickListener() {
+        @Override
+        public void onEmptyViewClicked(Calendar calendar) {
+
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +53,8 @@ public class CalendarActivity extends ActionBarActivity {
         mWeekView = (WeekView) findViewById(R.id.weekView);
         mWeekView.setMonthChangeListener(mMonthChangeListener);
         mWeekView.setOnEventClickListener(mEventClickListener);
+        mWeekView.setEmptyViewClickListener(mEmptyClickListener);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

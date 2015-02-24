@@ -1,5 +1,6 @@
 package seniorproject.caretakers.caretakersapp.data.model;
 
+import com.alamkanak.weekview.WeekViewEvent;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * Created by Stephen on 2/18/2015.
  */
-public class Event {
+public class Event extends WeekViewEvent{
 
     @SerializedName("title")
     String title;
@@ -26,4 +27,5 @@ public class Event {
 
     @SerializedName("weeks_to_repeat")
     int weeksToRepeat;
+
 }

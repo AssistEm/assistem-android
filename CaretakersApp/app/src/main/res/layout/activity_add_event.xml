@@ -1,0 +1,131 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context="seniorproject.caretakers.caretakersapp.ui.actvities.AddEventActivity">
+
+    <include layout="@layout/actionbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add_event_title_hint"
+                android:textSize="36sp"
+                android:padding="15dp"/>
+
+            <EditText
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add_event_description_hint"
+                android:layout_below="@id/title"
+                android:padding="15dp"/>
+
+            <EditText
+                android:id="@+id/time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/description"
+                android:layout_toEndOf="@+id/time_image"
+                android:layout_toRightOf="@+id/time_image"
+                android:padding="15dp"
+                android:hint="@string/add_event_time_hint"/>
+
+            <ImageView
+                android:id="@+id/time_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:contentDescription="@string/add_event_time_description"
+                android:layout_below="@id/description"
+                android:layout_alignTop="@id/time"
+                android:layout_alignBottom="@id/time"
+                android:src="@drawable/ic_time"/>
+
+            <EditText
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/time"
+                android:layout_toEndOf="@+id/date_image"
+                android:layout_toRightOf="@+id/date_image"
+                android:hint="@string/add_event_date_hint"
+                android:padding="15dp"/>
+
+            <ImageView
+                android:id="@+id/date_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:contentDescription="@string/add_event_date_description"
+                android:layout_below="@id/time"
+                android:layout_alignTop="@id/date"
+                android:layout_alignBottom="@id/date"
+                android:src="@drawable/ic_date"/>
+
+            <EditText
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/date"
+                android:layout_toEndOf="@+id/location_image"
+                android:layout_toRightOf="@+id/location_image"
+                android:hint="@string/add_event_location_hint"
+                android:padding="15dp"/>
+
+            <ImageView
+                android:id="@+id/location_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:contentDescription="@string/add_event_location_description"
+                android:layout_below="@id/date"
+                android:layout_alignTop="@id/location"
+                android:layout_alignBottom="@id/location"
+                android:src="@drawable/ic_location"/>
+
+            <Spinner
+                android:id="@+id/priority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/location"
+                android:layout_toEndOf="@+id/priority_image"
+                android:layout_toRightOf="@+id/priority_image"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+
+            <ImageView
+                android:id="@+id/priority_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:contentDescription="@string/add_event_priority_description"
+                android:layout_below="@id/location"
+                android:layout_alignTop="@id/priority"
+                android:layout_alignBottom="@id/priority"
+                android:src="@drawable/ic_priority"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</LinearLayout>

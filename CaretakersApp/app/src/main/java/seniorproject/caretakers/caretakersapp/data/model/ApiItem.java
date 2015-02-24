@@ -7,6 +7,6 @@ import com.google.gson.annotations.SerializedName;
  */
 public class ApiItem {
 
-    @SerializedName("id")
+    @SerializedName("_id")
     String id;
 }

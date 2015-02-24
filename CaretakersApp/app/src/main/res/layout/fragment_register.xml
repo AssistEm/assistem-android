@@ -4,6 +4,36 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingBottom="@dimen/login_element_vertical_margin">
+
+        <RadioButton
+            android:id="@+id/button_caretaker"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:checked="true"
+            android:text="@string/caretaker"
+            android:textColor="@color/text_color"/>
+
+        <RadioButton
+            android:id="@+id/button_patient"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:text="@string/patient"
+            android:textColor="@color/text_color"/>
+
+    </RadioGroup>
+
     <EditText
         android:id="@+id/user_email"
         android:layout_width="match_parent"
@@ -27,6 +57,52 @@
         android:paddingBottom="@dimen/login_element_vertical_margin"
         android:hint="@string/confirm_password"
         android:inputType="textPassword"/>
+
+    <EditText
+        android:id="@+id/user_first_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/login_element_vertical_margin"
+        android:hint="@string/first_name"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/user_last_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/login_element_vertical_margin"
+        android:hint="@string/last_name"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/user_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/login_element_vertical_margin"
+        android:hint="@string/phone"
+        android:inputType="phone"/>
+
+    <TextView
+        android:id="@+id/community_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="@string/find_a_community" />
+
+    <EditText
+        android:id="@+id/create_community_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/login_element_vertical_margin"
+        android:hint="@string/register_community_name_hint"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/find_community_query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/login_element_vertical_margin"
+        android:hint="@string/register_find_community_hint"/>
 
     <Button
         android:id="@+id/user_register_submit"

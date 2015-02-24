@@ -1,6 +1,7 @@
 package seniorproject.caretakers.caretakersapp.data.handlers;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -15,74 +16,142 @@ import java.util.List;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import seniorproject.caretakers.caretakersapp.apiservices.BaseService;
-import seniorproject.caretakers.caretakersapp.apiservices.UserRestClient;
-import seniorproject.caretakers.caretakersapp.apiservices.UserService;
-import seniorproject.caretakers.caretakersapp.objects.User;
+import seniorproject.caretakers.caretakersapp.tempdata.apis.BaseJsonResponseHandler;
+import seniorproject.caretakers.caretakersapp.tempdata.apis.NoNetworkException;
+import seniorproject.caretakers.caretakersapp.tempdata.apis.UserRestClient;
+import seniorproject.caretakers.caretakersapp.tempdata.model.Community;
+import seniorproject.caretakers.caretakersapp.tempdata.model.User;
 
 public class AccountHandler {
+
+    private final static String USER_STORE_PREFS = "user";
+    private final static String TOKEN_KEY_PREFS = "token";
+    private final static String ID_KEY_PREFS = "id";
+    private final static String FIRST_NAME_KEY_PREFS = "first_name";
+    private final static String LAST_NAME_KEY_PREFS = "last_name";
+    private final static String EMAIL_KEY_PREFS = "email";
+    private final static String PHONE_KEY_PREFS = "phone";
+    private final static String TYPE_KEY_PREFS = "type";
+    private final static String COMMUNITY_ID_PREFS = "community_id";
+    private final static String COMMUNITY_NAME_PREFS = "community_name";
+    private final static String COMMUNITY_PATIENT_ID_PREFS = "community_patient";
 
     static AccountHandler mInstance;
 
     User mCurrentUser;
+    Community mCurrentCommunity;
+    String mToken;
+    Context mApplicationContext;
+    SharedPreferences mUserStore;
 
     List<AccountListener> mListeners;
 
-    private AccountHandler() {
+    private AccountHandler(Context applicationContext) {
+        mApplicationContext = applicationContext;
         mListeners = new ArrayList<AccountListener>();
+        loadFromStore();
     }
 
-    public static AccountHandler getInstance() {
+    public static AccountHandler getInstance(Context context) {
         if(mInstance == null) {
-            mInstance = new AccountHandler();
+            mInstance = new AccountHandler(context.getApplicationContext());
         }
         return mInstance;
     }
 
-    Callback<Response> mLoginCallBack = new Callback<Response>() {
-        @Override
-        public void success(Response jsonObject, Response response) {
-            Log.i("LOGGED IN", "LOGGED IN CALLBACK");
-            for(AccountListener listener : mListeners) {
-                //listener.onLoggedIn();
+    private void setToStore() {
+        if(mUserStore == null) {
+            mUserStore = mApplicationContext.getSharedPreferences(USER_STORE_PREFS, Context.MODE_PRIVATE);
+        }
+        SharedPreferences.Editor edit = mUserStore.edit();
+        if(mToken != null) {
+            edit.putString(TOKEN_KEY_PREFS, mToken)
+                    .putString(ID_KEY_PREFS, mCurrentUser.getId())
+                    .putString(FIRST_NAME_KEY_PREFS, mCurrentUser.getFirstName())
+                    .putString(LAST_NAME_KEY_PREFS, mCurrentUser.getLastName())
+                    .putString(EMAIL_KEY_PREFS, mCurrentUser.getEmail())
+                    .putString(PHONE_KEY_PREFS, mCurrentUser.getPhone())
+                    .putString(TYPE_KEY_PREFS, mCurrentUser.getType());
+            if(mCurrentCommunity != null) {
+                edit.putString(COMMUNITY_ID_PREFS, mCurrentCommunity.getId())
+                        .putString(COMMUNITY_NAME_PREFS, mCurrentCommunity.getName())
+                        .putString(COMMUNITY_PATIENT_ID_PREFS, mCurrentCommunity.getPatientId());
+            }
+            edit.commit();
+        }
+    }
+
+    private void loadFromStore() {
+        if(mUserStore == null) {
+            mUserStore = mApplicationContext.getSharedPreferences(USER_STORE_PREFS, Context.MODE_PRIVATE);
+        }
+        if(mUserStore.contains(TOKEN_KEY_PREFS)) {
+            mToken = mUserStore.getString(TOKEN_KEY_PREFS, "");
+            if(mToken.isEmpty()) {
+                return;
+            }
+            String id = mUserStore.getString(ID_KEY_PREFS, "");
+            String firstName = mUserStore.getString(FIRST_NAME_KEY_PREFS, "");
+            String lastName = mUserStore.getString(LAST_NAME_KEY_PREFS, "");
+            String email = mUserStore.getString(EMAIL_KEY_PREFS, "");
+            String phone = mUserStore.getString(PHONE_KEY_PREFS, "");
+            String type = mUserStore.getString(TYPE_KEY_PREFS, "");
+            mCurrentUser = User.parseUser(id, firstName, lastName, email, phone, type);
+            if(mUserStore.contains(COMMUNITY_ID_PREFS)) {
+                String communityId = mUserStore.getString(COMMUNITY_ID_PREFS, "");
+                String communityName = mUserStore.getString(COMMUNITY_NAME_PREFS, "");
+                String communityPatient = mUserStore.getString(COMMUNITY_PATIENT_ID_PREFS, "");
+                mCurrentCommunity = new Community(communityId, communityName, communityPatient);
             }
         }
+    }
 
-        @Override
-        public void failure(RetrofitError error) {
-            Log.i("ERROR", error.toString());
+    private void clearStore() {
+        if(mUserStore == null) {
+            mUserStore = mApplicationContext.getSharedPreferences(USER_STORE_PREFS, Context.MODE_PRIVATE);
         }
-    };
+        mUserStore.edit().clear().commit();
+    }
 
-    JsonHttpResponseHandler mLoginHandler = new JsonHttpResponseHandler() {
+    BaseJsonResponseHandler mLoginHandler = new BaseJsonResponseHandler() {
 
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             try {
+                mToken = response.getString("token");
                 JSONObject user = response.getJSONObject("user");
-                String firstName = user.getString("first_name");
-                String lastName = user.getString("last_name");
-                String phone = user.getString("phone");
-                String type = user.getString("type");
-                JSONObject loginInfo = user.getJSONObject("login_info");
-                String email = loginInfo.getString("email");
-                Log.i("LASTNAME", lastName);
+                mCurrentUser = User.parseUser(user);
+                JSONObject community = response.getJSONObject("community");
+                mCurrentCommunity = Community.parseCommunity(community);
+                setToStore();
                 for(AccountListener listener : mListeners) {
-                    listener.onLoggedIn(firstName, lastName, email, phone, type);
+                    listener.onLoggedIn();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+    };
 
+    BaseJsonResponseHandler mRegisterHandler = new BaseJsonResponseHandler() {
         @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
-            Log.i("STATUS", String.valueOf(statusCode));
-
-            Log.i("RESPONSE", response.toString());
-
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            try {
+                mToken = response.getString("token");
+                JSONObject user = response.getJSONObject("user");
+                mCurrentUser = User.parseUser(user);
+                JSONObject community = response.getJSONObject("community");
+                mCurrentCommunity = Community.parseCommunity(community);
+                setToStore();
+                for(AccountListener listener : mListeners) {
+                    listener.onRegistered();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     };
+
     Callback<Response> mRegisterCallback = new Callback<Response>() {
         @Override
         public void success(Response jsonObject, Response response) {
@@ -98,20 +167,44 @@ public class AccountHandler {
     };
 
     public void login(Context context, String email, String password) {
-        //UserService.get().login(email, password, mLoginCallBack);
-        UserRestClient.login(context, email, password, mLoginHandler);
+        try {
+            UserRestClient.login(context, email, password, mLoginHandler);
+        } catch (NoNetworkException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void patientRegister(String email, String password) throws JSONException {
-        UserService.get().patientRegister(email, password, mRegisterCallback);
+    public void patientRegister(Context context, String email, String password, String firstName,
+                                String lastName, String phone, String communityName,
+                                boolean privacy) {
+        try {
+            UserRestClient.createPatient(context, email, password, firstName, lastName, phone,
+                    communityName, privacy, mRegisterHandler);
+        } catch (NoNetworkException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void caretakerRegister(Context context, String email, String password, String firstName,
+                                  String lastName, String phone, String emailOrName) {
+        try {
+            UserRestClient.createCaretaker(context, email, password, firstName, lastName, phone,
+                    emailOrName, mRegisterHandler);
+        } catch (NoNetworkException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean getLocalLoggedIn() {
-        return UserService.getLocalLoggedIn();
+        return mCurrentUser != null;
     }
 
     public User getCurrentUser() {
         return mCurrentUser;
+    }
+
+    public Community getCurrentCommunity() {
+        return mCurrentCommunity;
     }
 
     public void addAccountListener(AccountListener listener) {
@@ -125,8 +218,34 @@ public class AccountHandler {
         }
     }
 
+    public void clearAccountListeners() {
+        mListeners.clear();
+    }
+
+    public void logout() {
+        if(mCurrentUser != null) {
+            mCurrentUser = null;
+            mToken = null;
+            clearStore();
+        }
+        for(AccountListener listener : mListeners) {
+            listener.onLogout();
+        }
+    }
+
+    public void triggerAuthenticationError() {
+        if(mListeners != null) {
+            for(AccountListener listener : mListeners) {
+                listener.onAuthenticationError();
+            }
+        }
+        logout();
+    }
+
     public static abstract class AccountListener {
-        public void onLoggedIn(String firstName, String lastName, String email, String phone, String type) { }
+        public void onLoggedIn() { }
         public void onRegistered() { }
+        public void onLogout() { }
+        public void onAuthenticationError() { }
     }
 }
