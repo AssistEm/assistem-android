@@ -3,7 +3,9 @@ package seniorproject.caretakers.caretakersapp.tempdata.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public abstract class User {
+import java.io.Serializable;
+
+public abstract class User implements Serializable {
 
     protected String mId;
     protected String mFirstName;

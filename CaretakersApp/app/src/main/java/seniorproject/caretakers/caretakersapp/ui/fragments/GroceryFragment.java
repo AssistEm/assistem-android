@@ -5,8 +5,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import seniorproject.caretakers.caretakersapp.R;
+import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 
 public class GroceryFragment extends Fragment {
 

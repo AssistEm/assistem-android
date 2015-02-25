@@ -2,16 +2,18 @@
 <seniorproject.caretakers.caretakersapp.ui.views.DrawerRowItem
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
 
     <seniorproject.caretakers.caretakersapp.ui.views.DrawerRowTextView
         android:id="@+id/drawer_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:layout_marginStart="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"/>
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"/>
 
 </seniorproject.caretakers.caretakersapp.ui.views.DrawerRowItem>

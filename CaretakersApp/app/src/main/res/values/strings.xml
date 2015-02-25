@@ -30,14 +30,27 @@
     <string name="add_event_description_hint">Description</string>
     <string name="add_event_title_hint">Title</string>
     <string name="add_event_location_hint">Location</string>
-    <string name="add_event_time_hint">Time</string>
-    <string name="add_event_date_hint">Date</string>
+    <string name="add_event_start_time_hint">Start Time</string>
+    <string name="add_event_time_to">to</string>
+    <string name="add_event_end_time_hint">End Time</string>
+    <string name="add_event_start_date_hint">Start Date</string>
+    <string name="add_event_end_date_hint">End Date</string>
+    <string name="add_event_category_hint">Category</string>
     <string name="add_event_priority_description">Priority</string>
     <string name="add_event_time_description">Time</string>
     <string name="add_event_date_description">Date</string>
     <string name="add_event_location_description">Location</string>
+    <string name="add_event_category_description">Category</string>
+    <string name="add_event_submit">Add Event</string>
     <string name="title_activity_edit_event">EditEventActivity</string>
     <string name="title_activity_view">ViewActivity</string>
     <string name="title_activity_view_event">ViewEventActivity</string>
+    <string name="view_event_volunteer">Volunteer</string>
+    <string name="view_event_unvolunteer">Unvolunteer</string>
+    <string name="view_event_submit">Submit</string>
+    <string name="settings_logout_text">Logout</string>
+    <string name="event_added_toast">Event added</string>
+    <string name="event_volunteered_toast">Volunteered for event</string>
+    <string name="event_edited_toast">Event modified</string>
 
 </resources>

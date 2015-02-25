@@ -7,6 +7,7 @@ import android.util.Log;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,6 +57,10 @@ public class AccountHandler {
         if(mInstance == null) {
             mInstance = new AccountHandler(context.getApplicationContext());
         }
+        return mInstance;
+    }
+
+    public static AccountHandler getExistingInstance() {
         return mInstance;
     }
 
@@ -121,8 +126,10 @@ public class AccountHandler {
                 mToken = response.getString("token");
                 JSONObject user = response.getJSONObject("user");
                 mCurrentUser = User.parseUser(user);
-                JSONObject community = response.getJSONObject("community");
-                mCurrentCommunity = Community.parseCommunity(community);
+                JSONArray community = response.getJSONArray("community");
+                if(community.length() > 0) {
+                    mCurrentCommunity = Community.parseCommunity(community.getJSONObject(0));
+                }
                 setToStore();
                 for(AccountListener listener : mListeners) {
                     listener.onLoggedIn();
@@ -205,6 +212,10 @@ public class AccountHandler {
 
     public Community getCurrentCommunity() {
         return mCurrentCommunity;
+    }
+
+    public String getToken() {
+        return mToken;
     }
 
     public void addAccountListener(AccountListener listener) {

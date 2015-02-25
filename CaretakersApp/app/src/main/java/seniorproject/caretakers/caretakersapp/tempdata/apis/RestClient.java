@@ -4,12 +4,15 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import org.apache.http.Header;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+
+import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 
 public abstract class RestClient {
 
@@ -40,5 +43,10 @@ public abstract class RestClient {
         StringEntity entity = new StringEntity(object.toString());
         entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
         return entity;
+    }
+
+    protected static Header generateAuthHeader(Context context) {
+        String token = AccountHandler.getInstance(context).getToken();
+        return new BasicHeader("Authorization", "Bearer " + token);
     }
 }

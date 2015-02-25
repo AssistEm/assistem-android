@@ -1,6 +1,7 @@
 package seniorproject.caretakers.caretakersapp.ui.views;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import seniorproject.caretakers.caretakersapp.R;
 
 public class DrawerRowItem extends LinearLayout implements Checkable {
 
@@ -28,6 +31,11 @@ public class DrawerRowItem extends LinearLayout implements Checkable {
         mIsChecked = b;
         for(Checkable checkable : mCheckableViews) {
             checkable.setChecked(b);
+        }
+        if(b) {
+            setBackgroundColor(getResources().getColor(R.color.drawer_background_selected));
+        } else {
+            setBackgroundColor(Color.WHITE);
         }
     }
 

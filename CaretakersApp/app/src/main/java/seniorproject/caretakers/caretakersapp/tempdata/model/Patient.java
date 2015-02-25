@@ -1,9 +1,11 @@
 package seniorproject.caretakers.caretakersapp.tempdata.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Jason on 2/24/15.
  */
-public class Patient extends User {
+public class Patient extends User implements Serializable {
 
     public final static String PATIENT_TYPE = "patient";
 

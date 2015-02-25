@@ -20,7 +20,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
                 @Override
                 public void onAuthenticationError() {
-                    setResult(LoginActivity.AUTHENTICATION_ERROR);
+                    setResult(LoginActivity.AUTHENTICATION_ERROR_RESULT);
                     finish();
                 }
             };

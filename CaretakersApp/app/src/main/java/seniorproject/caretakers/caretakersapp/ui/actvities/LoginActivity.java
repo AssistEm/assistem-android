@@ -18,7 +18,8 @@ public class LoginActivity extends ActionBarActivity {
     public final static int LOGGED_IN_REQUEST = 1;
 
     public final static int EXIT_APP_RESULT = 10;
-    public final static int AUTHENTICATION_ERROR = 20;
+    public final static int AUTHENTICATION_ERROR_RESULT = 20;
+    public final static int LOGGED_OUT_RESULT = 30;
 
     AccountHandler mAccountHandler;
 

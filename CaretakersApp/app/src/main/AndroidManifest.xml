@@ -31,16 +31,9 @@
             android:theme="@style/AppTheme.EditText" >
         </activity>
         <activity
-            android:name=".ui.actvities.EditEventActivity"
-            android:label="@string/title_activity_edit_event" >
-        </activity>
-        <activity
-            android:name=".ui.actvities.ViewActivity"
-            android:label="@string/title_activity_view" >
-        </activity>
-        <activity
             android:name=".ui.actvities.ViewEventActivity"
-            android:label="@string/title_activity_view_event" >
+            android:label="@string/title_activity_view_event"
+            android:theme="@style/AppTheme.EditText">
         </activity>
     </application>
 

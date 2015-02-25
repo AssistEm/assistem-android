@@ -9,4 +9,9 @@
     <color name="calendar_add_event_button_pressed">@color/secondary_color_dark</color>
     <color name="drawer_text_color">#666666</color>
     <color name="drawer_text_selected_color">#000000</color>
+    <color name="drawer_background_selected">#EEEEEE</color>
+    <color name="priority_high">#F44336</color>
+    <color name="priority_medium">#FFC107</color>
+    <color name="priority_low">#8BC34A</color>
+    <color name="event_taken">#9E9E9E</color>
 </resources>

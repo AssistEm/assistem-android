@@ -17,8 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import seniorproject.caretakers.caretakersapp.R;
+import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 import seniorproject.caretakers.caretakersapp.ui.adapters.DrawerAdapter;
 
 public class DrawerFragment extends Fragment {
@@ -47,6 +49,8 @@ public class DrawerFragment extends Fragment {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
     private View mFragmentContainerView;
+    private TextView mUserNameText;
+    private TextView mCommunityNameText;
 
     private int mCurrentSelectedPosition = -1;
     private boolean mFromSavedInstanceState;
@@ -91,6 +95,10 @@ public class DrawerFragment extends Fragment {
         mDrawerListView.setAdapter(new DrawerAdapter(getActivity()));
         selectItem(0);
         mDrawerListView.setItemChecked(0, true);
+        mUserNameText = (TextView) rootView.findViewById(R.id.name);
+        mUserNameText.setText(AccountHandler.getInstance(getActivity()).getCurrentUser().getDisplayName());
+        mCommunityNameText = (TextView) rootView.findViewById(R.id.community_name);
+        mCommunityNameText.setText(AccountHandler.getInstance(getActivity()).getCurrentCommunity().getName());
         return rootView;
     }
 
