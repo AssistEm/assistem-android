@@ -70,7 +70,7 @@ public class EventRestClient extends CommunityRestClient {
 
     public static void volunteerForEvent(Context context, String communityId, String eventId,
                                          boolean volunteer, BaseJsonResponseHandler handler)
-        throws NoNetworkException {
+            throws NoNetworkException {
         checkNetwork(context);
         String url = BASE_URL + COMMUNITIES + "/" + communityId + "/" + EVENTS + "/" + eventId;
         JSONObject body = new JSONObject();
@@ -81,5 +81,24 @@ public class EventRestClient extends CommunityRestClient {
         } catch (JSONException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void deleteEvent(Context context, String communityId, String eventId,
+                                   boolean deleteRepeating, BaseJsonResponseHandler handler)
+            throws NoNetworkException {
+        checkNetwork(context);
+        String url = BASE_URL + COMMUNITIES + "/" + communityId + "/" + EVENTS + "/" + eventId;
+        url += "?delete_repeating=" + deleteRepeating;
+        Log.i("DELETE", url);
+        Header[] headers = new Header[] {generateAuthHeader(context)};
+        mClient.delete(context, url, headers, handler);
+        /*JSONObject body = new JSONObject();
+        try {
+            body.put("deleteRepeating", deleteRepeating);
+            Header[] headers = new Header[] {generateAuthHeader(context)};
+            //mClient.delete
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }*/
     }
 }

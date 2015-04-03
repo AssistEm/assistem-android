@@ -1,6 +1,7 @@
 package seniorproject.caretakers.caretakersapp.ui.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -19,8 +20,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import butterknife.OnClick;
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
+import seniorproject.caretakers.caretakersapp.ui.actvities.ProfileActivity;
 import seniorproject.caretakers.caretakersapp.ui.adapters.DrawerAdapter;
 
 public class DrawerFragment extends Fragment {
@@ -55,6 +58,14 @@ public class DrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = -1;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+
+    private View.OnClickListener mUserNameClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getActivity(), ProfileActivity.class);
+            startActivity(intent);
+        }
+    };
 
     public DrawerFragment() {
     }
@@ -96,6 +107,7 @@ public class DrawerFragment extends Fragment {
         selectItem(0);
         mDrawerListView.setItemChecked(0, true);
         mUserNameText = (TextView) rootView.findViewById(R.id.name);
+        mUserNameText.setOnClickListener(mUserNameClickListener);
         mUserNameText.setText(AccountHandler.getInstance(getActivity()).getCurrentUser().getDisplayName());
         mCommunityNameText = (TextView) rootView.findViewById(R.id.community_name);
         mCommunityNameText.setText(AccountHandler.getInstance(getActivity()).getCurrentCommunity().getName());

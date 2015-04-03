@@ -105,6 +105,21 @@ public class EventHandler {
         }
     }
 
+    private class DeleteEventResponseHandler extends BaseJsonResponseHandler {
+        EventListener mListener;
+
+        public DeleteEventResponseHandler(EventListener listener) {
+            mListener = listener;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            if(mListener != null) {
+                mListener.onEventDeleted();
+            }
+        }
+    }
+
     public void getEvents(Context context, int year, int month,
                           EventListener listener) {
         String communityId = AccountHandler.getInstance(context).getCurrentCommunity().getId();
@@ -161,10 +176,22 @@ public class EventHandler {
         }
     }
 
+    public void deleteEvent(Context context, String eventId, boolean deleteRepeating,
+                            EventListener listener) {
+        String communityId = AccountHandler.getInstance(context).getCurrentCommunity().getId();
+        try {
+            EventRestClient.deleteEvent(context, communityId, eventId, deleteRepeating,
+                    new DeleteEventResponseHandler(listener));
+        } catch(NoNetworkException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static abstract class EventListener {
         public void onEventsFetched(List<Event> events, int year, int month) { }
         public void onEventAdded() { }
         public void onEventVolunteered() { }
         public void onEventUpdated() { }
+        public void onEventDeleted() { }
     }
 }

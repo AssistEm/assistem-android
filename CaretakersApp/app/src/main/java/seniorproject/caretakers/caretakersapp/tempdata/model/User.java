@@ -1,5 +1,7 @@
 package seniorproject.caretakers.caretakersapp.tempdata.model;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,6 +24,7 @@ public abstract class User implements Serializable {
     }
 
     public static User parseUser(JSONObject userObject) throws JSONException {
+        Log.i("USEROBJECT", userObject.toString());
         String id = userObject.getString("_id");
         String firstName = userObject.getString("first_name");
         String lastName = userObject.getString("last_name");

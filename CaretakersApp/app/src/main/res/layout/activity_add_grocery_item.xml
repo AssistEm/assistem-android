@@ -1,0 +1,143 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context="seniorproject.caretakers.caretakersapp.ui.actvities.AddEventActivity">
+
+    <include layout="@layout/actionbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add_grocery_item_title_hint"
+                android:textSize="36sp"
+                android:padding="15dp"/>
+
+            <EditText
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add_grocery_item_description_hint"
+                android:layout_below="@id/title"
+                android:padding="15dp"/>
+
+            <EditText
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/description"
+                android:layout_toEndOf="@+id/time_image"
+                android:layout_toRightOf="@+id/time_image"
+                android:gravity="center"
+                android:padding="15dp"
+                android:hint="@string/add_grocery_item_time_hint"/>
+
+            <TextView
+                android:id="@+id/time_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_grocery_item_on"
+                android:textSize="16sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:layout_toEndOf="@id/time"
+                android:layout_toRightOf="@id/time"
+                android:layout_alignBaseline="@id/time"/>
+
+            <ImageView
+                android:id="@+id/time_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:contentDescription="@string/add_event_time_description"
+                android:layout_below="@id/description"
+                android:layout_alignTop="@id/time"
+                android:layout_alignBottom="@id/time"
+                android:src="@drawable/ic_time"/>
+
+            <EditText
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/description"
+                android:layout_toEndOf="@+id/time_to"
+                android:layout_toRightOf="@+id/time_to"
+                android:hint="@string/add_grocery_item_date_hint"
+                android:padding="15dp"/>
+
+
+            <ImageView
+                android:id="@+id/quantity_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:contentDescription="@string/add_event_location_description"
+                android:layout_below="@id/date"
+                android:layout_alignTop="@+id/quantity"
+                android:layout_alignBottom="@+id/quantity"
+                android:src="@drawable/ic_quantity"/>
+
+            <EditText
+                android:id="@+id/quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/date"
+                android:layout_toEndOf="@+id/quantity_image"
+                android:layout_toRightOf="@+id/quantity_image"
+                android:hint="@string/add_grocery_item_quantity_hint"
+                android:padding="15dp"/>
+
+            <EditText
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/quantity"
+                android:layout_toEndOf="@+id/location_image"
+                android:layout_toRightOf="@+id/location_image"
+                android:hint="@string/add_event_location_hint"
+                android:padding="15dp"/>
+
+            <ImageView
+                android:id="@+id/location_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:contentDescription="@string/add_event_location_description"
+                android:layout_below="@id/quantity"
+                android:layout_alignTop="@id/location"
+                android:layout_alignBottom="@id/location"
+                android:src="@drawable/ic_location"/>
+
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/location"
+                android:layout_margin="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:text="@string/add_grocery_item_submit"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -5,4 +5,21 @@
         <item>Medium</item>
         <item>High</item>
     </string-array>
+    <string-array name="grocery_sort_types">
+        <item>Name</item>
+        <item>Urgency</item>
+    </string-array>
+    <string-array name="grocery_sort_order">
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
+    <string-array name="days_of_week">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
 </resources>

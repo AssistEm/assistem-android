@@ -8,12 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import seniorproject.caretakers.caretakersapp.R;
+import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
+import seniorproject.caretakers.caretakersapp.tempdata.model.Patient;
 import seniorproject.caretakers.caretakersapp.ui.views.DrawerRowTextView;
 
 public class DrawerAdapter extends BaseAdapter {
 
     private static final int[] DRAWER_SECTIONS = {
-            R.string.drawer_calendar, R.string.drawer_grocery_list, R.string.drawer_settings
+            R.string.drawer_calendar, R.string.drawer_grocery_list, R.string.drawer_ping, R.string.drawer_settings
     };
 
     private Context mContext;
@@ -24,12 +26,23 @@ public class DrawerAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return DRAWER_SECTIONS.length;
+        if(AccountHandler.getInstance(mContext).getCurrentUser() instanceof Patient) {
+            return DRAWER_SECTIONS.length;
+        } else {
+            return DRAWER_SECTIONS.length - 1;
+        }
     }
 
     @Override
     public String getItem(int i) {
-        return mContext.getResources().getString(DRAWER_SECTIONS[i]);
+        if(AccountHandler.getInstance(mContext).getCurrentUser() instanceof Patient) {
+            return mContext.getResources().getString(DRAWER_SECTIONS[i]);
+        } else {
+            if(i == getCount() - 1) {
+                i++;
+            }
+            return mContext.getResources().getString(DRAWER_SECTIONS[i]);
+        }
     }
 
     @Override

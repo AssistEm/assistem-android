@@ -2,14 +2,20 @@ package seniorproject.caretakers.caretakersapp.tempdata.apis;
 
 import android.content.Context;
 
+import com.loopj.android.http.RequestParams;
+
+import org.apache.http.Header;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
+import seniorproject.caretakers.caretakersapp.tempdata.model.Availability;
 import seniorproject.caretakers.caretakersapp.tempdata.model.Caretaker;
 import seniorproject.caretakers.caretakersapp.tempdata.model.Patient;
 
@@ -81,6 +87,33 @@ public class UserRestClient extends RestClient {
             body.put("user", user);
             body.put("community", community);
             mClient.post(context, url, jsonToEntity(body), CONTENT_TYPE, handler);
+        } catch (JSONException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getFullProfile(Context context, BaseJsonResponseHandler handler)
+            throws NoNetworkException {
+        checkNetwork(context);
+        String url = BASE_URL + USER + "/" + ME;
+        mClient.get(context, url, new Header[] {generateAuthHeader(context)}, new RequestParams(), handler);
+    }
+
+    public static void setAvailability(Context context, List<Availability> availabilityList,
+                                       BaseJsonResponseHandler handler) throws NoNetworkException {
+        checkNetwork(context);
+        String url = BASE_URL + USER + "/" + ME;
+        JSONObject body = new JSONObject();
+        JSONObject caretakerInfo = new JSONObject();
+        JSONArray availabilityArray = new JSONArray();
+        try {
+            for(Availability avail : availabilityList) {
+                availabilityArray.put(avail.toJson());
+            }
+            caretakerInfo.put("availability", availabilityArray);
+            body.put("caretaker_info", caretakerInfo);
+            Header[] headers = new Header[] {generateAuthHeader(context)};
+            mClient.put(context, url, headers, jsonToEntity(body), CONTENT_TYPE, handler);
         } catch (JSONException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }

@@ -31,8 +31,7 @@ public class LoginActivity extends ActionBarActivity {
 
         @Override
         public void onRegistered() {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
+            loggedIn();
         }
     };
 

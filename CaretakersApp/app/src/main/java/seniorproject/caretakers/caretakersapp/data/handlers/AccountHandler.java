@@ -1,5 +1,6 @@
 package seniorproject.caretakers.caretakersapp.data.handlers;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -20,6 +21,7 @@ import retrofit.client.Response;
 import seniorproject.caretakers.caretakersapp.tempdata.apis.BaseJsonResponseHandler;
 import seniorproject.caretakers.caretakersapp.tempdata.apis.NoNetworkException;
 import seniorproject.caretakers.caretakersapp.tempdata.apis.UserRestClient;
+import seniorproject.caretakers.caretakersapp.tempdata.model.Availability;
 import seniorproject.caretakers.caretakersapp.tempdata.model.Community;
 import seniorproject.caretakers.caretakersapp.tempdata.model.User;
 
@@ -159,6 +161,65 @@ public class AccountHandler {
         }
     };
 
+    private class GetFullProfileInfoResponseHandler extends BaseJsonResponseHandler {
+        AccountListener mListener;
+
+        public GetFullProfileInfoResponseHandler(AccountListener listener) {
+            mListener = listener;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject object) {
+            if(mListener != null) {
+                mListener.onFullProfileFetched(object);
+            }
+        }
+    }
+
+    private class GetAvailabilityResponseHandler extends BaseJsonResponseHandler {
+        AccountListener mListener;
+
+        public GetAvailabilityResponseHandler(AccountListener listener) {
+            mListener = listener;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject object) {
+            List<Availability> availabilities = new ArrayList<>();
+            if(object.has("caretaker_info") && !object.isNull("caretaker_info")) {
+                try {
+                    JSONObject caretakerObject = object.getJSONObject("caretaker_info");
+                    if(caretakerObject.has("availability") && !caretakerObject.isNull("availability")) {
+                        JSONArray availabilityArray = caretakerObject.getJSONArray("availability");
+                        for(int i = 0; i < availabilityArray.length(); i++) {
+                            availabilities.add(Availability.parseAvailability(availabilityArray.getJSONObject(i)));
+                        }
+                        if(mListener != null) {
+                            mListener.onAvailabilityFetched(availabilities);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private class SetAvailabilityResponseHandler extends BaseJsonResponseHandler {
+        AccountListener mListener;
+
+        public SetAvailabilityResponseHandler(AccountListener listener) {
+            mListener = listener;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject object) {
+            if(mListener != null) {
+                mListener.onAvailabilitySet();
+            }
+        }
+    }
+
     Callback<Response> mRegisterCallback = new Callback<Response>() {
         @Override
         public void success(Response jsonObject, Response response) {
@@ -197,6 +258,32 @@ public class AccountHandler {
         try {
             UserRestClient.createCaretaker(context, email, password, firstName, lastName, phone,
                     emailOrName, mRegisterHandler);
+        } catch (NoNetworkException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getFullProfile(Context context, AccountListener mListener) {
+        try {
+            UserRestClient.getFullProfile(context, new GetFullProfileInfoResponseHandler(mListener));
+        } catch (NoNetworkException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getAvailability(Context context, AccountListener mListener) {
+        try {
+            UserRestClient.getFullProfile(context, new GetAvailabilityResponseHandler(mListener));
+        } catch (NoNetworkException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setAvailability(Context context, List<Availability> availabilities,
+                                AccountListener mListener) {
+        try {
+            UserRestClient.setAvailability(context, availabilities,
+                    new SetAvailabilityResponseHandler(mListener));
         } catch (NoNetworkException e) {
             e.printStackTrace();
         }
@@ -258,5 +345,8 @@ public class AccountHandler {
         public void onRegistered() { }
         public void onLogout() { }
         public void onAuthenticationError() { }
+        public void onFullProfileFetched(JSONObject profile) { }
+        public void onAvailabilityFetched(List<Availability> availabilities) { }
+        public void onAvailabilitySet() {}
     }
 }

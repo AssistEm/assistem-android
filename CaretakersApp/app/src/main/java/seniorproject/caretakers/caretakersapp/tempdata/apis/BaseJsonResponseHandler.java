@@ -34,7 +34,7 @@ public abstract class BaseJsonResponseHandler extends JsonHttpResponseHandler {
 
     private final void handleFailure(int statusCode, Header[] headers, String response,
                                      Throwable e) {
-        Log.i("ERROR", response);
+        Log.i("ERROR " + statusCode, response);
         if(mContext == null) {
             return;
         }

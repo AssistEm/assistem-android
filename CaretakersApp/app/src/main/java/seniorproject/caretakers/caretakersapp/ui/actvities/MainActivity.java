@@ -1,5 +1,6 @@
 package seniorproject.caretakers.caretakersapp.ui.actvities;
 
+import android.accounts.Account;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -11,9 +12,13 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import seniorproject.caretakers.caretakersapp.R;
+import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
+import seniorproject.caretakers.caretakersapp.tempdata.model.Patient;
 import seniorproject.caretakers.caretakersapp.ui.fragments.CalendarFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.DrawerFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.GroceryFragment;
+import seniorproject.caretakers.caretakersapp.ui.fragments.GroceryTabsFragment;
+import seniorproject.caretakers.caretakersapp.ui.fragments.PingFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.SettingsFragment;
 
 public class MainActivity extends BaseActivity implements DrawerFragment.NavigationDrawerCallbacks {
@@ -64,16 +69,23 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        Fragment fragment;
+        Fragment fragment = null;
 
         switch(position) {
             case 0:
                 fragment = new CalendarFragment();
                 break;
             case 1:
-                fragment = new GroceryFragment();
+                fragment = new GroceryTabsFragment();
                 break;
             case 2:
+                if(AccountHandler.getInstance(this).getCurrentUser() instanceof Patient) {
+                    fragment = new PingFragment();
+                } else {
+                    fragment = new SettingsFragment();
+                }
+                break;
+            case 3:
                 fragment = new SettingsFragment();
                 break;
             default:

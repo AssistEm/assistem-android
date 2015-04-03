@@ -46,4 +46,5 @@ public class LoginFragment extends Fragment {
         mPasswordEdit = (EditText) view.findViewById(R.id.user_password);
         return view;
     }
+
 }
