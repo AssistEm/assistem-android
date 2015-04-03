@@ -8,6 +8,7 @@ import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.POST;
 import retrofit.http.Path;
+import retrofit.http.Query;
 import rx.Observable;
 import seniorproject.caretakers.caretakersapp.data.model.Community;
 import seniorproject.caretakers.caretakersapp.data.model.Event;
@@ -21,25 +22,21 @@ public interface CommunitiesApi {
     public Observable<List<Community>> communities();
 
     @POST("/communities")
-    public Observable<Community> create(@Header("Authorization") String auth,
-                                        @Body Community community);
+    public Observable<Community> create(@Body Community community);
 
     @POST("/communities/{id}")
-    public Observable<Community> update(@Header("Authorization") String auth,
-                                        @Path("id") String id,
+    public Observable<Community> update(@Path("id") String id,
                                         @Body Community community);
 
     @DELETE("/communties/{id}")
-    public void delete(@Header("Authorization") String auth,
-                       @Path("id") String id);
+    public void delete(@Path("id") String id);
 
     @GET("/communities/{id}/events")
-    public Observable<List<Event>> events(@Header("Authorization") String auth,
-                                          @Path("id") String id);
+    public Observable<List<Event>> events(@Path("id") String id,
+                                          @Query("months") int monthsAgo);
 
     @POST("/communities/{id}/events")
-    public Observable<List<Event>> addEvent(@Header("Authorization") String auth,
-                                            @Path("id") String id,
+    public Observable<List<Event>> addEvent(@Path("id") String id,
                                             @Body Event event);
 
 

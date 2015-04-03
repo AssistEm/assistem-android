@@ -9,6 +9,9 @@ import java.util.List;
  */
 public class Community extends ApiItem {
 
+    @SerializedName("_id")
+    String id;
+
     @SerializedName("name")
     String name;
 
@@ -20,5 +23,25 @@ public class Community extends ApiItem {
 
     @SerializedName("privacy")
     boolean privacy;
+
+    @SerializedName("query")
+    String query;
+
+    public Community(String query) {
+        this.query = query;
+    }
+
+    public Community(String name, boolean privacy) {
+        this.name = name;
+        this.privacy = privacy;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 
 }

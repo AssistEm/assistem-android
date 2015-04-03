@@ -1,5 +1,6 @@
 package seniorproject.caretakers.caretakersapp.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,10 +14,20 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 
+import javax.inject.Inject;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
+import seniorproject.caretakers.caretakersapp.presenters.RegisterPresenter;
+import seniorproject.caretakers.caretakersapp.ui.actvities.MainActivity;
+import seniorproject.caretakers.caretakersapp.ui.interfaces.RegisterView;
 
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment implements RegisterView {
+
+    @Inject
+    RegisterPresenter presenter;
 
     EditText mEmailEdit;
     EditText mPasswordEdit;
@@ -32,27 +43,16 @@ public class RegisterFragment extends Fragment {
 
     TextView mCommunityText;
 
-    boolean mCaretaker = true;
-
     View.OnClickListener mRadioButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch(view.getId()) {
                 case R.id.button_caretaker:
-                    mCaretaker = true;
+                    presenter.setCaretakerStatus(true);
                     break;
                 case R.id.button_patient:
-                    mCaretaker = false;
+                    presenter.setCaretakerStatus(false);
                     break;
-            }
-            if(mCaretaker) {
-                mCommunityText.setText(getResources().getString(R.string.find_a_community));
-                mCommunityNameEdit.setVisibility(View.GONE);
-                mCommunityQueryEdit.setVisibility(View.VISIBLE);
-            } else {
-                mCommunityText.setText(getResources().getString(R.string.create_a_community));
-                mCommunityQueryEdit.setVisibility(View.GONE);
-                mCommunityNameEdit.setVisibility(View.VISIBLE);
             }
         }
     };
@@ -66,31 +66,12 @@ public class RegisterFragment extends Fragment {
             String firstName = mFirstNameEdit.getText().toString();
             String lastName = mLastNameEdit.getText().toString();
             String phone = mPhoneEdit.getText().toString();
-            if(email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()
-                    || firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty()) {
-                return;
-            } else if(!password.equals(confirmPassword)) {
-                Toast.makeText(getActivity(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            String community;
-            if(mCaretaker) {
-                community = mCommunityQueryEdit.getText().toString();
-            } else {
-                community = mCommunityNameEdit.getText().toString();
-            }
-            if(community.isEmpty()) {
-                return;
-            }
-            if(mCaretaker) {
-                AccountHandler.getInstance(getActivity())
-                        .caretakerRegister(getActivity(), email, password, firstName, lastName,
-                                phone, community);
-            } else {
-                AccountHandler.getInstance(getActivity())
-                        .patientRegister(getActivity(), email, password, firstName, lastName,
-                                phone, community, false);
-            }
+            String communitySearch = mCommunityQueryEdit.getText().toString();
+            String communityName = mCommunityNameEdit.getText().toString();
+
+            presenter.register(email, password, confirmPassword,
+                               firstName, lastName, phone,
+                               communitySearch, communityName);
         }
     };
 
@@ -112,5 +93,30 @@ public class RegisterFragment extends Fragment {
         mPatientRadio.setOnClickListener(mRadioButtonClickListener);
         mCommunityText = (TextView) view.findViewById(R.id.community_title);
         return view;
+    }
+
+    @Override
+    public void onRegisterSuccess() {
+        Intent intent = new Intent(this.getActivity(), MainActivity.class);
+        startActivity(intent);
+        this.getActivity().finish();
+    }
+
+    @Override
+    public void onRegisterFailed(String error) {
+        Crouton.makeText(this.getActivity(), error, Style.ALERT);
+    }
+
+    @Override
+    public void onCaretakerStatusChanged(boolean isCaretaker) {
+        if(isCaretaker) {
+            mCommunityText.setText(getResources().getString(R.string.find_a_community));
+            mCommunityNameEdit.setVisibility(View.GONE);
+            mCommunityQueryEdit.setVisibility(View.VISIBLE);
+        } else {
+            mCommunityText.setText(getResources().getString(R.string.create_a_community));
+            mCommunityQueryEdit.setVisibility(View.GONE);
+            mCommunityNameEdit.setVisibility(View.VISIBLE);
+        }
     }
 }

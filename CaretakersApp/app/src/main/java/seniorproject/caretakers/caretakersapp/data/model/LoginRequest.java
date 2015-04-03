@@ -12,4 +12,9 @@ public class LoginRequest {
 
     @SerializedName("password")
     String password;
+
+    public LoginRequest(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

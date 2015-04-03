@@ -2,7 +2,6 @@ package seniorproject.caretakers.caretakersapp.tempdata.model;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 
 import com.alamkanak.weekview.WeekViewEvent;
 
@@ -18,7 +17,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import seniorproject.caretakers.caretakersapp.R;
-import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 
 public class Event extends WeekViewEvent implements Serializable {
 

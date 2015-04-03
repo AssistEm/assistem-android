@@ -21,21 +21,29 @@ import com.doomonafireball.betterpickers.datepicker.DatePickerDialogFragment;
 import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog;
 import com.doomonafireball.betterpickers.timepicker.TimePickerDialogFragment;
 
+import org.parceler.Parcels;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.inject.Inject;
+
 import seniorproject.caretakers.caretakersapp.R;
-import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 import seniorproject.caretakers.caretakersapp.data.handlers.EventHandler;
-import seniorproject.caretakers.caretakersapp.tempdata.model.Event;
-import seniorproject.caretakers.caretakersapp.tempdata.model.Patient;
+import seniorproject.caretakers.caretakersapp.data.model.Event;
+import seniorproject.caretakers.caretakersapp.presenters.ViewEventPresenter;
+import seniorproject.caretakers.caretakersapp.ui.interfaces.EventView;
 import seniorproject.caretakers.caretakersapp.ui.views.FloatingActionButton;
 
 public class ViewEventActivity extends BaseActivity implements
         DatePickerDialogFragment.DatePickerDialogHandler,
         TimePickerDialogFragment.TimePickerDialogHandler,
-        RadialTimePickerDialog.OnTimeSetListener {
+        RadialTimePickerDialog.OnTimeSetListener,
+        EventView {
+
+    @Inject
+    ViewEventPresenter presenter;
 
     public final static int DONE_RESULT = 10;
     public final static int EVENT_EDITED_RESULT = 20;
@@ -189,7 +197,7 @@ public class ViewEventActivity extends BaseActivity implements
             Calendar endTime = Calendar.getInstance();
             endTime.set(mEndYear, mEndMonth, mEndDay, mEndHour, mEndMinute, 0);
             endTime.set(Calendar.MILLISECOND, 0);
-            EventHandler.getInstance().updateEvent(ViewEventActivity.this, mEvent.getStringId(),
+            EventHandler.getInstance().updateEvent(ViewEventActivity.this, mEvent.getId(),
                     title, description, location, category, priority, startTime, endTime,
                     mEventListener);
         }
@@ -199,7 +207,7 @@ public class ViewEventActivity extends BaseActivity implements
         @Override
         public void onClick(View view) {
             boolean volunteer = mEvent.getVolunteer() == null;
-            EventHandler.getInstance().volunteerEvent(ViewEventActivity.this, mEvent.getStringId(),
+            EventHandler.getInstance().volunteerEvent(ViewEventActivity.this, mEvent.getId(),
                     volunteer, mEventListener);
         }
     };
@@ -219,11 +227,8 @@ public class ViewEventActivity extends BaseActivity implements
         setTitle("");
         mViewLayout = (RelativeLayout) findViewById(R.id.view_layout);
         mEditLayout = (RelativeLayout) findViewById(R.id.edit_layout);
-        mEvent = (Event) getIntent().getSerializableExtra("event");
-        mEvent.setId(1);
-        mEvent.setName(mEvent.getTitle());
-        mEvent.setStartTime((Calendar) getIntent().getSerializableExtra("start_time"));
-        mEvent.setEndTime((Calendar) getIntent().getSerializableExtra("end_time"));
+        mEvent = Parcels.unwrap(getIntent().getParcelableExtra("event"));
+        mEvent.setId("1");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(mEvent.getColor()));
         mTitleText = (TextView) findViewById(R.id.title);
         mTitleText.setBackgroundColor(mEvent.getColor());
@@ -235,38 +240,7 @@ public class ViewEventActivity extends BaseActivity implements
         mPriorityText = (TextView) findViewById(R.id.priority);
         mVolunteerText = (TextView) findViewById(R.id.volunteer);
         mVolunteerButton = (Button) findViewById(R.id.volunteer_event);
-        if(AccountHandler.getInstance(this).getCurrentUser() instanceof Patient) {
-            mTitleEdit = (EditText) findViewById(R.id.edit_title);
-            mEditButton = (FloatingActionButton) findViewById(R.id.edit_button);
-            mEditButton.setVisibility(View.VISIBLE);
-            mEditButton.setOnClickListener(mEditClickListener);
-            mDescriptionEdit = (EditText) findViewById(R.id.edit_description);
-            mStartDateEdit = (EditText) findViewById(R.id.edit_start_date);
-            mStartDateEdit.setInputType(InputType.TYPE_NULL);
-            mStartDateEdit.setOnFocusChangeListener(mDateFocusListener);
-            mStartDateEdit.setOnClickListener(mDateClickListener);
-            mEndDateEdit = (EditText) findViewById(R.id.edit_end_date);
-            mEndDateEdit.setInputType(InputType.TYPE_NULL);
-            mEndDateEdit.setOnFocusChangeListener(mDateFocusListener);
-            mEndDateEdit.setOnClickListener(mDateClickListener);
-            mStartTimeEdit = (EditText) findViewById(R.id.edit_start_time);
-            mStartTimeEdit.setInputType(InputType.TYPE_NULL);
-            mStartTimeEdit.setOnFocusChangeListener(mTimeFocusListener);
-            mStartTimeEdit.setOnClickListener(mTimeClickListener);
-            mEndTimeEdit = (EditText) findViewById(R.id.edit_end_time);
-            mEndTimeEdit.setInputType(InputType.TYPE_NULL);
-            mEndTimeEdit.setOnFocusChangeListener(mTimeFocusListener);
-            mEndTimeEdit.setOnClickListener(mTimeClickListener);
-            mLocationEdit = (EditText) findViewById(R.id.edit_location);
-            mCategoryEdit = (EditText) findViewById(R.id.edit_category);
-            mPrioritySpinner = (Spinner) findViewById(R.id.edit_priority);
-            ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
-                    R.array.priority_array, android.R.layout.simple_spinner_item);
-            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            mPrioritySpinner.setAdapter(spinnerAdapter);
-            mSubmitButton = (Button) findViewById(R.id.submit);
-            mSubmitButton.setOnClickListener(mSubmitClickListener);
-        }
+        presenter.checkUserIsPatient();
         fillFields();
     }
 
@@ -302,7 +276,7 @@ public class ViewEventActivity extends BaseActivity implements
         mDescriptionText.setText(mEvent.getDescription());
         mLocationText.setText(mEvent.getLocation());
         mCategoryText.setText(mEvent.getCategory());
-        mVolunteerText.setText(mEvent.getVolunteerName());
+        mVolunteerText.setText(mEvent.getVolunteer().getDisplayName());
         mPriorityText.setText(mEvent.getPriorityString(this));
         Calendar startTime = mEvent.getStartTime();
         Calendar endTime = mEvent.getEndTime();
@@ -323,32 +297,8 @@ public class ViewEventActivity extends BaseActivity implements
         }
         mTimeText.setText(timeString);
         mDateText.setText(dateString);
-        if(mEvent.getVolunteer() != null) {
-            if (mAccountHandler.getCurrentUser().getId().equals(mEvent.getVolunteer().getId())) {
-                mVolunteerButton.setText(getResources().getString(R.string.view_event_unvolunteer));
-            } else {
-                mVolunteerButton.setVisibility(View.GONE);
-            }
-        }
+        presenter.checkEventVolunteered();
         mVolunteerButton.setOnClickListener(mVolunteerClickListener);
-
-        if(AccountHandler.getInstance(this).getCurrentUser() instanceof Patient) {
-            mTitleEdit.setText(mEvent.getTitle());
-            mDescriptionEdit.setText(mEvent.getDescription());
-            Calendar mStartDate = mEvent.getStartTime();
-            Calendar mEndDate = mEvent.getEndTime();
-            onDialogDateSet(R.id.edit_start_date, mStartDate.get(Calendar.YEAR),
-                    mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH));
-            onDialogTimeSet(R.id.edit_start_time, mStartDate.get(Calendar.HOUR_OF_DAY),
-                    mStartDate.get(Calendar.MINUTE));
-            onDialogDateSet(R.id.edit_end_date, mEndDate.get(Calendar.YEAR),
-                    mEndDate.get(Calendar.MONTH), mEndDate.get(Calendar.DAY_OF_MONTH));
-            onDialogTimeSet(R.id.edit_end_time, mEndDate.get(Calendar.HOUR_OF_DAY),
-                    mEndDate.get(Calendar.MINUTE));
-            mLocationEdit.setText(mEvent.getLocation());
-            mCategoryEdit.setText(mEvent.getCategory());
-            mPrioritySpinner.setSelection(mEvent.getPriority() - 1);
-        }
     }
 
     @Override
@@ -422,14 +372,66 @@ public class ViewEventActivity extends BaseActivity implements
                 .newInstance(this, hourInt, minuteInt, DateFormat.is24HourFormat(this));
         dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "radial_dialog");
-        /*TimePickerBuilder builder = new TimePickerBuilder()
-                .setFragmentManager(getSupportFragmentManager())
-                .setStyleResId(R.style.DateTimePickers)
-                .setReference(reference)
-                .addTimePickerDialogHandler(AddEventActivity.this);
-        if(hour != null && minute != null) {
-            builder.
-        }
-        builder.show();*/
     }
+
+    @Override
+    public void onPatient() {
+
+        mTitleEdit = (EditText) findViewById(R.id.edit_title);
+        mEditButton = (FloatingActionButton) findViewById(R.id.edit_button);
+        mEditButton.setVisibility(View.VISIBLE);
+        mEditButton.setOnClickListener(mEditClickListener);
+        mDescriptionEdit = (EditText) findViewById(R.id.edit_description);
+        mStartDateEdit = (EditText) findViewById(R.id.edit_start_date);
+        mStartDateEdit.setInputType(InputType.TYPE_NULL);
+        mStartDateEdit.setOnFocusChangeListener(mDateFocusListener);
+        mStartDateEdit.setOnClickListener(mDateClickListener);
+        mEndDateEdit = (EditText) findViewById(R.id.edit_end_date);
+        mEndDateEdit.setInputType(InputType.TYPE_NULL);
+        mEndDateEdit.setOnFocusChangeListener(mDateFocusListener);
+        mEndDateEdit.setOnClickListener(mDateClickListener);
+        mStartTimeEdit = (EditText) findViewById(R.id.edit_start_time);
+        mStartTimeEdit.setInputType(InputType.TYPE_NULL);
+        mStartTimeEdit.setOnFocusChangeListener(mTimeFocusListener);
+        mStartTimeEdit.setOnClickListener(mTimeClickListener);
+        mEndTimeEdit = (EditText) findViewById(R.id.edit_end_time);
+        mEndTimeEdit.setInputType(InputType.TYPE_NULL);
+        mEndTimeEdit.setOnFocusChangeListener(mTimeFocusListener);
+        mEndTimeEdit.setOnClickListener(mTimeClickListener);
+        mLocationEdit = (EditText) findViewById(R.id.edit_location);
+        mCategoryEdit = (EditText) findViewById(R.id.edit_category);
+        mPrioritySpinner = (Spinner) findViewById(R.id.edit_priority);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.priority_array, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mPrioritySpinner.setAdapter(spinnerAdapter);
+        mSubmitButton = (Button) findViewById(R.id.submit);
+        mSubmitButton.setOnClickListener(mSubmitClickListener);
+
+        mTitleEdit.setText(mEvent.getTitle());
+        mDescriptionEdit.setText(mEvent.getDescription());
+        Calendar mStartDate = mEvent.getStartTime();
+        Calendar mEndDate = mEvent.getEndTime();
+        onDialogDateSet(R.id.edit_start_date, mStartDate.get(Calendar.YEAR),
+                mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH));
+        onDialogTimeSet(R.id.edit_start_time, mStartDate.get(Calendar.HOUR_OF_DAY),
+                mStartDate.get(Calendar.MINUTE));
+        onDialogDateSet(R.id.edit_end_date, mEndDate.get(Calendar.YEAR),
+                mEndDate.get(Calendar.MONTH), mEndDate.get(Calendar.DAY_OF_MONTH));
+        onDialogTimeSet(R.id.edit_end_time, mEndDate.get(Calendar.HOUR_OF_DAY),
+                mEndDate.get(Calendar.MINUTE));
+        mLocationEdit.setText(mEvent.getLocation());
+        mCategoryEdit.setText(mEvent.getCategory());
+        mPrioritySpinner.setSelection(mEvent.getPriority() - 1);
+    }
+
+    @Override
+    public void onVolunteeringStatus(boolean isVolunteer) {
+        if (isVolunteer) {
+            mVolunteerButton.setText(getResources().getString(R.string.view_event_unvolunteer));
+        } else {
+            mVolunteerButton.setVisibility(View.GONE);
+        }
+    }
+
 }

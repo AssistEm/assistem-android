@@ -1,5 +1,6 @@
 package seniorproject.caretakers.caretakersapp.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,10 +9,26 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import seniorproject.caretakers.caretakersapp.R;
-import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
+import javax.inject.Inject;
 
-public class LoginFragment extends Fragment {
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import seniorproject.caretakers.caretakersapp.R;
+import seniorproject.caretakers.caretakersapp.data.api.UserApi;
+import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
+import seniorproject.caretakers.caretakersapp.data.login.LoginManager;
+import seniorproject.caretakers.caretakersapp.data.model.Login;
+import seniorproject.caretakers.caretakersapp.data.model.LoginRequest;
+import seniorproject.caretakers.caretakersapp.presenters.LoginPresenter;
+import seniorproject.caretakers.caretakersapp.ui.actvities.MainActivity;
+import seniorproject.caretakers.caretakersapp.ui.interfaces.LoginView;
+
+public class LoginFragment extends Fragment implements LoginView {
+
+    @Inject
+    LoginPresenter presenter;
 
     EditText mUsernameEdit;
     EditText mPasswordEdit;
@@ -23,9 +40,8 @@ public class LoginFragment extends Fragment {
                 case R.id.user_login_submit:
                     String username = mUsernameEdit.getText().toString();
                     String password = mPasswordEdit.getText().toString();
-                    if(!username.isEmpty() && !password.isEmpty()) {
-                        AccountHandler.getInstance(getActivity()).login(getActivity(), username, password);
-                    }
+                    presenter.login(username, password);
+
                     break;
                 case R.id.user_register:
                     getActivity().getSupportFragmentManager().beginTransaction()
@@ -45,5 +61,17 @@ public class LoginFragment extends Fragment {
         mUsernameEdit = (EditText) view.findViewById(R.id.user_email);
         mPasswordEdit = (EditText) view.findViewById(R.id.user_password);
         return view;
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        Intent intent = new Intent(this.getActivity(), MainActivity.class);
+        startActivity(intent);
+        this.getActivity().finish();
+    }
+
+    @Override
+    public void onLoginFailed() {
+        Crouton.makeText(this.getActivity(), "Login Failed", Style.ALERT).show();
     }
 }

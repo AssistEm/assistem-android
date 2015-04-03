@@ -7,14 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import javax.inject.Inject;
+
 import seniorproject.caretakers.caretakersapp.R;
-import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
+import seniorproject.caretakers.caretakersapp.presenters.SettingsPresenter;
+import seniorproject.caretakers.caretakersapp.ui.actvities.BaseActivity;
 import seniorproject.caretakers.caretakersapp.ui.actvities.LoginActivity;
+import seniorproject.caretakers.caretakersapp.ui.interfaces.SettingsView;
 
 /**
  * Created by Jason on 2/22/15.
  */
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends Fragment implements SettingsView {
+
+    @Inject
+    SettingsPresenter presenter;
 
     Button mLogoutButton;
 
@@ -22,7 +29,7 @@ public class SettingsFragment extends Fragment {
         @Override
         public void onClick(View view) {
             getActivity().setResult(LoginActivity.LOGGED_OUT_RESULT);
-            AccountHandler.getInstance(getActivity()).logout();
+            presenter.logout();
         }
     };
 
@@ -33,5 +40,10 @@ public class SettingsFragment extends Fragment {
         mLogoutButton = (Button) rootView.findViewById(R.id.logout_button);
         mLogoutButton.setOnClickListener(mLogoutClickListener);
         return rootView;
+    }
+
+    @Override
+    public void onLogout() {
+        ((BaseActivity)(getActivity())).onLogout();
     }
 }

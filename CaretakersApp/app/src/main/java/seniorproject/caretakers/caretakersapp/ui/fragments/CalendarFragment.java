@@ -12,23 +12,30 @@ import android.view.ViewTreeObserver;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import seniorproject.caretakers.caretakersapp.R;
-import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
-import seniorproject.caretakers.caretakersapp.data.handlers.EventHandler;
-import seniorproject.caretakers.caretakersapp.tempdata.model.Caretaker;
-import seniorproject.caretakers.caretakersapp.tempdata.model.Event;
-import seniorproject.caretakers.caretakersapp.tempdata.model.Patient;
+import seniorproject.caretakers.caretakersapp.data.model.Event;
+import seniorproject.caretakers.caretakersapp.presenters.CalendarPresenter;
 import seniorproject.caretakers.caretakersapp.ui.actvities.AddEventActivity;
 import seniorproject.caretakers.caretakersapp.ui.actvities.ViewEventActivity;
+import seniorproject.caretakers.caretakersapp.ui.interfaces.CalendarView;
 import seniorproject.caretakers.caretakersapp.ui.views.AddFloatingActionButton;
 
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends Fragment implements CalendarView {
+
+    @Inject
+    CalendarPresenter presenter;
 
     public static final int ADD_EVENT_REQUEST = 1;
     public static final int VIEW_EVENT_REQUEST = 2;
@@ -41,17 +48,6 @@ public class CalendarFragment extends Fragment {
 
     HashSet<String> mEventCallsMade;
 
-    EventHandler.EventListener mEventListener = new EventHandler.EventListener() {
-
-        @Override
-        public void onEventsFetched(List<Event> events, int year, int month) {
-            String key = "" + year + " " + month;
-            mEventsMap.put(key, events);
-            mEventCallsMade.remove(key);
-            mWeekView.notifyDatasetChanged();
-        }
-    };
-
     WeekView.MonthChangeListener mMonthChangeListener = new WeekView.MonthChangeListener() {
         @Override
         public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
@@ -61,8 +57,7 @@ public class CalendarFragment extends Fragment {
                 if(!mEventsMap.containsKey(key) && !mEventCallsMade.contains(key)) {
                     if (getActivity() != null) {
                         mEventCallsMade.add(key);
-                        EventHandler.getInstance().getEvents(getActivity(), newYear, newMonth,
-                                mEventListener);
+                        presenter.events(newYear, newMonth);
                     }
                 } else if(mEventsMap.containsKey(key)) {
                     list.addAll(mEventsMap.get(key));
@@ -96,7 +91,7 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mEventsMap = new HashMap<String, List<Event>>();
+        mEventsMap = new HashMap<>();
         mEventCallsMade = new HashSet<>();
     }
 
@@ -104,12 +99,6 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_calendar, viewGroup, false);
         mAddEventButton = (AddFloatingActionButton) rootView.findViewById(R.id.add_event_button);
-        if(AccountHandler.getInstance(getActivity()).getCurrentUser() instanceof Caretaker) {
-            mAddEventButton.setVisibility(View.GONE);
-        } else if(AccountHandler.getInstance(getActivity()).getCurrentUser() instanceof Patient){
-            mAddEventButton.setVisibility(View.VISIBLE);
-            mAddEventButton.setOnClickListener(mAddEventClickListener);
-        }
         mWeekView = (WeekView) rootView.findViewById(R.id.weekView);
         mWeekView.setMonthChangeListener(mMonthChangeListener);
         mWeekView.setOnEventClickListener(mEventClickListener);
@@ -117,23 +106,23 @@ public class CalendarFragment extends Fragment {
         mWeekView.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
-            @Override
-            public void onGlobalLayout() {
-                boolean moved = false;
-                double currHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-                currHour += Calendar.getInstance().get(Calendar.MINUTE) / 60.0;
-                while (!moved) {
-                    try {
-                        mWeekView.goToHour(currHour);
-                        moved = true;
-                    } catch (IllegalArgumentException e) {
-                        moved = false;
-                        currHour -= .10;
+                    @Override
+                    public void onGlobalLayout() {
+                        boolean moved = false;
+                        double currHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+                        currHour += Calendar.getInstance().get(Calendar.MINUTE) / 60.0;
+                        while (!moved) {
+                            try {
+                                mWeekView.goToHour(currHour);
+                                moved = true;
+                            } catch (IllegalArgumentException e) {
+                                moved = false;
+                                currHour -= .10;
+                            }
+                        }
+                        mWeekView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     }
-                }
-                mWeekView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-            }
-        });
+                });
         return rootView;
     }
 
@@ -166,7 +155,7 @@ public class CalendarFragment extends Fragment {
 
     private void viewEvent(Event event) {
         Intent intent = new Intent(getActivity(), ViewEventActivity.class);
-        intent.putExtra("event", event);
+        intent.putExtra("event", Parcels.wrap(event));
         intent.putExtra("start_time", event.getStartTime());
         intent.putExtra("end_time", event.getEndTime());
         startActivityForResult(intent, VIEW_EVENT_REQUEST);
@@ -187,5 +176,28 @@ public class CalendarFragment extends Fragment {
                     break;
             }
         }
+    }
+
+    @Override
+    public void isCaretaker(boolean isCaretaker) {
+        if(isCaretaker) {
+            mAddEventButton.setVisibility(View.GONE);
+        } else {
+            mAddEventButton.setVisibility(View.VISIBLE);
+            mAddEventButton.setOnClickListener(mAddEventClickListener);
+        }
+    }
+
+    @Override
+    public void onEventsReceived(List<Event> events, int year, int month) {
+        String key = "" + year + " " + month;
+        mEventsMap.put(key, events);
+        mEventCallsMade.remove(key);
+        mWeekView.notifyDatasetChanged();
+    }
+
+    @Override
+    public void onRetrieveEventsFailed(String error) {
+        Crouton.makeText(this.getActivity(), error, Style.ALERT).show();
     }
 }

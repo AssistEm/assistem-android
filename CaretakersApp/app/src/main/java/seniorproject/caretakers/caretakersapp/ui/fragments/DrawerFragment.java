@@ -19,11 +19,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import seniorproject.caretakers.caretakersapp.R;
-import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
-import seniorproject.caretakers.caretakersapp.ui.adapters.DrawerAdapter;
+import javax.inject.Inject;
 
-public class DrawerFragment extends Fragment {
+import seniorproject.caretakers.caretakersapp.R;
+import seniorproject.caretakers.caretakersapp.data.model.User;
+import seniorproject.caretakers.caretakersapp.presenters.DrawerPresenter;
+import seniorproject.caretakers.caretakersapp.ui.adapters.DrawerAdapter;
+import seniorproject.caretakers.caretakersapp.ui.interfaces.DrawerView;
+
+public class DrawerFragment extends Fragment implements DrawerView
+{
 
     /**
      * Remember the position of the selected item.
@@ -56,8 +61,8 @@ public class DrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
-    public DrawerFragment() {
-    }
+    @Inject
+    DrawerPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,9 +101,8 @@ public class DrawerFragment extends Fragment {
         selectItem(0);
         mDrawerListView.setItemChecked(0, true);
         mUserNameText = (TextView) rootView.findViewById(R.id.name);
-        mUserNameText.setText(AccountHandler.getInstance(getActivity()).getCurrentUser().getDisplayName());
         mCommunityNameText = (TextView) rootView.findViewById(R.id.community_name);
-        mCommunityNameText.setText(AccountHandler.getInstance(getActivity()).getCurrentCommunity().getName());
+        presenter.retrieveUser();
         return rootView;
     }
 
@@ -243,6 +247,12 @@ public class DrawerFragment extends Fragment {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onUserRetrieved(User user) {
+        mUserNameText.setText(user.getDisplayName());
+        mCommunityNameText.setText(user.getCommunity().getName());
     }
 
     public static interface NavigationDrawerCallbacks {

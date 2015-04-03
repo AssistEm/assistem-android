@@ -39,4 +39,8 @@ dependencies {
     compile "org.parceler:parceler-api:0.2.15"
     provided "org.parceler:parceler:0.2.15"
     compile 'uk.co.chrisjenx:calligraphy:2.0.0'
+    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
+        // exclusion is not necessary, but generally a good idea.
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
 }

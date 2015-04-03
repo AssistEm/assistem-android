@@ -8,8 +8,16 @@ import com.google.gson.annotations.SerializedName;
 public class Login {
 
     @SerializedName("token")
-    String auth;
+    String token;
 
     @SerializedName("user")
     User user;
+
+    public String getToken() {
+        return token;
+    }
+
+    public User getUser() {
+        return user;
+    }
 }

@@ -1,14 +1,10 @@
 package seniorproject.caretakers.caretakersapp.ui.actvities;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.ui.fragments.CalendarFragment;

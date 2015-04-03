@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,15 +17,11 @@ import android.widget.Toast;
 import com.doomonafireball.betterpickers.datepicker.DatePickerBuilder;
 import com.doomonafireball.betterpickers.datepicker.DatePickerDialogFragment;
 import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog;
-import com.doomonafireball.betterpickers.recurrencepicker.EventRecurrence;
-import com.doomonafireball.betterpickers.recurrencepicker.RecurrencePickerDialog;
-import com.doomonafireball.betterpickers.timepicker.TimePickerBuilder;
 import com.doomonafireball.betterpickers.timepicker.TimePickerDialogFragment;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.data.handlers.EventHandler;
