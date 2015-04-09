@@ -3,6 +3,7 @@ package seniorproject.caretakers.caretakersapp.ui.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +19,15 @@ import javax.inject.Inject;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import seniorproject.caretakers.caretakersapp.CaretakersApplication;
 import seniorproject.caretakers.caretakersapp.R;
-import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 import seniorproject.caretakers.caretakersapp.presenters.RegisterPresenter;
 import seniorproject.caretakers.caretakersapp.ui.actvities.MainActivity;
 import seniorproject.caretakers.caretakersapp.ui.interfaces.RegisterView;
 
 public class RegisterFragment extends Fragment implements RegisterView {
+
+    private static final String TAG = "RegisterFragment";
 
     @Inject
     RegisterPresenter presenter;
@@ -68,7 +71,7 @@ public class RegisterFragment extends Fragment implements RegisterView {
             String phone = mPhoneEdit.getText().toString();
             String communitySearch = mCommunityQueryEdit.getText().toString();
             String communityName = mCommunityNameEdit.getText().toString();
-
+            Log.d(TAG, "Registering");
             presenter.register(email, password, confirmPassword,
                                firstName, lastName, phone,
                                communitySearch, communityName);
@@ -78,6 +81,9 @@ public class RegisterFragment extends Fragment implements RegisterView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, group, false);
+        CaretakersApplication app = (CaretakersApplication) this.getActivity().getApplication();
+        app.inject(this);
+        presenter.setView(this);
         ((Button) view.findViewById(R.id.user_register_submit)).setOnClickListener(mOnClickListener);
         mEmailEdit = (EditText) view.findViewById(R.id.user_email);
         mPasswordEdit = (EditText) view.findViewById(R.id.user_password);
@@ -104,7 +110,7 @@ public class RegisterFragment extends Fragment implements RegisterView {
 
     @Override
     public void onRegisterFailed(String error) {
-        Crouton.makeText(this.getActivity(), error, Style.ALERT);
+        Toast.makeText(this.getActivity(), error, Toast.LENGTH_LONG).show();
     }
 
     @Override

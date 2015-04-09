@@ -24,6 +24,7 @@ import javax.inject.Inject;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import seniorproject.caretakers.caretakersapp.CaretakersApplication;
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.data.model.Event;
 import seniorproject.caretakers.caretakersapp.presenters.CalendarPresenter;
@@ -98,6 +99,9 @@ public class CalendarFragment extends Fragment implements CalendarView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_calendar, viewGroup, false);
+        CaretakersApplication app = (CaretakersApplication) this.getActivity().getApplication();
+        app.inject(this);
+        presenter.setView(this);
         mAddEventButton = (AddFloatingActionButton) rootView.findViewById(R.id.add_event_button);
         mWeekView = (WeekView) rootView.findViewById(R.id.weekView);
         mWeekView.setMonthChangeListener(mMonthChangeListener);

@@ -1,11 +1,10 @@
 package seniorproject.caretakers.caretakersapp.data.model;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import com.alamkanak.weekview.WeekViewEvent;
 import com.google.gson.annotations.SerializedName;
-
-import org.parceler.Parcel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,10 +19,13 @@ import seniorproject.caretakers.caretakersapp.R;
 /**
  * Created by Stephen on 2/18/2015.
  */
-@Parcel
-public class Event extends ApiItem {
+public class Event extends WeekViewEvent {
 
-    public final static String ISO8601DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    // ISO8601DATEFORMAT
+    public final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+    @SerializedName("_id")
+    String id;
 
     @SerializedName("title")
     String title;
@@ -55,6 +57,19 @@ public class Event extends ApiItem {
     @SerializedName("volunteer")
     User volunteer;
 
+    public Event(String id, String title, String description, String location,
+                 String category, int priority, Calendar startTime, Calendar endTime) {
+        super(1, title, startTime, endTime);
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.category = category;
+        this.priority = priority;
+        this.startTime = DATE_FORMAT.format(startTime.getTime());
+        this.endTime = DATE_FORMAT.format(endTime);
+    }
+
     public Calendar getStartTime() {
         return parseTime(startTime);
     }
@@ -67,11 +82,23 @@ public class Event extends ApiItem {
         return category;
     }
 
+    public int getColor() {
+        if(priority == 3) {
+            return Color.parseColor("#F44336");
+        } else if(priority == 2) {
+            return Color.parseColor("#FFC107");
+        } else if(priority == 1) {
+            return Color.parseColor("#8BC34A");
+        } else {
+            return Color.parseColor("#000000");
+        }
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public String getId() {
+    public String getApiId() {
         return id;
     }
 
@@ -101,9 +128,8 @@ public class Event extends ApiItem {
 
     private Calendar parseTime(String time) {
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault()) ;
-        SimpleDateFormat dateFormat = new SimpleDateFormat(ISO8601DATEFORMAT, Locale.getDefault());
         try {
-            Date date = dateFormat.parse(time);
+            Date date = DATE_FORMAT.parse(time);
             date.setHours(date.getHours());
             calendar.setTime(date);
         } catch (ParseException e) {
@@ -112,17 +138,12 @@ public class Event extends ApiItem {
         return calendar;
     }
 
-    public void setId(String id) {
+    public void setApiId(String id) {
         this.id = id;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    // TODO: Probably refactor this
-    public WeekViewEvent toWeekViewEvent() {
-        return new WeekViewEvent(1, title, getStartTime(), getEndTime());
     }
 
 }

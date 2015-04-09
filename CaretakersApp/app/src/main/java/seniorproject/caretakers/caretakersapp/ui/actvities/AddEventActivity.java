@@ -23,13 +23,23 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.inject.Inject;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import seniorproject.caretakers.caretakersapp.R;
-import seniorproject.caretakers.caretakersapp.data.handlers.EventHandler;
+import seniorproject.caretakers.caretakersapp.data.model.Event;
+import seniorproject.caretakers.caretakersapp.presenters.AddEventPresenter;
+import seniorproject.caretakers.caretakersapp.ui.interfaces.AddEventView;
 
 public class AddEventActivity extends BaseActivity implements
         DatePickerDialogFragment.DatePickerDialogHandler,
         TimePickerDialogFragment.TimePickerDialogHandler,
-        RadialTimePickerDialog.OnTimeSetListener {
+        RadialTimePickerDialog.OnTimeSetListener,
+        AddEventView {
+
+    @Inject
+    AddEventPresenter presenter;
 
     public static final int EVENT_ADDED_RESULT = 10;
     public static final int CANCELED_RESULT = 20;
@@ -51,16 +61,6 @@ public class AddEventActivity extends BaseActivity implements
 
     Integer mStartHour, mStartMinute;
     Integer mEndHour, mEndMinute;
-
-    private EventHandler.EventListener mEventListener = new EventHandler.EventListener() {
-        @Override
-        public void onEventAdded() {
-            Toast.makeText(AddEventActivity.this, getString(R.string.event_added_toast),
-                    Toast.LENGTH_SHORT).show();
-            setResult(EVENT_ADDED_RESULT);
-            finish();
-        }
-    };
 
     View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
         @Override
@@ -159,8 +159,10 @@ public class AddEventActivity extends BaseActivity implements
             Calendar endTime = Calendar.getInstance();
             endTime.set(mEndYear, mEndMonth, mEndDay, mEndHour, mEndMinute, 0);
             endTime.set(Calendar.MILLISECOND, 0);
-            EventHandler.getInstance().addEvent(AddEventActivity.this, title, description,
-                    location, category, priority, startTime, endTime, mEventListener);
+            // TODO: Watch the toString
+            Event event = new Event(null, title, description, location, category,
+                                    priority, startTime, endTime);
+            presenter.addEvent(event);
         }
     };
 
@@ -327,5 +329,18 @@ public class AddEventActivity extends BaseActivity implements
             builder.
         }
         builder.show();*/
+    }
+
+    @Override
+    public void onEventAdded() {
+        Toast.makeText(AddEventActivity.this, getString(R.string.event_added_toast),
+                Toast.LENGTH_SHORT).show();
+        setResult(EVENT_ADDED_RESULT);
+        finish();
+    }
+
+    @Override
+    public void onError(String error) {
+        Crouton.makeText(this, error, Style.ALERT).show();
     }
 }

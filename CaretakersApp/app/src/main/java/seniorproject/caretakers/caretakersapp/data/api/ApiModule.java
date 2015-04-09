@@ -44,6 +44,11 @@ public class ApiModule {
     }
 
     @Provides @Singleton
+    CommunitiesApi provideCommunitiesApi(RestAdapter restAdapter) {
+        return restAdapter.create(CommunitiesApi.class);
+    }
+
+    @Provides @Singleton
     UserApi provideUserApi(RestAdapter restAdapter) {
         return restAdapter.create(UserApi.class);
     }

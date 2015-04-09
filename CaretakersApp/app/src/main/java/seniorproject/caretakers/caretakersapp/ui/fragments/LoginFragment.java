@@ -13,14 +13,8 @@ import javax.inject.Inject;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
+import seniorproject.caretakers.caretakersapp.CaretakersApplication;
 import seniorproject.caretakers.caretakersapp.R;
-import seniorproject.caretakers.caretakersapp.data.api.UserApi;
-import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
-import seniorproject.caretakers.caretakersapp.data.login.LoginManager;
-import seniorproject.caretakers.caretakersapp.data.model.Login;
-import seniorproject.caretakers.caretakersapp.data.model.LoginRequest;
 import seniorproject.caretakers.caretakersapp.presenters.LoginPresenter;
 import seniorproject.caretakers.caretakersapp.ui.actvities.MainActivity;
 import seniorproject.caretakers.caretakersapp.ui.interfaces.LoginView;
@@ -38,8 +32,8 @@ public class LoginFragment extends Fragment implements LoginView {
         public void onClick(View view) {
             switch(view.getId()) {
                 case R.id.user_login_submit:
-                    String username = mUsernameEdit.getText().toString();
-                    String password = mPasswordEdit.getText().toString();
+                    String username = "sgherri2@illinois.edu";//mUsernameEdit.getText().toString();
+                    String password = "W3lcome1";//mPasswordEdit.getText().toString();
                     presenter.login(username, password);
 
                     break;
@@ -56,10 +50,13 @@ public class LoginFragment extends Fragment implements LoginView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, group, false);
-        ((Button) view.findViewById(R.id.user_login_submit)).setOnClickListener(mOnClickListener);
-        ((Button) view.findViewById(R.id.user_register)).setOnClickListener(mOnClickListener);
+        CaretakersApplication app = (CaretakersApplication) this.getActivity().getApplication();
+        app.inject(this);
+        presenter.setView(this);
         mUsernameEdit = (EditText) view.findViewById(R.id.user_email);
         mPasswordEdit = (EditText) view.findViewById(R.id.user_password);
+        view.findViewById(R.id.user_login_submit).setOnClickListener(mOnClickListener);
+        view.findViewById(R.id.user_register).setOnClickListener(mOnClickListener);
         return view;
     }
 

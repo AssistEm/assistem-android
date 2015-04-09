@@ -1,5 +1,6 @@
 package seniorproject.caretakers.caretakersapp.ui.actvities;
 
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.InputType;
@@ -29,8 +30,9 @@ import java.util.GregorianCalendar;
 
 import javax.inject.Inject;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import seniorproject.caretakers.caretakersapp.R;
-import seniorproject.caretakers.caretakersapp.data.handlers.EventHandler;
 import seniorproject.caretakers.caretakersapp.data.model.Event;
 import seniorproject.caretakers.caretakersapp.presenters.ViewEventPresenter;
 import seniorproject.caretakers.caretakersapp.ui.interfaces.EventView;
@@ -81,24 +83,6 @@ public class ViewEventActivity extends BaseActivity implements
     Integer mEndHour, mEndMinute;
 
     Event mEvent;
-
-    EventHandler.EventListener mEventListener = new EventHandler.EventListener() {
-        @Override
-        public void onEventVolunteered() {
-            Toast.makeText(ViewEventActivity.this, getString(R.string.event_volunteered_toast),
-                    Toast.LENGTH_SHORT).show();
-            setResult(EVENT_EDITED_RESULT);
-            finish();
-        }
-
-        @Override
-        public void onEventUpdated() {
-            Toast.makeText(ViewEventActivity.this, getString(R.string.event_edited_toast),
-                    Toast.LENGTH_SHORT).show();
-            setResult(EVENT_EDITED_RESULT);
-            finish();
-        }
-    };
 
     View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
         @Override
@@ -197,18 +181,19 @@ public class ViewEventActivity extends BaseActivity implements
             Calendar endTime = Calendar.getInstance();
             endTime.set(mEndYear, mEndMonth, mEndDay, mEndHour, mEndMinute, 0);
             endTime.set(Calendar.MILLISECOND, 0);
-            EventHandler.getInstance().updateEvent(ViewEventActivity.this, mEvent.getId(),
-                    title, description, location, category, priority, startTime, endTime,
-                    mEventListener);
+            // TODO: Be careful about the calendar toString here, it's probably wrong
+            Event event = new Event(mEvent.getApiId(),
+                    title, description, location, category, priority,
+                    startTime, endTime);
+            presenter.updateEvent(event);
         }
     };
 
     View.OnClickListener mVolunteerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            boolean volunteer = mEvent.getVolunteer() == null;
-            EventHandler.getInstance().volunteerEvent(ViewEventActivity.this, mEvent.getId(),
-                    volunteer, mEventListener);
+            boolean isVolunteer = mEvent.getVolunteer() == null;
+            presenter.volunteer(isVolunteer);
         }
     };
 
@@ -228,10 +213,11 @@ public class ViewEventActivity extends BaseActivity implements
         mViewLayout = (RelativeLayout) findViewById(R.id.view_layout);
         mEditLayout = (RelativeLayout) findViewById(R.id.edit_layout);
         mEvent = Parcels.unwrap(getIntent().getParcelableExtra("event"));
-        mEvent.setId("1");
+        mEvent.setApiId("1");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(mEvent.getColor()));
-        mTitleText = (TextView) findViewById(R.id.title);
         mTitleText.setBackgroundColor(mEvent.getColor());
+
+        mTitleText = (TextView) findViewById(R.id.title);
         mDescriptionText = (TextView) findViewById(R.id.description);
         mTimeText = (TextView) findViewById(R.id.time);
         mDateText = (TextView) findViewById(R.id.date);
@@ -429,9 +415,35 @@ public class ViewEventActivity extends BaseActivity implements
     public void onVolunteeringStatus(boolean isVolunteer) {
         if (isVolunteer) {
             mVolunteerButton.setText(getResources().getString(R.string.view_event_unvolunteer));
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#9E9E9E")));
+            mTitleText.setBackgroundColor(Color.parseColor("#9E9E9E"));
         } else {
             mVolunteerButton.setVisibility(View.GONE);
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(mEvent.getColor()));
+            mTitleText.setBackgroundColor(mEvent.getColor());
+
         }
+    }
+
+    @Override
+    public void onVolunteer() {
+        Toast.makeText(ViewEventActivity.this, getString(R.string.event_volunteered_toast),
+                Toast.LENGTH_SHORT).show();
+        setResult(EVENT_EDITED_RESULT);
+        finish();
+    }
+
+    @Override
+    public void onError(String error) {
+        Crouton.makeText(this, error, Style.ALERT).show();
+    }
+
+    @Override
+    public void onEventUpdate() {
+        Toast.makeText(ViewEventActivity.this, getString(R.string.event_edited_toast),
+                Toast.LENGTH_SHORT).show();
+        setResult(EVENT_EDITED_RESULT);
+        finish();
     }
 
 }

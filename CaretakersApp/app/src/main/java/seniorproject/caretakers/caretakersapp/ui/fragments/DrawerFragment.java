@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
+import seniorproject.caretakers.caretakersapp.CaretakersApplication;
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.data.model.User;
 import seniorproject.caretakers.caretakersapp.presenters.DrawerPresenter;
@@ -90,6 +91,9 @@ public class DrawerFragment extends Fragment implements DrawerView
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_drawer, container, false);
+        CaretakersApplication app = (CaretakersApplication) this.getActivity().getApplication();
+        app.inject(this);
+        presenter.setView(this);
         mDrawerListView = (ListView) rootView.findViewById(R.id.drawer_list);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -252,7 +256,9 @@ public class DrawerFragment extends Fragment implements DrawerView
     @Override
     public void onUserRetrieved(User user) {
         mUserNameText.setText(user.getDisplayName());
-        mCommunityNameText.setText(user.getCommunity().getName());
+        if(user.getCommunity() != null) {
+            mCommunityNameText.setText(user.getCommunity().getName());
+        }
     }
 
     public static interface NavigationDrawerCallbacks {

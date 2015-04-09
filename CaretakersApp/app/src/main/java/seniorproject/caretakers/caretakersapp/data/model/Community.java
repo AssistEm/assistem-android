@@ -2,15 +2,16 @@ package seniorproject.caretakers.caretakersapp.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.util.List;
+
+import seniorproject.caretakers.caretakersapp.data.api.CommunitiesApi;
 
 /**
  * Created by Stephen on 2/18/2015.
  */
 public class Community extends ApiItem {
-
-    @SerializedName("_id")
-    String id;
 
     @SerializedName("name")
     String name;
