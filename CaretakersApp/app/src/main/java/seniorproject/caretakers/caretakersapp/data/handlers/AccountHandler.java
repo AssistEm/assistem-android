@@ -3,8 +3,14 @@ package seniorproject.caretakers.caretakersapp.data.handlers;
 import android.accounts.Account;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -12,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +45,12 @@ public class AccountHandler {
     private final static String COMMUNITY_ID_PREFS = "community_id";
     private final static String COMMUNITY_NAME_PREFS = "community_name";
     private final static String COMMUNITY_PATIENT_ID_PREFS = "community_patient";
+
+    public static final String EXTRA_MESSAGE = "message";
+    public static final String PROPERTY_REG_ID = "registration_id";
+    private static final String PROPERTY_APP_VERSION = "appVersion";
+
+    private static final String GCM_SENDER_ID = "202386854646";
 
     static AccountHandler mInstance;
 
@@ -160,6 +173,19 @@ public class AccountHandler {
             }
         }
     };
+
+    private class GcmRegisterResponseHandler extends BaseJsonResponseHandler {
+        String mGcmId;
+
+        public GcmRegisterResponseHandler(String gcmId) {
+            mGcmId = gcmId;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject object) {
+            storeRegistrationId(mApplicationContext, mGcmId);
+        }
+    }
 
     private class GetFullProfileInfoResponseHandler extends BaseJsonResponseHandler {
         AccountListener mListener;
@@ -338,6 +364,84 @@ public class AccountHandler {
             }
         }
         logout();
+    }
+
+    public void registerGCM() {
+        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(mApplicationContext);
+        String regId = getRegistrationId(mApplicationContext);
+        if(regId.isEmpty()) {
+            registerInBackground();
+        }
+    }
+
+    private void sendGcmId(Context context, String gcmId) {
+        try {
+            UserRestClient.setGcmId(context, gcmId, new GcmRegisterResponseHandler(gcmId));
+        } catch (NoNetworkException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getRegistrationId(Context context) {
+        final SharedPreferences prefs = getGCMPreferences(context);
+        String registrationId = prefs.getString(PROPERTY_REG_ID, "");
+        if (registrationId.isEmpty()) {
+            Log.i("GCM", "Registration not found.");
+            return "";
+        }
+        int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
+        int currentVersion = getAppVersion(context);
+        if (registeredVersion != currentVersion) {
+            Log.i("GCM", "App version changed.");
+            return "";
+        }
+        return registrationId;
+    }
+
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException("Could not get package name: " + e);
+        }
+    }
+
+    private SharedPreferences getGCMPreferences(Context context) {
+        return context.getSharedPreferences("gcm_prefs",
+                Context.MODE_PRIVATE);
+    }
+
+    private void storeRegistrationId(Context context, String regId) {
+        final SharedPreferences prefs = getGCMPreferences(context);
+        int appVersion = getAppVersion(context);
+        Log.i("GCM", "Saving regId on app version " + appVersion);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(PROPERTY_REG_ID, regId);
+        editor.putInt(PROPERTY_APP_VERSION, appVersion);
+        editor.commit();
+    }
+
+    private void registerInBackground() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                try {
+                    GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(mApplicationContext);
+                    return gcm.register(GCM_SENDER_ID);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            public void onPostExecute(String param) {
+                sendGcmId(mApplicationContext, param);
+            }
+
+        }.execute(null, null, null);
     }
 
     public static abstract class AccountListener {

@@ -68,11 +68,25 @@
 
         </ViewFlipper>
 
-        <Button
-            android:id="@+id/edit_button"
+        <ViewFlipper
+            android:id="@+id/button_flipper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/edit_grocery_item_submit" />
+            android:layout_gravity="right">
+
+            <Button
+                android:id="@+id/edit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile_edit" />
+
+            <Button
+                android:id="@+id/submit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile_submit"/>
+
+        </ViewFlipper>
 
     </LinearLayout>
 

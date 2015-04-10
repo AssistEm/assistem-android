@@ -91,4 +91,6 @@
     <string name="dialog_add">Add</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="no_availability">No Availability Set</string>
+    <string name="profile_edit">Edit</string>
+    <string name="profile_submit">Submit</string>
 </resources>

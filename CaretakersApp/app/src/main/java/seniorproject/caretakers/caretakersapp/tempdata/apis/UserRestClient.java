@@ -26,6 +26,7 @@ public class UserRestClient extends RestClient {
     protected static final String LOGIN = "login";
     protected static final String CHANGE_PASSWORD = "password";
     protected static final String ME = "me";
+    protected static final String PUSH_REGISTER = "pushregister";
 
     public static void login(Context context, String email, String password,
                              BaseJsonResponseHandler handler) throws NoNetworkException {
@@ -114,6 +115,20 @@ public class UserRestClient extends RestClient {
             body.put("caretaker_info", caretakerInfo);
             Header[] headers = new Header[] {generateAuthHeader(context)};
             mClient.put(context, url, headers, jsonToEntity(body), CONTENT_TYPE, handler);
+        } catch (JSONException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setGcmId(Context context, String gcmId, BaseJsonResponseHandler handler)
+        throws NoNetworkException {
+        checkNetwork(context);
+        String url = BASE_URL + USER + "/" + ME + "/" + PUSH_REGISTER;
+        JSONObject body = new JSONObject();
+        try {
+            body.put("deviceId", gcmId);
+            Header[] headers = new Header[] {generateAuthHeader(context)};
+            mClient.post(context, url, headers, jsonToEntity(body), CONTENT_TYPE, handler);
         } catch (JSONException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
