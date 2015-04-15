@@ -4,10 +4,11 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import seniorproject.caretakers.caretakersapp.data.api.CommunitiesApi;
 import seniorproject.caretakers.caretakersapp.data.login.LoginManager;
+import seniorproject.caretakers.caretakersapp.data.model.DeleteRepeating;
 import seniorproject.caretakers.caretakersapp.data.model.Event;
 import seniorproject.caretakers.caretakersapp.data.model.User;
 import seniorproject.caretakers.caretakersapp.data.model.VolunteerRequest;
-import seniorproject.caretakers.caretakersapp.ui.interfaces.EventView;
+import seniorproject.caretakers.caretakersapp.views.EventView;
 
 /**
  * Created by Stephen on 4/2/2015.
@@ -43,6 +44,10 @@ public class ViewEventPresenter implements Presenter<EventView> {
     public void checkEventVolunteered() {
         boolean isVolunteering = loginManager.getUser().getId().equals(event.getVolunteer().getId());
         view.onVolunteeringStatus(isVolunteering);
+    }
+
+    public void deleteEvent(Event event, boolean deleteRepeating) {
+        api.deleteEvent(loginManager.getCommunityId(), event.getId(), new DeleteRepeating(deleteRepeating));
     }
 
     public void updateEvent(Event event) {

@@ -1,6 +1,7 @@
 package seniorproject.caretakers.caretakersapp.ui.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -25,8 +26,9 @@ import seniorproject.caretakers.caretakersapp.CaretakersApplication;
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.data.model.User;
 import seniorproject.caretakers.caretakersapp.presenters.DrawerPresenter;
+import seniorproject.caretakers.caretakersapp.ui.actvities.ProfileActivity;
 import seniorproject.caretakers.caretakersapp.ui.adapters.DrawerAdapter;
-import seniorproject.caretakers.caretakersapp.ui.interfaces.DrawerView;
+import seniorproject.caretakers.caretakersapp.views.DrawerView;
 
 public class DrawerFragment extends Fragment implements DrawerView
 {
@@ -64,6 +66,14 @@ public class DrawerFragment extends Fragment implements DrawerView
 
     @Inject
     DrawerPresenter presenter;
+
+    private View.OnClickListener mUserNameClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getActivity(), ProfileActivity.class);
+            startActivity(intent);
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -4,8 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
+import seniorproject.caretakers.caretakersapp.CaretakersApplication;
 import seniorproject.caretakers.caretakersapp.R;
-import seniorproject.caretakers.caretakersapp.ui.interfaces.BaseView;
+import seniorproject.caretakers.caretakersapp.views.BaseView;
 
 public abstract class BaseActivity extends ActionBarActivity implements BaseView {
 

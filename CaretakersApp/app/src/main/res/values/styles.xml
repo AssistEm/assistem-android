@@ -10,6 +10,11 @@
         <item name="android:textColor">@color/text_color</item>
         <item name="editTextColor">@color/text_color</item>
         <item name="android:textColorHint">@android:color/secondary_text_dark</item>
+        <item name="colorControlNormal">@android:color/secondary_text_dark</item>
+        <item name="colorControlActivated">@color/secondary_color</item>
+        <item name="colorButtonNormal">@android:color/secondary_text_dark</item>
+        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropdownItemStyle</item>
+        <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner.Underlined</item>
     </style>
 
     <style name="AppTheme.EditText" parent="AppTheme" >
@@ -33,10 +38,10 @@
     </style>
 
     <style name="SpinnerDropdownItemStyle">
-        <item name="android:background">@android:color/white</item>
+        <item name="android:background">@color/sort_background</item>
         <item name="android:textSize">16sp</item>
         <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingBottom">0dp</item>
         <item name="android:paddingLeft">10dp</item>
     </style>
 

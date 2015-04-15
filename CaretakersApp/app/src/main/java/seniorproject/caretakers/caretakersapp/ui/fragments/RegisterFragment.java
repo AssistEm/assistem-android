@@ -7,23 +7,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-
 import javax.inject.Inject;
 
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 import seniorproject.caretakers.caretakersapp.CaretakersApplication;
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.presenters.RegisterPresenter;
 import seniorproject.caretakers.caretakersapp.ui.actvities.MainActivity;
-import seniorproject.caretakers.caretakersapp.ui.interfaces.RegisterView;
+import seniorproject.caretakers.caretakersapp.views.RegisterView;
 
 public class RegisterFragment extends Fragment implements RegisterView {
 
@@ -84,7 +79,7 @@ public class RegisterFragment extends Fragment implements RegisterView {
         CaretakersApplication app = (CaretakersApplication) this.getActivity().getApplication();
         app.inject(this);
         presenter.setView(this);
-        ((Button) view.findViewById(R.id.user_register_submit)).setOnClickListener(mOnClickListener);
+        view.findViewById(R.id.user_register_submit).setOnClickListener(mOnClickListener);
         mEmailEdit = (EditText) view.findViewById(R.id.user_email);
         mPasswordEdit = (EditText) view.findViewById(R.id.user_password);
         mConfirmPasswordEdit = (EditText) view.findViewById(R.id.user_confirm_password);

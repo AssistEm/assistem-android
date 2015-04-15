@@ -9,11 +9,12 @@ import android.widget.Button;
 
 import javax.inject.Inject;
 
+import seniorproject.caretakers.caretakersapp.CaretakersApplication;
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.presenters.SettingsPresenter;
 import seniorproject.caretakers.caretakersapp.ui.actvities.BaseActivity;
 import seniorproject.caretakers.caretakersapp.ui.actvities.LoginActivity;
-import seniorproject.caretakers.caretakersapp.ui.interfaces.SettingsView;
+import seniorproject.caretakers.caretakersapp.views.SettingsView;
 
 /**
  * Created by Jason on 2/22/15.
@@ -37,6 +38,9 @@ public class SettingsFragment extends Fragment implements SettingsView {
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_settings, viewGroup, false);
+        CaretakersApplication app = (CaretakersApplication) this.getActivity().getApplication();
+        app.inject(this);
+        presenter.setView(this);
         mLogoutButton = (Button) rootView.findViewById(R.id.logout_button);
         mLogoutButton.setOnClickListener(mLogoutClickListener);
         return rootView;

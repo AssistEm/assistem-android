@@ -1,5 +1,6 @@
 package seniorproject.caretakers.caretakersapp.ui.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,29 +8,49 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
+import seniorproject.caretakers.caretakersapp.CaretakersApplication;
 import seniorproject.caretakers.caretakersapp.R;
+import seniorproject.caretakers.caretakersapp.presenters.UserPresenter;
 import seniorproject.caretakers.caretakersapp.ui.views.DrawerRowTextView;
 
 public class DrawerAdapter extends BaseAdapter {
 
     private static final int[] DRAWER_SECTIONS = {
-            R.string.drawer_calendar, R.string.drawer_grocery_list, R.string.drawer_settings
+            R.string.drawer_calendar, R.string.drawer_grocery_list, R.string.drawer_ping, R.string.drawer_settings
     };
+
+    @Inject
+    UserPresenter presenter;
 
     private Context mContext;
 
-    public DrawerAdapter(Context context) {
-        mContext = context;
+    public DrawerAdapter(Activity activity) {
+        mContext = activity;
+        CaretakersApplication app = (CaretakersApplication) activity.getApplication();
+        app.inject(this);
     }
 
     @Override
     public int getCount() {
-        return DRAWER_SECTIONS.length;
+        if(presenter.isUserPatient()) {
+            return DRAWER_SECTIONS.length;
+        } else {
+            return DRAWER_SECTIONS.length - 1;
+        }
     }
 
     @Override
     public String getItem(int i) {
-        return mContext.getResources().getString(DRAWER_SECTIONS[i]);
+        if(presenter.isUserPatient()) {
+            return mContext.getResources().getString(DRAWER_SECTIONS[i]);
+        } else {
+            if(i == getCount() - 1) {
+                i++;
+            }
+            return mContext.getResources().getString(DRAWER_SECTIONS[i]);
+        }
     }
 
     @Override

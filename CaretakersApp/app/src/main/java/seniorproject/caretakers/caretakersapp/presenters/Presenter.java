@@ -1,8 +1,6 @@
 package seniorproject.caretakers.caretakersapp.presenters;
 
-import android.view.View;
-
-import seniorproject.caretakers.caretakersapp.ui.interfaces.ViewInterface;
+import seniorproject.caretakers.caretakersapp.views.ViewInterface;
 
 /**
  * Created by Stephen on 3/31/2015.

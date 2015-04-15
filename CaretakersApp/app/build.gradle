@@ -2,7 +2,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "20.0.0"
+    buildToolsVersion "22.0.0"
 
     defaultConfig {
         applicationId "seniorproject.caretakers.caretakersapp"
@@ -21,8 +21,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.android.support:support-v4:22.0.0'
     compile 'com.github.alamkanak:android-week-view:1.2.1'
     compile ("com.doomonafireball.betterpickers:library:1.5.3") {
         exclude group: 'com.android.support', module: 'support-v4'
@@ -43,4 +43,8 @@ dependencies {
         // exclusion is not necessary, but generally a good idea.
         exclude group: 'com.google.android', module: 'support-v4'
     }
+    // TODO: Take this out
+    compile 'com.loopj.android:android-async-http:1.4.6'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'com.afollestad:material-dialogs:0.6.7.1'
 }

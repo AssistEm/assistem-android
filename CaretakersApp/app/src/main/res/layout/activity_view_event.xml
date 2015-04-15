@@ -53,9 +53,10 @@
                     android:layout_marginRight="15dp"
                     android:layout_marginBottom="20dp"
                     android:src="@drawable/ic_edit"
-                    app:fab_size="mini"
                     app:fab_colorNormal="@color/calendar_add_event_button"
                     app:fab_colorPressed="@color/calendar_add_event_button_pressed"
+                    app:fab_size="mini"
+
                     android:visibility="gone"/>
 
                 <TextView
@@ -340,6 +341,16 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
                     android:text="@string/view_event_submit"/>
+
+                <Button
+                    android:id="@+id/delete_event"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edit_priority"
+                    android:layout_margin="15dp"
+                    android:layout_toLeftOf="@id/submit"
+                    android:layout_toStartOf="@id/submit"
+                    android:text="@string/view_event_delete"/>
 
             </RelativeLayout>
 

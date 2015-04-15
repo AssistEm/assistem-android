@@ -33,10 +33,11 @@ import javax.inject.Inject;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import seniorproject.caretakers.caretakersapp.R;
+import seniorproject.caretakers.caretakersapp.data.handlers.EventHandler;
 import seniorproject.caretakers.caretakersapp.data.model.Event;
 import seniorproject.caretakers.caretakersapp.presenters.ViewEventPresenter;
-import seniorproject.caretakers.caretakersapp.ui.interfaces.EventView;
 import seniorproject.caretakers.caretakersapp.ui.views.FloatingActionButton;
+import seniorproject.caretakers.caretakersapp.views.EventView;
 
 public class ViewEventActivity extends BaseActivity implements
         DatePickerDialogFragment.DatePickerDialogHandler,
@@ -75,6 +76,7 @@ public class ViewEventActivity extends BaseActivity implements
     Spinner mPrioritySpinner;
 
     Button mSubmitButton;
+    Button mDeleteButton;
 
     Integer mStartYear, mStartMonth, mStartDay;
     Integer mEndYear, mEndMonth, mEndDay;
@@ -83,6 +85,8 @@ public class ViewEventActivity extends BaseActivity implements
     Integer mEndHour, mEndMinute;
 
     Event mEvent;
+
+    boolean mEditOpen;
 
     View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
         @Override
@@ -189,6 +193,14 @@ public class ViewEventActivity extends BaseActivity implements
         }
     };
 
+    View.OnClickListener mDeleteClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            boolean deleteRepeating = false;
+            presenter.deleteEvent(mEvent, deleteRepeating);
+        }
+    };
+
     View.OnClickListener mVolunteerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -202,6 +214,7 @@ public class ViewEventActivity extends BaseActivity implements
         public void onClick(View view) {
             mViewLayout.setVisibility(View.GONE);
             mEditLayout.setVisibility(View.VISIBLE);
+            mEditOpen = true;
         }
     };
 
@@ -209,6 +222,7 @@ public class ViewEventActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setResult(DONE_RESULT);
+        mEditOpen = false;
         setTitle("");
         mViewLayout = (RelativeLayout) findViewById(R.id.view_layout);
         mEditLayout = (RelativeLayout) findViewById(R.id.edit_layout);
@@ -255,6 +269,17 @@ public class ViewEventActivity extends BaseActivity implements
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mEditOpen) {
+            mViewLayout.setVisibility(View.VISIBLE);
+            mEditLayout.setVisibility(View.GONE);
+            mEditOpen = false;
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void fillFields() {

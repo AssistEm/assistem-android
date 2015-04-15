@@ -1,18 +1,27 @@
 package seniorproject.caretakers.caretakersapp.ui.actvities;
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import javax.inject.Inject;
+
+import seniorproject.caretakers.caretakersapp.CaretakersApplication;
 import seniorproject.caretakers.caretakersapp.R;
+import seniorproject.caretakers.caretakersapp.presenters.MainPresenter;
 import seniorproject.caretakers.caretakersapp.ui.fragments.CalendarFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.DrawerFragment;
-import seniorproject.caretakers.caretakersapp.ui.fragments.GroceryFragment;
+import seniorproject.caretakers.caretakersapp.ui.fragments.GroceryTabsFragment;
+import seniorproject.caretakers.caretakersapp.ui.fragments.PingFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.SettingsFragment;
 
 public class MainActivity extends BaseActivity implements DrawerFragment.NavigationDrawerCallbacks {
+
+    @Inject
+    MainPresenter presenter;
 
     private DrawerFragment mDrawerFragment;
 
@@ -20,6 +29,8 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setResult(LoginActivity.EXIT_APP_RESULT);
+        CaretakersApplication app = (CaretakersApplication) this.getApplication();
+        app.inject(this);
         mDrawerFragment = (DrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -61,15 +72,21 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         Fragment fragment;
-
         switch(position) {
             case 0:
                 fragment = new CalendarFragment();
                 break;
             case 1:
-                fragment = new GroceryFragment();
+                fragment = new GroceryTabsFragment();
                 break;
             case 2:
+                if(presenter.isUserPatient()) {
+                    fragment = new PingFragment();
+                } else {
+                    fragment = new SettingsFragment();
+                }
+                break;
+            case 3:
                 fragment = new SettingsFragment();
                 break;
             default:

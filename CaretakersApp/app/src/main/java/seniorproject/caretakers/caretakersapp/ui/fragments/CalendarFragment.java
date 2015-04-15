@@ -30,8 +30,8 @@ import seniorproject.caretakers.caretakersapp.data.model.Event;
 import seniorproject.caretakers.caretakersapp.presenters.CalendarPresenter;
 import seniorproject.caretakers.caretakersapp.ui.actvities.AddEventActivity;
 import seniorproject.caretakers.caretakersapp.ui.actvities.ViewEventActivity;
-import seniorproject.caretakers.caretakersapp.ui.interfaces.CalendarView;
 import seniorproject.caretakers.caretakersapp.ui.views.AddFloatingActionButton;
+import seniorproject.caretakers.caretakersapp.views.CalendarView;
 
 public class CalendarFragment extends Fragment implements CalendarView {
 

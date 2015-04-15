@@ -3,7 +3,6 @@ package seniorproject.caretakers.caretakersapp;
 import android.app.Application;
 
 import java.util.Arrays;
-import java.util.List;
 
 import dagger.ObjectGraph;
 import seniorproject.caretakers.caretakersapp.data.DataModule;
@@ -32,4 +31,5 @@ public class CaretakersApplication extends Application {
     public void inject(Object object) {
         objectGraph.inject(object);
     }
+
 }

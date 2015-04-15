@@ -6,8 +6,7 @@ import com.google.gson.GsonBuilder;
 import java.util.Calendar;
 
 import dagger.Module;
-import seniorproject.caretakers.caretakersapp.data.gson.CalendarDeserializer;
-import seniorproject.caretakers.caretakersapp.data.model.User;
+import seniorproject.caretakers.caretakersapp.data.gson.CalendarSerializer;
 
 /**
  * Created by Stephen on 2/19/2015.
@@ -18,6 +17,7 @@ public class DataModule {
 
     public Gson provideGson() {
         return new GsonBuilder()
-                .registerTypeAdapter(Calendar.class, new CalendarDeserializer()).create();
+                .registerTypeAdapter(Calendar.class, new CalendarSerializer())
+                .create();
     }
 }

@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
 import javax.inject.Inject;
@@ -17,7 +16,7 @@ import seniorproject.caretakers.caretakersapp.CaretakersApplication;
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.presenters.LoginPresenter;
 import seniorproject.caretakers.caretakersapp.ui.actvities.MainActivity;
-import seniorproject.caretakers.caretakersapp.ui.interfaces.LoginView;
+import seniorproject.caretakers.caretakersapp.views.LoginView;
 
 public class LoginFragment extends Fragment implements LoginView {
 

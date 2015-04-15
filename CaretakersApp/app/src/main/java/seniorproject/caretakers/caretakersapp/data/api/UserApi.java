@@ -13,6 +13,7 @@ import rx.Observable;
 import seniorproject.caretakers.caretakersapp.data.model.Login;
 import seniorproject.caretakers.caretakersapp.data.model.LoginRequest;
 import seniorproject.caretakers.caretakersapp.data.model.PasswordChange;
+import seniorproject.caretakers.caretakersapp.data.model.PostRequest;
 import seniorproject.caretakers.caretakersapp.data.model.User;
 
 /**
@@ -42,8 +43,8 @@ public interface UserApi {
                                @Body PasswordChange passwordChange);
 
     @PUT("/user/me")
-    public void editDetails(@Header("Authorization") String auth,
-                            @Body User user);
+    public Observable<PostRequest> editDetails(@Header("Authorization") String auth,
+                                               @Body User user);
 
     @GET("/user/me")
     public Observable<User> me(@Header("Authorization") String auth);

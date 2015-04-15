@@ -27,10 +27,11 @@ import javax.inject.Inject;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import seniorproject.caretakers.caretakersapp.CaretakersApplication;
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.data.model.Event;
 import seniorproject.caretakers.caretakersapp.presenters.AddEventPresenter;
-import seniorproject.caretakers.caretakersapp.ui.interfaces.AddEventView;
+import seniorproject.caretakers.caretakersapp.views.AddEventView;
 
 public class AddEventActivity extends BaseActivity implements
         DatePickerDialogFragment.DatePickerDialogHandler,
@@ -171,6 +172,8 @@ public class AddEventActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setResult(CANCELED_RESULT);
         setTitle(R.string.title_activity_add_event);
+        CaretakersApplication app = (CaretakersApplication) this.getApplication();
+        app.inject(this);
         mTitleEdit = (EditText) findViewById(R.id.title);
         mDescriptionEdit = (EditText) findViewById(R.id.description);
         mStartDateEdit = (EditText) findViewById(R.id.start_date);
@@ -320,7 +323,8 @@ public class AddEventActivity extends BaseActivity implements
                 .newInstance(this, hourInt, minuteInt, DateFormat.is24HourFormat(this));
         dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "radial_dialog");
-        /*TimePickerBuilder builder = new TimePickerBuilder()
+        /*
+        TimePickerBuilder builder = new TimePickerBuilder()
                 .setFragmentManager(getSupportFragmentManager())
                 .setStyleResId(R.style.DateTimePickers)
                 .setReference(reference)
@@ -328,7 +332,8 @@ public class AddEventActivity extends BaseActivity implements
         if(hour != null && minute != null) {
             builder.
         }
-        builder.show();*/
+        builder.show();
+        */
     }
 
     @Override

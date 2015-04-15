@@ -1,7 +1,8 @@
 package seniorproject.caretakers.caretakersapp.presenters;
 
+import seniorproject.caretakers.caretakersapp.CaretakersApplication;
 import seniorproject.caretakers.caretakersapp.data.login.LoginManager;
-import seniorproject.caretakers.caretakersapp.ui.interfaces.SettingsView;
+import seniorproject.caretakers.caretakersapp.views.SettingsView;
 
 /**
  * Created by Stephen on 4/1/2015.

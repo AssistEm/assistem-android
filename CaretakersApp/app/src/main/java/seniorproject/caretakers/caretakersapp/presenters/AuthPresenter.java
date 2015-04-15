@@ -2,7 +2,6 @@ package seniorproject.caretakers.caretakersapp.presenters;
 
 import seniorproject.caretakers.caretakersapp.data.api.UserApi;
 import seniorproject.caretakers.caretakersapp.data.login.LoginManager;
-import seniorproject.caretakers.caretakersapp.ui.interfaces.LoginView;
 
 /**
  * Created by Stephen on 3/31/2015.

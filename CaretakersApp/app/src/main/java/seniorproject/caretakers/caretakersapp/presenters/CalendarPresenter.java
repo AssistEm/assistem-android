@@ -5,10 +5,11 @@ import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import seniorproject.caretakers.caretakersapp.CaretakersApplication;
 import seniorproject.caretakers.caretakersapp.data.api.CommunitiesApi;
 import seniorproject.caretakers.caretakersapp.data.login.LoginManager;
 import seniorproject.caretakers.caretakersapp.data.model.Event;
-import seniorproject.caretakers.caretakersapp.ui.interfaces.CalendarView;
+import seniorproject.caretakers.caretakersapp.views.CalendarView;
 
 /**
  * Created by Stephen on 3/31/2015.

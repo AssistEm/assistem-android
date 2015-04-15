@@ -6,13 +6,9 @@ import android.graphics.Color;
 import com.alamkanak.weekview.WeekViewEvent;
 import com.google.gson.annotations.SerializedName;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import seniorproject.caretakers.caretakersapp.R;
 
@@ -20,9 +16,6 @@ import seniorproject.caretakers.caretakersapp.R;
  * Created by Stephen on 2/18/2015.
  */
 public class Event extends WeekViewEvent {
-
-    // ISO8601DATEFORMAT
-    public final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     @SerializedName("_id")
     String id;
@@ -40,10 +33,10 @@ public class Event extends WeekViewEvent {
     String location;
 
     @SerializedName("start_time")
-    String startTime;
+    Calendar startTime;
 
     @SerializedName("end_time")
-    String endTime;
+    Calendar endTime;
 
     @SerializedName("priority")
     int priority;
@@ -66,16 +59,16 @@ public class Event extends WeekViewEvent {
         this.location = location;
         this.category = category;
         this.priority = priority;
-        this.startTime = DATE_FORMAT.format(startTime.getTime());
-        this.endTime = DATE_FORMAT.format(endTime);
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public Calendar getStartTime() {
-        return parseTime(startTime);
+        return startTime;
     }
 
     public Calendar getEndTime() {
-        return parseTime(endTime);
+        return endTime;
     }
 
     public String getCategory() {
@@ -124,18 +117,6 @@ public class Event extends WeekViewEvent {
 
     public User getVolunteer() {
         return volunteer;
-    }
-
-    private Calendar parseTime(String time) {
-        Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault()) ;
-        try {
-            Date date = DATE_FORMAT.parse(time);
-            date.setHours(date.getHours());
-            calendar.setTime(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return calendar;
     }
 
     public void setApiId(String id) {
