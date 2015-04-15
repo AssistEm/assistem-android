@@ -246,6 +246,25 @@ public class AccountHandler {
         }
     }
 
+    private class GetCurrentAvailabilityResponseHandler extends BaseJsonResponseHandler {
+        AccountListener mListener;
+
+        public GetCurrentAvailabilityResponseHandler(AccountListener listener) {
+            mListener = listener;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject object) {
+            try {
+                if (mListener != null) {
+                    mListener.onCurrentAvailabilityFetched(object.getBoolean("is_available"));
+                }
+            } catch(JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     Callback<Response> mRegisterCallback = new Callback<Response>() {
         @Override
         public void success(Response jsonObject, Response response) {
@@ -312,6 +331,14 @@ public class AccountHandler {
                     new SetAvailabilityResponseHandler(mListener));
         } catch (NoNetworkException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void getCurrentAvailability(Context context, AccountListener mListener) {
+        try {
+            UserRestClient.getAvailable(context, new GetCurrentAvailabilityResponseHandler(mListener));
+        } catch(NoNetworkException e) {
+
         }
     }
 
@@ -452,5 +479,6 @@ public class AccountHandler {
         public void onFullProfileFetched(JSONObject profile) { }
         public void onAvailabilityFetched(List<Availability> availabilities) { }
         public void onAvailabilitySet() {}
+        public void onCurrentAvailabilityFetched(boolean available) { }
     }
 }

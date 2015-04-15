@@ -6,10 +6,12 @@ import android.util.Log;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public class EventRestClient extends CommunityRestClient {
 
@@ -39,6 +41,37 @@ public class EventRestClient extends CommunityRestClient {
             body.put("priority", priority);
             body.put("start_time", startTime);
             body.put("end_time", endTime);
+            Header[] headers = new Header[] {generateAuthHeader(context)};
+            mClient.post(context, url, headers, jsonToEntity(body), CONTENT_TYPE, handler);
+        } catch (JSONException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addRepeatingEvent(Context context, String communityId, String title,
+                                         String description, String location, String category,
+                                         int priority, String startTime, String endTime,
+                                         List<Integer> daysOfWeek, int numberOfWeeks,
+                                         BaseJsonResponseHandler handler)
+            throws NoNetworkException {
+        checkNetwork(context);
+        String url = BASE_URL + COMMUNITIES + "/" + communityId + "/" + EVENTS;
+        JSONObject body = new JSONObject();
+        try {
+            body.put("title", title);
+            body.put("description", description);
+            body.put("location", location);
+            body.put("category", category);
+            body.put("priority", priority);
+            body.put("start_time", startTime);
+            body.put("end_time", endTime);
+            JSONArray array = new JSONArray();
+            for(Integer value : daysOfWeek) {
+                array.put(value);
+            }
+            body.put("days_of_week", array);
+            body.put("weeks_to_repeat", numberOfWeeks);
+            Log.i("REPEATING EVENT ADD", url + " " + body.toString());
             Header[] headers = new Header[] {generateAuthHeader(context)};
             mClient.post(context, url, headers, jsonToEntity(body), CONTENT_TYPE, handler);
         } catch (JSONException | UnsupportedEncodingException e) {

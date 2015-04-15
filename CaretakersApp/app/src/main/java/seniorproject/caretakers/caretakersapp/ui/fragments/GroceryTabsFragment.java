@@ -96,6 +96,12 @@ public class GroceryTabsFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshLists();
+    }
+
     private void refreshLists() {
         mAdapter.refreshLists();
     }

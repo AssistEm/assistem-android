@@ -27,6 +27,7 @@ public class UserRestClient extends RestClient {
     protected static final String CHANGE_PASSWORD = "password";
     protected static final String ME = "me";
     protected static final String PUSH_REGISTER = "pushregister";
+    protected static final String AVAILABLE = "available";
 
     public static void login(Context context, String email, String password,
                              BaseJsonResponseHandler handler) throws NoNetworkException {
@@ -132,5 +133,13 @@ public class UserRestClient extends RestClient {
         } catch (JSONException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void getAvailable(Context context, BaseJsonResponseHandler handler)
+        throws NoNetworkException {
+        checkNetwork(context);
+        String url = BASE_URL + USER + "/" + ME + "/" + AVAILABLE;
+        Header[] headers = new Header[] {generateAuthHeader(context)};
+        mClient.get(context, url, headers, new RequestParams(), handler);
     }
 }

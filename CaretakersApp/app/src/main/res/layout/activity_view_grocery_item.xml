@@ -86,8 +86,7 @@
                     android:layout_toRightOf="@+id/time_to"
                     android:hint="@string/add_grocery_item_date_hint"
                     android:padding="15dp"/>
-    
-    
+
                 <ImageView
                     android:id="@+id/quantity_image"
                     android:layout_width="wrap_content"
@@ -218,12 +217,20 @@
                     android:layout_toRightOf="@+id/view_time_to"
                     android:padding="15dp"/>
 
+                <TextView
+                    android:id="@+id/view_volunteer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/view_date"
+                    android:drawableLeft="@drawable/ic_volunteer"
+                    android:drawablePadding="15dp"
+                    android:padding="15dp"/>
 
                 <TextView
                     android:id="@+id/view_quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/view_date"
+                    android:layout_below="@id/view_volunteer"
                     android:drawableLeft="@drawable/ic_quantity"
                     android:drawablePadding="15dp"
                     android:padding="15dp"/>

@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import butterknife.OnClick;
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
+import seniorproject.caretakers.caretakersapp.tempdata.model.Caretaker;
 import seniorproject.caretakers.caretakersapp.ui.actvities.ProfileActivity;
 import seniorproject.caretakers.caretakersapp.ui.adapters.DrawerAdapter;
 
@@ -59,11 +61,20 @@ public class DrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
+    private SwitchCompat mAvailableSwitch;
+
     private View.OnClickListener mUserNameClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(getActivity(), ProfileActivity.class);
             startActivity(intent);
+        }
+    };
+
+    private AccountHandler.AccountListener mAvailabilityListener = new AccountHandler.AccountListener() {
+        @Override
+        public void onCurrentAvailabilityFetched(boolean available) {
+            mAvailableSwitch.setChecked(available);
         }
     };
 
@@ -111,6 +122,13 @@ public class DrawerFragment extends Fragment {
         mUserNameText.setText(AccountHandler.getInstance(getActivity()).getCurrentUser().getDisplayName());
         mCommunityNameText = (TextView) rootView.findViewById(R.id.community_name);
         mCommunityNameText.setText(AccountHandler.getInstance(getActivity()).getCurrentCommunity().getName());
+        mAvailableSwitch = (SwitchCompat) rootView.findViewById(R.id.available_switch);
+        /*if(AccountHandler.getInstance(getActivity()).getCurrentUser() instanceof Caretaker) {
+            mAvailableSwitch.setVisibility(View.VISIBLE);
+            AccountHandler.getInstance(getActivity()).getCurrentAvailability(getActivity(), mAvailabilityListener);
+        } else {
+            mAvailableSwitch.setVisibility(View.GONE);
+        }*/
         return rootView;
     }
 
@@ -192,16 +210,20 @@ public class DrawerFragment extends Fragment {
             }
             return;
         }
-        mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
-            Log.i("ITEM CHECKED", "" + position);
-            mDrawerListView.setItemChecked(position, true);
+        if (mCallbacks != null) {
+            if(mCallbacks.onNavigationDrawerItemSelected(position)) {
+                mCurrentSelectedPosition = position;
+                if (mDrawerListView != null) {
+                    Log.i("ITEM CHECKED", "" + position);
+                    mDrawerListView.setItemChecked(position, true);
+                }
+            } else {
+                mDrawerListView.setItemChecked(position, false);
+                mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+            }
         }
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
-        }
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
         }
     }
 
@@ -258,6 +280,6 @@ public class DrawerFragment extends Fragment {
     }
 
     public static interface NavigationDrawerCallbacks {
-        void onNavigationDrawerItemSelected(int position);
+        boolean onNavigationDrawerItemSelected(int position);
     }
 }

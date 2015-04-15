@@ -150,6 +150,22 @@ public class EventHandler {
         }
     }
 
+    public void addRepeatingEvent(Context context, String title, String description, String location,
+                                  String category, int priority, Calendar startTime, Calendar endTime,
+                                  List<Integer> daysOfWeek, int numberOfRepeats,
+                                  EventListener listener) {
+        String communityId = AccountHandler.getInstance(context).getCurrentCommunity().getId();
+        SimpleDateFormat format = new SimpleDateFormat(Event.ISO8601DATEFORMAT);
+        String startString = format.format(startTime.getTime());
+        String endString = format.format(endTime.getTime());
+        try {
+            EventRestClient.addRepeatingEvent(context, communityId, title, description, location, category,
+                    priority, startString, endString, daysOfWeek, numberOfRepeats, new AddEventsResponseHandler(listener));
+        } catch (NoNetworkException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void updateEvent(Context context, String eventId, String title, String description,
                             String location, String category, int priority, Calendar startTime,
                             Calendar endTime, EventListener listener) {

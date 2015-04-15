@@ -63,6 +63,7 @@ public class GroceryRestClient extends CommunityRestClient {
                 body.put("delivery_time", deliveryDate);
             }
             Header[] headers = new Header[]{generateAuthHeader(context)};
+            Log.i("GROCERY ITEM", url + " " + body.toString());
             mClient.put(context, url, headers, jsonToEntity(body), CONTENT_TYPE, handler);
         } catch (JSONException | UnsupportedEncodingException e) {
             e.printStackTrace();

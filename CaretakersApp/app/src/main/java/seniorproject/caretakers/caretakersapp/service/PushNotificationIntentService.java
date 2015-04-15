@@ -11,7 +11,11 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import seniorproject.caretakers.caretakersapp.R;
+import seniorproject.caretakers.caretakersapp.data.handlers.PingHandler;
 import seniorproject.caretakers.caretakersapp.ui.actvities.LoginActivity;
 
 public class PushNotificationIntentService extends IntentService {
@@ -32,35 +36,21 @@ public class PushNotificationIntentService extends IntentService {
         Bundle extras = intent.getExtras();
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
         String messageType = gcm.getMessageType(intent);
-        Log.i("MESSAGE", extras.toString());
         if(!extras.isEmpty()) {
             if(GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
 
             } else if(GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
 
             } else if(GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-                sendNotification(extras.toString());
+                String message = extras.getString("message");
+                try {
+                    JSONObject messageObj = new JSONObject(message);
+                    PingHandler.getInstance(this).pingReceived(this, messageObj);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
         GcmBroadcastReceiver.completeWakefulIntent(intent);
-    }
-
-    private void sendNotification(String msg) {
-        mNotificationManager = (NotificationManager) this
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, LoginActivity.class), 0);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_date)
-                .setContentTitle("Caretakers' Ping")
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(msg))
-                .setContentText(msg);
-
-        builder.setContentIntent(contentIntent);
-        mNotificationManager.notify(NOTIFICATION_ID, builder.build());
-
     }
 }

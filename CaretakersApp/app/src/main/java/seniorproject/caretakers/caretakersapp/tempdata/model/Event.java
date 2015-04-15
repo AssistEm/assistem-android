@@ -31,6 +31,7 @@ public class Event extends WeekViewEvent implements Serializable {
     private String mDescription;
     private int mPriority;
     private User mVolunteer;
+    private boolean mRepeating;
 
     private Event() {
 
@@ -38,7 +39,7 @@ public class Event extends WeekViewEvent implements Serializable {
 
     public Event(String id, String title, Calendar startTime, Calendar endTime,
                  String location, String category, String description, int priority,
-                 User volunteer) {
+                 User volunteer, boolean repeating) {
         super(1, title, startTime, endTime);
         mId = id;
         mTitle = title;
@@ -47,9 +48,11 @@ public class Event extends WeekViewEvent implements Serializable {
         mDescription = description;
         mPriority = priority;
         mVolunteer = volunteer;
+        mRepeating = repeating;
     }
 
     public static Event parseEvent(JSONObject eventObject) throws JSONException {
+        Log.i("EVENT OBJECT", eventObject.toString());
         String id = eventObject.getString("_id");
         String title = eventObject.getString("title");
         String description = eventObject.getString("description");
@@ -57,6 +60,7 @@ public class Event extends WeekViewEvent implements Serializable {
         String location = eventObject.getString("location");
         int priority = eventObject.getInt("priority");
         JSONObject timeObject = eventObject.getJSONObject("time");
+        boolean repeating = timeObject.has("weeks_to_repeat");
         String startTime = timeObject.getString("start");
         String endTime = timeObject.getString("end");
         Calendar start = parseTime(startTime);
@@ -67,7 +71,7 @@ public class Event extends WeekViewEvent implements Serializable {
             user = User.parseUser(volunteerObject);
         }
         return new Event(id, title, start, end, location, category, description, priority,
-                user);
+                user, repeating);
     }
 
     private static Calendar parseTime(String time) {
@@ -138,6 +142,10 @@ public class Event extends WeekViewEvent implements Serializable {
 
     public int getPriority() {
         return mPriority;
+    }
+
+    public boolean getRepeating() {
+        return mRepeating;
     }
 
     public String getPriorityString(Context context) {

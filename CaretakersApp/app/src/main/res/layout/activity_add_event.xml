@@ -192,6 +192,18 @@
                 android:layout_alignBottom="@id/priority"
                 android:src="@drawable/ic_priority"/>
 
+            <CheckBox
+                android:id="@+id/repeating_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_event_repeating"
+                android:textColor="@color/text_color"
+                android:textSize="16sp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center_vertical"
+                android:layout_below="@id/priority_image" />
+
             <Button
                 android:id="@+id/submit"
                 android:layout_width="wrap_content"

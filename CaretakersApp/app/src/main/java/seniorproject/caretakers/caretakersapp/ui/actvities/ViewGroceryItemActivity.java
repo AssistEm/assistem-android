@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.doomonafireball.betterpickers.datepicker.DatePickerBuilder;
 import com.doomonafireball.betterpickers.datepicker.DatePickerDialogFragment;
@@ -54,6 +56,7 @@ public class ViewGroceryItemActivity extends BaseActivity implements
     TextView mLocation;
     TextView mTime;
     TextView mDate;
+    TextView mVolunteer;
 
     Button mSubmitButton;
     Button mDeleteButton;
@@ -210,6 +213,14 @@ public class ViewGroceryItemActivity extends BaseActivity implements
         mLocation = (TextView) findViewById(R.id.view_location);
         fillOrHideView(mLocation, mItem.getLocation());
         Calendar time = mItem.getUrgency();
+        mVolunteer = (TextView) findViewById(R.id.view_volunteer);
+        String volunteerName = null;
+        if(mItem.getVolunteer() != null) {
+            volunteerName = mItem.getVolunteer().getDisplayName();
+        } else {
+            Log.i("VOLUNTEER NULL", "VOLUNTEER NULL");
+        }
+        fillOrHideView(mVolunteer, volunteerName);
         mTime = (TextView) findViewById(R.id.view_time);
         mTime.setText(DateUtils
                 .formatDateTime(this, time.getTime().getTime(), DateUtils.FORMAT_SHOW_TIME));
@@ -280,29 +291,6 @@ public class ViewGroceryItemActivity extends BaseActivity implements
         return R.layout.activity_view_grocery_item;
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_view_grocery_item, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @Override
     public void onBackPressed() {
         if(mEditOpen) {
@@ -335,6 +323,10 @@ public class ViewGroceryItemActivity extends BaseActivity implements
                 deliveryTime.set(Calendar.YEAR, mVolunteerYear);
                 deliveryTime.set(Calendar.MONTH, mVolunteerMonth);
                 deliveryTime.set(Calendar.DAY_OF_MONTH, mVolunteerDay);
+                if(deliveryTime.after(mItem.getUrgency())) {
+                    Toast.makeText(this, "Delivery date cannot be after urgency!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 GroceryHandler.getInstance().volunteerItem(ViewGroceryItemActivity.this, mItem.getId(),
                         true, deliveryTime, mListener);
         }

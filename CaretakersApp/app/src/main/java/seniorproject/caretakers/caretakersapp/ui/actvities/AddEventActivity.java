@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -18,18 +18,16 @@ import android.widget.Toast;
 import com.doomonafireball.betterpickers.datepicker.DatePickerBuilder;
 import com.doomonafireball.betterpickers.datepicker.DatePickerDialogFragment;
 import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog;
-import com.doomonafireball.betterpickers.recurrencepicker.EventRecurrence;
-import com.doomonafireball.betterpickers.recurrencepicker.RecurrencePickerDialog;
-import com.doomonafireball.betterpickers.timepicker.TimePickerBuilder;
 import com.doomonafireball.betterpickers.timepicker.TimePickerDialogFragment;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
+import java.util.List;
 
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.data.handlers.EventHandler;
+import seniorproject.caretakers.caretakersapp.ui.dialogs.AddEventRepeatingDialog;
 
 public class AddEventActivity extends BaseActivity implements
         DatePickerDialogFragment.DatePickerDialogHandler,
@@ -47,6 +45,7 @@ public class AddEventActivity extends BaseActivity implements
     EditText mEndTimeEdit;
     EditText mCategoryEdit;
     EditText mLocationEdit;
+    CheckBox mRepeatingCheck;
     Spinner mPrioritySpinner;
 
     Button mSubmitButton;
@@ -56,6 +55,8 @@ public class AddEventActivity extends BaseActivity implements
 
     Integer mStartHour, mStartMinute;
     Integer mEndHour, mEndMinute;
+
+    boolean mRepeating;
 
     private EventHandler.EventListener mEventListener = new EventHandler.EventListener() {
         @Override
@@ -158,14 +159,48 @@ public class AddEventActivity extends BaseActivity implements
                     || mEndHour == null) {
                 return;
             }
+            if(mRepeating) {
+                AddEventRepeatingDialog dialog = new AddEventRepeatingDialog();
+                dialog.setRepeatingListener(mRepeatingListener);
+                dialog.show(getSupportFragmentManager(), "repeating");
+            } else {
+                Calendar startTime = Calendar.getInstance();
+                startTime.set(mStartYear, mStartMonth, mStartDay, mStartHour, mStartMinute, 0);
+                startTime.set(Calendar.MILLISECOND, 0);
+                Calendar endTime = Calendar.getInstance();
+                endTime.set(mEndYear, mEndMonth, mEndDay, mEndHour, mEndMinute, 0);
+                endTime.set(Calendar.MILLISECOND, 0);
+                EventHandler.getInstance().addEvent(AddEventActivity.this, title, description,
+                        location, category, priority, startTime, endTime, mEventListener);
+            }
+        }
+    };
+
+    View.OnClickListener mRepeatingClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            mRepeating = !mRepeating;
+        }
+    };
+
+    AddEventRepeatingDialog.OnRepeatingListener mRepeatingListener =
+            new AddEventRepeatingDialog.OnRepeatingListener() {
+        @Override
+        public void onRepeatingListener(List<Integer> days, int numberOfWeeks) {
+            String title = mTitleEdit.getText().toString();
+            String description = mDescriptionEdit.getText().toString();
+            String location = mLocationEdit.getText().toString();
+            String category = mCategoryEdit.getText().toString();
+            int priority = mPrioritySpinner.getSelectedItemPosition() + 1;
             Calendar startTime = Calendar.getInstance();
             startTime.set(mStartYear, mStartMonth, mStartDay, mStartHour, mStartMinute, 0);
             startTime.set(Calendar.MILLISECOND, 0);
             Calendar endTime = Calendar.getInstance();
             endTime.set(mEndYear, mEndMonth, mEndDay, mEndHour, mEndMinute, 0);
             endTime.set(Calendar.MILLISECOND, 0);
-            EventHandler.getInstance().addEvent(AddEventActivity.this, title, description,
-                    location, category, priority, startTime, endTime, mEventListener);
+            EventHandler.getInstance().addRepeatingEvent(AddEventActivity.this, title, description,
+                    location, category, priority, startTime, endTime, days, numberOfWeeks, mEventListener);
         }
     };
 
@@ -174,6 +209,7 @@ public class AddEventActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setResult(CANCELED_RESULT);
         setTitle(R.string.title_activity_add_event);
+        mRepeating = false;
         mTitleEdit = (EditText) findViewById(R.id.title);
         mDescriptionEdit = (EditText) findViewById(R.id.description);
         mStartDateEdit = (EditText) findViewById(R.id.start_date);
@@ -194,6 +230,8 @@ public class AddEventActivity extends BaseActivity implements
         mEndTimeEdit.setOnClickListener(mTimeClickListener);
         mLocationEdit = (EditText) findViewById(R.id.location);
         mCategoryEdit = (EditText) findViewById(R.id.category);
+        mRepeatingCheck = (CheckBox) findViewById(R.id.repeating_switch);
+        mRepeatingCheck.setOnClickListener(mRepeatingClickListener);
         mPrioritySpinner = (Spinner) findViewById(R.id.priority);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.priority_array, android.R.layout.simple_spinner_item);
@@ -228,28 +266,6 @@ public class AddEventActivity extends BaseActivity implements
     @Override
     public int getLayoutResource() {
         return R.layout.activity_add_event;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_event, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

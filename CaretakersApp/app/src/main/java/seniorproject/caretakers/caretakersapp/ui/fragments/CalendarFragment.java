@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -27,6 +31,7 @@ import seniorproject.caretakers.caretakersapp.tempdata.model.Patient;
 import seniorproject.caretakers.caretakersapp.ui.actvities.AddEventActivity;
 import seniorproject.caretakers.caretakersapp.ui.actvities.ViewEventActivity;
 import seniorproject.caretakers.caretakersapp.ui.views.AddFloatingActionButton;
+import seniorproject.caretakers.caretakersapp.ui.views.GeneralSwipeRefreshLayout;
 
 public class CalendarFragment extends Fragment {
 
@@ -102,18 +107,19 @@ public class CalendarFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_calendar, viewGroup, false);
         mAddEventButton = (AddFloatingActionButton) rootView.findViewById(R.id.add_event_button);
+        mWeekView = (WeekView) rootView.findViewById(R.id.weekView);
+        mWeekView.setMonthChangeListener(mMonthChangeListener);
+        mWeekView.setOnEventClickListener(mEventClickListener);
         if(AccountHandler.getInstance(getActivity()).getCurrentUser() instanceof Caretaker) {
             mAddEventButton.setVisibility(View.GONE);
         } else if(AccountHandler.getInstance(getActivity()).getCurrentUser() instanceof Patient){
             mAddEventButton.setVisibility(View.VISIBLE);
             mAddEventButton.setOnClickListener(mAddEventClickListener);
+            mWeekView.setEmptyViewClickListener(mEmptyClickListener);
         }
-        mWeekView = (WeekView) rootView.findViewById(R.id.weekView);
-        mWeekView.setMonthChangeListener(mMonthChangeListener);
-        mWeekView.setOnEventClickListener(mEventClickListener);
-        mWeekView.setEmptyViewClickListener(mEmptyClickListener);
         mWeekView.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
@@ -153,7 +159,6 @@ public class CalendarFragment extends Fragment {
         }
         if (mWeekView != null) {
             mWeekView.notifyDatasetChanged();
-
         }
     }
 
@@ -187,5 +192,28 @@ public class CalendarFragment extends Fragment {
                     break;
             }
         }
+    }
+
+    /*
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_calendar, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.menu_refresh) {
+            refreshEvents();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }*/
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshEvents();
     }
 }

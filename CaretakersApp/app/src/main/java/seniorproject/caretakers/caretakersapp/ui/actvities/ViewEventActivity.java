@@ -30,6 +30,7 @@ import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 import seniorproject.caretakers.caretakersapp.data.handlers.EventHandler;
 import seniorproject.caretakers.caretakersapp.tempdata.model.Event;
 import seniorproject.caretakers.caretakersapp.tempdata.model.Patient;
+import seniorproject.caretakers.caretakersapp.ui.dialogs.DeleteRepeatingEventDialog;
 import seniorproject.caretakers.caretakersapp.ui.views.FloatingActionButton;
 
 public class ViewEventActivity extends BaseActivity implements
@@ -209,9 +210,26 @@ public class ViewEventActivity extends BaseActivity implements
     View.OnClickListener mDeleteClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            boolean deleteRepeating = false;
-            EventHandler.getInstance().deleteEvent(ViewEventActivity.this, mEvent.getStringId(),
-                    deleteRepeating, mEventListener);
+            if(mEvent.getRepeating()) {
+                DeleteRepeatingEventDialog dialog = new DeleteRepeatingEventDialog();
+                dialog.setRepeatingListener(new DeleteRepeatingEventDialog.OnRepeatingListener() {
+                    @Override
+                    public void onCancel() {
+                        return;
+                    }
+
+                    @Override
+                    public void onDelete(boolean repeating) {
+                        EventHandler.getInstance().deleteEvent(ViewEventActivity.this, mEvent.getStringId(),
+                                repeating, mEventListener);
+                    }
+                });
+                dialog.show(getSupportFragmentManager(), "delete_dialog");
+            } else {
+                boolean deleteRepeating = false;
+                EventHandler.getInstance().deleteEvent(ViewEventActivity.this, mEvent.getStringId(),
+                        deleteRepeating, mEventListener);
+            }
         }
     };
 

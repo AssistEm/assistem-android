@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">CaretakersApp</string>
+    <string name="app_name">Assist\'em</string>
     <string name="hello_world">Hello Caretaker!</string>
     <string name="action_settings">Settings</string>
     <string name="email">Email</string>
@@ -9,7 +9,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="login">Login!</string>
     <string name="register">Register</string>
-    <string name="title_activity_main">Caretakers\' App</string>
+    <string name="title_activity_main">Assist\'em</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="phone">Phone Number</string>
@@ -43,6 +43,7 @@
     <string name="add_event_location_description">Location</string>
     <string name="add_event_category_description">Category</string>
     <string name="add_event_submit">Add Event</string>
+    <string name="add_event_repeating">Repeating</string>
     <string name="title_activity_edit_event">EditEventActivity</string>
     <string name="title_activity_view">ViewActivity</string>
     <string name="title_activity_view_event">ViewEventActivity</string>
@@ -93,4 +94,27 @@
     <string name="no_availability">No Availability Set</string>
     <string name="profile_edit">Edit</string>
     <string name="profile_submit">Submit</string>
+    <string name="ping_title">Title</string>
+    <string name="ping_description">Description</string>
+    <string name="ping_time">Time</string>
+    <string name="ping_now">Now</string>
+    <string name="dialog_ping">Ping</string>
+    <string name="repeat_monday">M</string>
+    <string name="repeat_tuesday">T</string>
+    <string name="repeat_wednesday">W</string>
+    <string name="repeat_thursday">R</string>
+    <string name="repeat_friday">F</string>
+    <string name="repeat_saturday">S</string>
+    <string name="repeat_sunday">U</string>
+    <string name="repeating_day_of_week">Days of Week</string>
+    <string name="repeating_number_of_weeks">Number of Weeks</string>
+    <string name="dialog_submit">Submit</string>
+    <string name="dialog_add_repeating">Repeating Event</string>
+    <string name="available">Available</string>
+    <string name="refresh">Refresh</string>
+    <string name="delete_repeating_question">Delete repeating events?</string>
+    <string name="delete_repeating_question_full">This event is repeating. Would you like to delete just this event or all in the series?</string>
+    <string name="delete_single">Single</string>
+    <string name="delete_all">All</string>
+
 </resources>

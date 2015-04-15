@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <TextView
+        android:id="@+id/days_of_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/repeating_day_of_week"/>
+
+    <LinearLayout
+        android:id="@+id/days_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/days_of_week">
+
+        <CheckBox
+            android:id="@+id/monday_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            android:text="@string/repeat_monday"/>
+
+        <CheckBox
+            android:id="@+id/tuesday_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            android:text="@string/repeat_tuesday"/>
+
+        <CheckBox
+            android:id="@+id/wednesday_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            android:text="@string/repeat_wednesday"/>
+
+        <CheckBox
+            android:id="@+id/thursday_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            android:text="@string/repeat_thursday"/>
+
+        <CheckBox
+            android:id="@+id/friday_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            android:text="@string/repeat_friday"/>
+
+        <CheckBox
+            android:id="@+id/saturday_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            android:text="@string/repeat_saturday"/>
+
+        <CheckBox
+            android:id="@+id/sunday_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            android:text="@string/repeat_sunday"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/number_of_weeks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_below="@id/days_layout"
+        android:text="@string/repeating_number_of_weeks"/>
+
+    <EditText
+        android:id="@+id/number_of_weeks_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/number_of_weeks"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:inputType="number"
+        android:hint="@string/repeating_number_of_weeks"/>
+
+</RelativeLayout>

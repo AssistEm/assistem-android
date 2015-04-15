@@ -27,7 +27,6 @@ public abstract class RestClient {
         mClient = new BaseAsyncHttpClient();
         mClient.setEnableRedirects(true, true, true);
         BASE_URL = STAGING_BASE_URL;
-        //BASE_URL = PRODUCTION_BASE_URL;
     }
 
     protected static void checkNetwork(Context context) throws NoNetworkException {

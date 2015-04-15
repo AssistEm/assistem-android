@@ -14,6 +14,8 @@
         <item name="colorControlNormal">@android:color/secondary_text_dark</item>
         <item name="colorControlActivated">@color/secondary_color</item>
         <item name="colorButtonNormal">@android:color/secondary_text_dark</item>
+        <item name="colorSwitchThumbNormal">@android:color/secondary_text_dark</item>
+        <item name="android:colorForeground">@android:color/secondary_text_dark</item>
         <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropdownItemStyle</item>
         <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner.Underlined</item>
     </style>
@@ -21,6 +23,7 @@
     <style name="AppTheme.EditText" parent="AppTheme" >
         <item name="colorControlNormal">@android:color/secondary_text_dark</item>
         <item name="colorControlActivated">@color/secondary_color</item>
+        <item name="colorSwitchThumbNormal">@android:color/secondary_text_dark</item>
         <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropdownItemStyle</item>
     </style>
 
