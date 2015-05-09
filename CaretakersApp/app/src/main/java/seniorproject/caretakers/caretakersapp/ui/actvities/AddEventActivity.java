@@ -29,11 +29,15 @@ import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.data.handlers.EventHandler;
 import seniorproject.caretakers.caretakersapp.ui.dialogs.AddEventRepeatingDialog;
 
+/**
+ * Activity that presents the UI for adding an Event
+ */
 public class AddEventActivity extends BaseActivity implements
         DatePickerDialogFragment.DatePickerDialogHandler,
         TimePickerDialogFragment.TimePickerDialogHandler,
         RadialTimePickerDialog.OnTimeSetListener {
 
+    //Results for this activity that will be passed to calling activity
     public static final int EVENT_ADDED_RESULT = 10;
     public static final int CANCELED_RESULT = 20;
 
@@ -50,14 +54,21 @@ public class AddEventActivity extends BaseActivity implements
 
     Button mSubmitButton;
 
+    //Currently selected start and end dates (may be null if none are selected)
     Integer mStartYear, mStartMonth, mStartDay;
     Integer mEndYear, mEndMonth, mEndDay;
 
+    //Currently selected start and end times (may be null if none are selected)
     Integer mStartHour, mStartMinute;
     Integer mEndHour, mEndMinute;
 
+    //If the event is set to be repeating
     boolean mRepeating;
 
+    /**
+     * EventListener for handling a successfully added event. Sets the result, notifies the user,
+     * and ends the activity.
+     */
     private EventHandler.EventListener mEventListener = new EventHandler.EventListener() {
         @Override
         public void onEventAdded() {
@@ -68,6 +79,10 @@ public class AddEventActivity extends BaseActivity implements
         }
     };
 
+    /**
+     * Listener for a focus change on a view. Used to open a date picker when the Date EditText is
+     * selected
+     */
     View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View view, boolean hasFocus) {
@@ -88,6 +103,10 @@ public class AddEventActivity extends BaseActivity implements
         }
     };
 
+    /**
+     * Listener for a focus change on a view. Used to open a time picker when the Time EditText is
+     * selected
+     */
     View.OnFocusChangeListener mTimeFocusListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View view, boolean hasFocus) {
@@ -108,6 +127,9 @@ public class AddEventActivity extends BaseActivity implements
         }
     };
 
+    /**
+     * Listener for a click on a view. Used to open a date picker when the Date EditText is clicked.
+     */
     View.OnClickListener mDateClickListener = new View.OnClickListener() {
 
         @Override
@@ -126,6 +148,9 @@ public class AddEventActivity extends BaseActivity implements
         }
     };
 
+    /**
+     * Listener for a click on a view. Used to open a time picker when the Time EditText is clicked.
+     */
     View.OnClickListener mTimeClickListener = new View.OnClickListener() {
 
         @Override
@@ -145,6 +170,11 @@ public class AddEventActivity extends BaseActivity implements
         }
     };
 
+    /**
+     * Click listener for the submit button. Validates the input, then either shows a repeating
+     * dialog if the event is set to be repeating, or initiates a network request via the
+     * EventHandler
+     */
     View.OnClickListener mSubmitClickListener = new View.OnClickListener() {
 
         @Override
@@ -176,6 +206,10 @@ public class AddEventActivity extends BaseActivity implements
         }
     };
 
+    /**
+     * Click listener for the repeating checkbox. Toggles the boolean status of if the event is
+     * repeating
+     */
     View.OnClickListener mRepeatingClickListener = new View.OnClickListener() {
 
         @Override
@@ -184,6 +218,9 @@ public class AddEventActivity extends BaseActivity implements
         }
     };
 
+    /**
+     * Listener for when the RepeatingDialog is closed. Receives the result of the dialog.
+     */
     AddEventRepeatingDialog.OnRepeatingListener mRepeatingListener =
             new AddEventRepeatingDialog.OnRepeatingListener() {
         @Override
@@ -204,6 +241,10 @@ public class AddEventActivity extends BaseActivity implements
         }
     };
 
+    /**
+     * Callback for when the activity is first created. Initializes and finds views.
+     * @param savedInstanceState Saved instance state of the activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -268,6 +309,14 @@ public class AddEventActivity extends BaseActivity implements
         return R.layout.activity_add_event;
     }
 
+    /**
+     * Callback for when a DateDialog finishes. Receives the date set, and stores it and updates views
+     * accordingly
+     * @param reference Reference for the context in which the DateDialog was spawned
+     * @param year Year selected
+     * @param month Month selected
+     * @param day Day selected
+     */
     @Override
     public void onDialogDateSet(int reference, int year, int month, int day) {
         GregorianCalendar calendar = new GregorianCalendar(year, month, day);
@@ -289,6 +338,13 @@ public class AddEventActivity extends BaseActivity implements
         }
     }
 
+    /**
+     * Callback for when a TimeDialog finishes. Receives the time set, and stores it and updates
+     * views accordingly
+     * @param reference Reference for the context in which the DateDialog was spawned
+     * @param hour Hour selected
+     * @param minute Minute selected
+     */
     public void onDialogTimeSet(int reference, int hour, int minute) {
         Date date = new Date();
         date.setMinutes(minute);
@@ -309,6 +365,13 @@ public class AddEventActivity extends BaseActivity implements
         }
     }
 
+    /**
+     * Callback for the RadialTimePickerDialog library. Receives selected hour and minute and
+     * passes them to the onDialogTimeSet method
+     * @param radialTimePickerDialog Dialog reference
+     * @param hour Hour selected
+     * @param minute Minute selected
+     */
     @Override
     public void onTimeSet(RadialTimePickerDialog radialTimePickerDialog, int hour, int minute) {
         Bundle bundle = radialTimePickerDialog.getArguments();
@@ -316,6 +379,13 @@ public class AddEventActivity extends BaseActivity implements
         onDialogTimeSet(reference, hour, minute);
     }
 
+    /**
+     * Method to open the date picker dialog
+     * @param reference Reference to use for this dialog
+     * @param year Previously selected year
+     * @param month Previously selected month
+     * @param day Previously selected day
+     */
     private void openDatePicker(int reference, Integer year, Integer month, Integer day) {
         DatePickerBuilder builder = new DatePickerBuilder()
                 .setFragmentManager(getSupportFragmentManager())
@@ -330,6 +400,12 @@ public class AddEventActivity extends BaseActivity implements
         builder.show();
     }
 
+    /**
+     * Method to open the time picker dialog
+     * @param reference Reference to use for this dialog
+     * @param hour Previously selected hour
+     * @param minute Previously selected minute
+     */
     private void openTimePicker(int reference, Integer hour, Integer minute) {
         int hourInt = hour == null ? 0 : hour;
         int minuteInt = minute == null ? 0 : minute;
@@ -339,14 +415,5 @@ public class AddEventActivity extends BaseActivity implements
                 .newInstance(this, hourInt, minuteInt, DateFormat.is24HourFormat(this));
         dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "radial_dialog");
-        /*TimePickerBuilder builder = new TimePickerBuilder()
-                .setFragmentManager(getSupportFragmentManager())
-                .setStyleResId(R.style.DateTimePickers)
-                .setReference(reference)
-                .addTimePickerDialogHandler(AddEventActivity.this);
-        if(hour != null && minute != null) {
-            builder.
-        }
-        builder.show();*/
     }
 }

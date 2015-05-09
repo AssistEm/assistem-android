@@ -193,23 +193,6 @@ public class CalendarFragment extends Fragment {
         }
     }
 
-    /*
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_calendar, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.menu_refresh) {
-            refreshEvents();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-    }*/
-
     @Override
     public void onResume() {
         super.onResume();

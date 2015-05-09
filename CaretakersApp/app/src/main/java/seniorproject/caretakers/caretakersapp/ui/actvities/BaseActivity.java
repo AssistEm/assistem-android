@@ -7,10 +7,19 @@ import android.support.v7.widget.Toolbar;
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 
+/**
+ * Base activity for all activities. Forces extension of the ActionBarActivity, and provides
+ * support in all subclasses for the support Toolbar class. Also forces implementation of finishing
+ * of activities when an authentication error occurs
+ */
 public abstract class BaseActivity extends ActionBarActivity {
 
     protected AccountHandler mAccountHandler;
 
+    /**
+     * AccountListener that checks for either logging out, or authentication errors and finishes
+     * accordingly
+     */
     protected final AccountHandler.AccountListener mAccountListener =
             new AccountHandler.AccountListener() {
                 @Override
@@ -25,6 +34,11 @@ public abstract class BaseActivity extends ActionBarActivity {
                 }
             };
 
+    /**
+     * Callback for when the activity is created. Loads the Toolbar support class and adds the
+     * AccountListener instance into the AccountHandler
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +53,10 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     public abstract int getLayoutResource();
 
+    /**
+     * Callback for when the activity is destroyed. Removes the AccountListener from the
+     * AccountHandler
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();

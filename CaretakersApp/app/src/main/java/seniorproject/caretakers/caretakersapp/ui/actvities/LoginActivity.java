@@ -12,7 +12,9 @@ import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.ui.fragments.LoginFragment;
 import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 
-
+/**
+ * Activity that presents the UI for logging into Assist'em
+ */
 public class LoginActivity extends ActionBarActivity {
 
     public final static int LOGGED_IN_REQUEST = 1;
@@ -23,6 +25,9 @@ public class LoginActivity extends ActionBarActivity {
 
     AccountHandler mAccountHandler;
 
+    /**
+     * AccountListener for recieving the results of a Login or Registration request
+     */
     AccountHandler.AccountListener mAccountListener = new AccountHandler.AccountListener() {
         @Override
         public void onLoggedIn() {
@@ -35,6 +40,11 @@ public class LoginActivity extends ActionBarActivity {
         }
     };
 
+    /**
+     * Callback for when an activity is created. Attaches the AccountListener to the AccountHandler
+     * to allow for callbacks for login or registration status
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +61,10 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * Method executed when the Activity is done. Clears the AccountListeners attached to the
+     * AccountHandler
+     */
     @Override
     public void finish() {
         super.finish();
@@ -59,6 +73,13 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * Activity result callback for when child activities finish. If the finished activity was
+     * stopped because it was actually exited, exit this activity too.
+     * @param requestCode Original request value for the activity that finished
+     * @param resultCode Result value for the activity that finished
+     * @param data Data in which the activity was started.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == LOGGED_IN_REQUEST) {
@@ -70,6 +91,9 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * Private method for when the user is logged in. Launches the MainActivity.
+     */
     private void loggedIn() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivityForResult(intent, LOGGED_IN_REQUEST);
