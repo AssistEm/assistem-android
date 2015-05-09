@@ -24,6 +24,9 @@ import android.widget.ImageButton;
 
 import seniorproject.caretakers.caretakersapp.R;
 
+/**
+ * FloatingActionButton implementation
+ */
 public class FloatingActionButton  extends ImageButton {
 
     public static final int SIZE_NORMAL = 0;

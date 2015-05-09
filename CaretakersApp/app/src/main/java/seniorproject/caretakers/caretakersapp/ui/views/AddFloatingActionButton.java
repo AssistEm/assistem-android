@@ -11,6 +11,9 @@ import android.util.AttributeSet;
 
 import seniorproject.caretakers.caretakersapp.R;
 
+/**
+ * Custom FloatingActionButton view that draws a plus sign on itself.
+ */
 public class AddFloatingActionButton extends FloatingActionButton {
     int mPlusColor;
 

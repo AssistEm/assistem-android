@@ -31,7 +31,6 @@ import seniorproject.caretakers.caretakersapp.tempdata.model.Patient;
 import seniorproject.caretakers.caretakersapp.ui.actvities.AddEventActivity;
 import seniorproject.caretakers.caretakersapp.ui.actvities.ViewEventActivity;
 import seniorproject.caretakers.caretakersapp.ui.views.AddFloatingActionButton;
-import seniorproject.caretakers.caretakersapp.ui.views.GeneralSwipeRefreshLayout;
 
 public class CalendarFragment extends Fragment {
 

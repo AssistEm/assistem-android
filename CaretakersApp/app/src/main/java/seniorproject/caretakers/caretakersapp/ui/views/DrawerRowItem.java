@@ -13,6 +13,10 @@ import java.util.List;
 
 import seniorproject.caretakers.caretakersapp.R;
 
+/**
+ * DrawerRow layout that passes checked status to children to allow them to be notified of checked
+ * status. Also modifies its own background color to match the checked state
+ */
 public class DrawerRowItem extends LinearLayout implements Checkable {
 
     private boolean mIsChecked;
@@ -26,6 +30,11 @@ public class DrawerRowItem extends LinearLayout implements Checkable {
         super(context, attrs);
     }
 
+    /**
+     * Method called when the view is checked. Sets the state, notifies children, and changes its
+     * own background color
+     * @param b Boolean value representing if the view is to be checked or not
+     */
     @Override
     public void setChecked(boolean b) {
         mIsChecked = b;
@@ -39,11 +48,18 @@ public class DrawerRowItem extends LinearLayout implements Checkable {
         }
     }
 
+    /**
+     * Method to check if the view is checked.
+     * @return if the view is checked
+     */
     @Override
     public boolean isChecked() {
         return mIsChecked;
     }
 
+    /**
+     * Toggle the checked status of the view and toggle the children views as well
+     */
     @Override
     public void toggle() {
         mIsChecked = !mIsChecked;
@@ -52,6 +68,10 @@ public class DrawerRowItem extends LinearLayout implements Checkable {
         }
     }
 
+    /**
+     * Callback for when the view is finished inflating. Finds all the children views that can
+     * be checked and stores references to them
+     */
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -61,6 +81,10 @@ public class DrawerRowItem extends LinearLayout implements Checkable {
         }
     }
 
+    /**
+     * Private method that finds all checkable children recursively.
+     * @param v View in which to find the checkable children.
+     */
     private void findCheckableChildren(View v) {
         if (v instanceof Checkable) {
             this.mCheckableViews.add((Checkable) v);

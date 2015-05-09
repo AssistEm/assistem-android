@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import seniorproject.caretakers.caretakersapp.R;
 
+/**
+ * Custom Checkable TextView class that also changes its own text color when checked
+ */
 public class DrawerRowTextView extends CheckedTextView {
 
     public DrawerRowTextView(Context context) {
