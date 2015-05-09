@@ -24,15 +24,23 @@ import seniorproject.caretakers.caretakersapp.tempdata.model.Ping;
 import seniorproject.caretakers.caretakersapp.tempdata.model.User;
 import seniorproject.caretakers.caretakersapp.ui.actvities.LoginActivity;
 
+/**
+ * Handler for Pinging. Offers a singleton class to initiate and process pings.
+ */
 public class PingHandler {
 
+    //Broadcast ID of the PendingIntents for notification actions
     private static final String BROADCAST = "seniorproject.caretakers.caretakersapp.pushresponse";
 
+    //Vibration pattern of the notification
     private static final long[] VIBRATE = new long[] {0,1000};
 
+    //Notification id of the sent ping
     private static final int SENT_PING_NOTIFICATION_ID = 10;
+    //Notification id fo the received ping
     private static final int RECEIVED_PING_NOTIFICATION_ID = 20;
 
+    //Request IDs for different actions
     private static final int ACCEPT_REQUEST = 1000;
     private static final int DEFER_REQUEST = 2000;
     private static final int DENY_REQUEST = 3000;
@@ -46,6 +54,11 @@ public class PingHandler {
         mContext = context;
     }
 
+    /**
+     * Singleton getInstance method. Either returns an existing instance of the PingHandler class
+     * or constructs, sets and returns a new instance.
+     * @return An instance of a PingHandler
+     */
     public static PingHandler getInstance(Context context) {
         if(mInstance == null) {
             mInstance = new PingHandler(context);
@@ -54,6 +67,9 @@ public class PingHandler {
         return mInstance;
     }
 
+    /**
+     * Callback object for parsing the response from a request to initiate a ping.
+     */
     private class InitiatePingResponseHandler extends BaseJsonResponseHandler {
 
         @Override
@@ -72,6 +88,9 @@ public class PingHandler {
         }
     }
 
+    /**
+     * Callback object for parsing the response for responding to a request to initiate a ping
+     */
     private class ResponsePingResponseHandler extends BaseJsonResponseHandler {
 
         @Override
@@ -133,6 +152,11 @@ public class PingHandler {
         }
     }
 
+    /**
+     * Public method to initiate a request to initiate a ping
+     * @param context Context in which to execute the call
+     * @param ping Ping object with data to send
+     */
     public void initiatePing(Context context, Ping ping) {
         String communityId = AccountHandler.getInstance(context).getCurrentCommunity().getId();
         SimpleDateFormat format = new SimpleDateFormat(Event.ISO8601DATEFORMAT);
@@ -145,6 +169,12 @@ public class PingHandler {
         }
     }
 
+    /**
+     * Public method to initiate a request to respond to a ping
+     * @param context Context in which to execute the call
+     * @param pingId ID of the ping to respond to
+     * @param response Response type of the request
+     */
     public void pingRespondedTo(Context context, String pingId, int response) {
         String communityId = AccountHandler.getInstance(context).getCurrentCommunity().getId();
         try {
@@ -154,6 +184,12 @@ public class PingHandler {
         }
     }
 
+    /**
+     * Public method that handles parsing and displaying a JSON ping object from the server. This
+     * method will call other methods to parse particular types of pings.
+     * @param context Context in which to parse the ping
+     * @param message JSON data of the ping object
+     */
     public void pingReceived(Context context, JSONObject message) {
         Log.i("PUSH", message.toString());
         try {
@@ -173,6 +209,11 @@ public class PingHandler {
         }
     }
 
+    /**
+     * Private method to parse and display a notification for an initial request for a ping
+     * @param context Context in which to display the notification
+     * @param message JSON data of the ping object
+     */
     private void initialPing(Context context, JSONObject message) {
         try {
             JSONObject pingObj = message.getJSONObject("ping");
@@ -229,12 +270,23 @@ public class PingHandler {
         }
     }
 
+    /**
+     * Private method to parse and display a notification that a ping was fufilled
+     * @param context Context in which to display the notification
+     * @param message JSON data of the ping object
+     */
     private void fulfilledPing(Context context, JSONObject message) {
         NotificationManager manager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(RECEIVED_PING_NOTIFICATION_ID);
     }
 
+    /**
+     * Private method to parse and display a notification that a ping was deferred and has
+     * returned to this user.
+     * @param context Context to display the notification in
+     * @param message JSON data of the ping object
+     */
     private void deferredPing(Context context, JSONObject message) {
         try {
             JSONObject pingObj = message.getJSONObject("ping");
@@ -286,6 +338,11 @@ public class PingHandler {
         }
     }
 
+    /**
+     * Private method to parse and display a notification that a ping was responded too
+     * @param context Context in which to display the notification
+     * @param message JSON data of the ping object
+     */
     private void responsePing(Context context, JSONObject message) {
         try {
             NotificationManager manager = (NotificationManager) context
@@ -315,6 +372,12 @@ public class PingHandler {
         }
     }
 
+    /**
+     * Private method to parse and display a notification that a ping has been defaulted to the
+     * primary caretaker, which should be this user
+     * @param context Context in which to display the notification
+     * @param message JSON data containing the ping
+     */
     private void primaryPing(Context context, JSONObject message) {
         try {
             NotificationManager manager = (NotificationManager) context
@@ -350,23 +413,5 @@ public class PingHandler {
         } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }
-    }
-
-    private void sendNotification(String msg) {
-        NotificationManager manager = (NotificationManager) mContext
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-
-        PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0,
-                new Intent(mContext, LoginActivity.class), 0);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext)
-                .setSmallIcon(R.drawable.ic_ping)
-                .setContentTitle("Caretakers' Ping")
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(msg))
-                .setContentText(msg);
-
-        builder.setContentIntent(contentIntent);
-        manager.notify(123, builder.build());
     }
 }

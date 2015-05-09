@@ -17,6 +17,10 @@ import seniorproject.caretakers.caretakersapp.tempdata.apis.EventRestClient;
 import seniorproject.caretakers.caretakersapp.tempdata.apis.NoNetworkException;
 import seniorproject.caretakers.caretakersapp.tempdata.model.Event;
 
+/**
+ * Handler class for events. Offers a singleton class for executing requests for and receiving Event
+ * objects.
+ */
 public class EventHandler {
 
     private static EventHandler mInstance;
@@ -25,6 +29,11 @@ public class EventHandler {
 
     }
 
+    /**
+     * Singleton getInstance method. Either returns an existing instance of the EventHandler class
+     * or constructs, sets and returns a new instance.
+     * @return An instance of an EventHandler
+     */
     public static EventHandler getInstance() {
         if(mInstance == null) {
             mInstance = new EventHandler();
@@ -32,6 +41,11 @@ public class EventHandler {
         return mInstance;
     }
 
+    /**
+     * Callback class for parsing the response from a request to get all the events from a
+     * particular month. Includes an instance of an EventListener observer as well as the year and
+     * integer month of the request.
+     */
     private class GetEventsResponseHandler extends BaseJsonResponseHandler {
         EventListener mListener;
         int mYear;
@@ -60,6 +74,10 @@ public class EventHandler {
         }
     }
 
+    /**
+     * Callback class for parsing the response from a request to add an Event. Includes an instance
+     * of an EventListener observer to notify.
+     */
     private class AddEventsResponseHandler extends BaseJsonResponseHandler {
         EventListener mListener;
 
@@ -75,6 +93,10 @@ public class EventHandler {
         }
     }
 
+    /**
+     * Callback class for parsing the response from a request that updates an Event. Includes an
+     * instance of an EventListener observer to notify.
+     */
     private class UpdateEventsResponseHandler extends BaseJsonResponseHandler {
         EventListener mListener;
 
@@ -90,6 +112,10 @@ public class EventHandler {
         }
     }
 
+    /**
+     * Callback class for parsing the response from a request to volunteer for an Event.
+     * Includes an EventListener observer to notify.
+     */
     private class VolunteerEventResponseHandler extends BaseJsonResponseHandler {
         EventListener mListener;
 
@@ -105,6 +131,10 @@ public class EventHandler {
         }
     }
 
+    /**
+     * Callback class for parsing the response from a request to delete an event.
+     * Includes an EventListener observer to notify.
+     */
     private class DeleteEventResponseHandler extends BaseJsonResponseHandler {
         EventListener mListener;
 
@@ -120,6 +150,13 @@ public class EventHandler {
         }
     }
 
+    /**
+     * Public method to initiate a request to fetch the events for a particular year and month
+     * @param context Context to execute the call in
+     * @param year Year of the month
+     * @param month Integer value of the month
+     * @param listener EventListener to notify of the result
+     */
     public void getEvents(Context context, int year, int month,
                           EventListener listener) {
         String communityId = AccountHandler.getInstance(context).getCurrentCommunity().getId();
@@ -135,6 +172,18 @@ public class EventHandler {
         }
     }
 
+    /**
+     * Public method to initiate a request to create an event.
+     * @param context Context to execute the call in
+     * @param title Title of the event
+     * @param description Description of the event
+     * @param location Location of the event
+     * @param category Category of the event
+     * @param priority Integer priority of the event
+     * @param startTime Start time of the event as a Calendar object
+     * @param endTime End time of the event as a Calendar object
+     * @param listener EventListener to notify of the result
+     */
     public void addEvent(Context context, String title, String description, String location,
                          String category, int priority, Calendar startTime, Calendar endTime,
                          EventListener listener) {
@@ -150,6 +199,20 @@ public class EventHandler {
         }
     }
 
+    /**
+     * Public method to initiate a request to create a set of repeating events.
+     * @param context Context to execute the call in
+     * @param title Title of the event
+     * @param description Description of the event
+     * @param location Location of the event
+     * @param category Category of the event
+     * @param priority Integer priority of the event
+     * @param startTime Start time of the event as a Calendar object
+     * @param endTime End time of the event as a Calendar object
+     * @param daysOfWeek List of integer valued days of the week
+     * @param numberOfRepeats Number of weeks to repeat the event
+     * @param listener EventListener to notify of the result
+     */
     public void addRepeatingEvent(Context context, String title, String description, String location,
                                   String category, int priority, Calendar startTime, Calendar endTime,
                                   List<Integer> daysOfWeek, int numberOfRepeats,
@@ -166,6 +229,19 @@ public class EventHandler {
         }
     }
 
+    /**
+     * Public method to initiate a request to update an event
+     * @param context Context to initiate the call in
+     * @param eventId Id of the event to update
+     * @param title Title of the event
+     * @param description Description of the event
+     * @param location Location of the event
+     * @param category Category of the event
+     * @param priority Integer valued priority of the event
+     * @param startTime Start time of the event as a Calendar object
+     * @param endTime End time of the event as a Calendar object
+     * @param listener EventListener to notify
+     */
     public void updateEvent(Context context, String eventId, String title, String description,
                             String location, String category, int priority, Calendar startTime,
                             Calendar endTime, EventListener listener) {
@@ -181,6 +257,13 @@ public class EventHandler {
         }
     }
 
+    /**
+     * Public method to initiate a request to volunteer for an event.
+     * @param context Context to execute the call in
+     * @param eventId Id of the event to volunteer for
+     * @param volunteer Boolean value to represent whether this is a volunteer or unvolunteer request
+     * @param listener EventListener to notify
+     */
     public void volunteerEvent(Context context, String eventId, boolean volunteer,
                                EventListener listener) {
         String communityId = AccountHandler.getInstance(context).getCurrentCommunity().getId();
@@ -192,6 +275,14 @@ public class EventHandler {
         }
     }
 
+    /**
+     * Public method to initiate a request to delete an event
+     * @param context Context to execute the call in
+     * @param eventId Id of the event to delete
+     * @param deleteRepeating Boolean value to indicate if the user wishes to delete all the events
+     *                        in a repeating series
+     * @param listener EventListener to notify
+     */
     public void deleteEvent(Context context, String eventId, boolean deleteRepeating,
                             EventListener listener) {
         String communityId = AccountHandler.getInstance(context).getCurrentCommunity().getId();
@@ -203,6 +294,7 @@ public class EventHandler {
         }
     }
 
+    //Observer class for the EventHandler
     public static abstract class EventListener {
         public void onEventsFetched(List<Event> events, int year, int month) { }
         public void onEventAdded() { }

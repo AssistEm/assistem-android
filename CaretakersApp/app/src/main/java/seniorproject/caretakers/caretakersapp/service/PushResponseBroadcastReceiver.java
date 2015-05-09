@@ -7,9 +7,6 @@ import android.util.Log;
 
 import seniorproject.caretakers.caretakersapp.data.handlers.PingHandler;
 
-/**
- * Created by Jason on 4/14/15.
- */
 public class PushResponseBroadcastReceiver extends WakefulBroadcastReceiver {
 
     @Override
