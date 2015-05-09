@@ -3,6 +3,9 @@ package seniorproject.caretakers.caretakersapp.tempdata.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Community class that represents the Community model
+ */
 public class Community {
 
     private String mId;
@@ -16,6 +19,12 @@ public class Community {
         mPatientId = patientId;
     }
 
+    /**
+     * Static method that parses a JSON representation of a community object
+     * @param communityObject The JSON representation of the community object
+     * @return A Community instance from the parsed input
+     * @throws JSONException Thrown if the input is not of the expected format
+     */
     public static Community parseCommunity(JSONObject communityObject) throws JSONException {
         String id = communityObject.getString("_id");
         String name = communityObject.getString("name");

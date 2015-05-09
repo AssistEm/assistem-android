@@ -10,6 +10,10 @@ import com.loopj.android.http.ResponseHandlerInterface;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 
+/**
+ * Extension of the Android Asynchronous Http Client class which implements support for the
+ * BaseJsonResponseHandler.
+ */
 public class BaseAsyncHttpClient extends AsyncHttpClient {
 
     @Override

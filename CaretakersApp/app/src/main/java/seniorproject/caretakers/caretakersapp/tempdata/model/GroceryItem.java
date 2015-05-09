@@ -13,8 +13,12 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.logging.Filter;
 
+/**
+ * Class that represents the Grocery Item model
+ */
 public class GroceryItem implements Serializable {
 
+    //Date format string for the ISO8601 standard for time strings
     public final static String ISO8601DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     private String mId;
@@ -38,6 +42,12 @@ public class GroceryItem implements Serializable {
         mDeliveryDate = delivery;
     }
 
+    /**
+     * Static method to parse a JSON object into an GroceryItem object
+     * @param object JSON representation of the GroceryItem object
+     * @return GroceryItem representation of the parsed input
+     * @throws JSONException Thrown when the input is not of the expected format
+     */
     public static GroceryItem parseGroceryItem(JSONObject object) throws JSONException {
         String id = object.getString("_id");
         String title = object.getString("title");
@@ -59,6 +69,11 @@ public class GroceryItem implements Serializable {
                 deliveryTime);
     }
 
+    /**
+     * Static method to parse a time string into a Calendar instance
+     * @param time Time string to parse
+     * @return Calendar instance from the time string
+     */
     private static Calendar parseTime(String time) {
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault()) ;
         SimpleDateFormat dateFormat = new SimpleDateFormat(ISO8601DATEFORMAT, Locale.getDefault());
@@ -104,11 +119,16 @@ public class GroceryItem implements Serializable {
         return mDeliveryDate;
     }
 
+    /**
+     * Override of the toString method, in this case it returns just the title of the item.
+     * @return
+     */
     @Override
     public String toString() {
         return getTitle();
     }
 
+    //Comparator that sorts GroceryItems by ascending name
     public final static Comparator<GroceryItem> ASC_NAME_COMPARE = new Comparator<GroceryItem>() {
         @Override
         public int compare(GroceryItem groceryItem, GroceryItem groceryItem2) {
@@ -116,6 +136,7 @@ public class GroceryItem implements Serializable {
         }
     };
 
+    //Comparator that sorts GroceryItems by descending name
     public final static Comparator<GroceryItem> DESC_NAME_COMPARE = new Comparator<GroceryItem>() {
         @Override
         public int compare(GroceryItem groceryItem, GroceryItem groceryItem2) {
@@ -123,6 +144,7 @@ public class GroceryItem implements Serializable {
         }
     };
 
+    //Comparator that sorts GroceryItems by descending urgency
     public final static Comparator<GroceryItem> DESC_URGENCY_COMPARE = new Comparator<GroceryItem>() {
         @Override
         public int compare(GroceryItem groceryItem, GroceryItem groceryItem2) {
@@ -130,6 +152,7 @@ public class GroceryItem implements Serializable {
         }
     };
 
+    //Comparator that sorts GroceryItems by ascending urgency
     public final static Comparator<GroceryItem> ASC_URGENCY_COMPARE = new Comparator<GroceryItem>() {
         @Override
         public int compare(GroceryItem groceryItem, GroceryItem groceryItem2) {
@@ -137,10 +160,12 @@ public class GroceryItem implements Serializable {
         }
     };
 
+    //Interface that is used to implement a filter on GroceryItems. Used to sort items into categories
     public static interface FilterGroceryItem {
         public boolean isInFilter(GroceryItem item, User currentUser);
     }
 
+    //Instance of a FilterGroceryItem that includes all items
     public final static FilterGroceryItem mAllItems = new FilterGroceryItem() {
         @Override
         public boolean isInFilter(GroceryItem item, User currentUser) {
@@ -148,6 +173,7 @@ public class GroceryItem implements Serializable {
         }
     };
 
+    //Instance of a FilterGroceryItem that only shows items that have already been taken
     public final static FilterGroceryItem mTakenItems = new FilterGroceryItem() {
         @Override
         public boolean isInFilter(GroceryItem item, User currentUser) {
@@ -155,6 +181,7 @@ public class GroceryItem implements Serializable {
         }
     };
 
+    //Instance of a FilterGroceryItem that only shows items that the user has volunteered for
     public final static FilterGroceryItem mYourItems = new FilterGroceryItem() {
         @Override
         public boolean isInFilter(GroceryItem item, User currentUser) {
@@ -163,6 +190,7 @@ public class GroceryItem implements Serializable {
         }
     };
 
+    //Instance of a FilterGroceryItem that only shows items that have not been taken
     public final static FilterGroceryItem mNotTakenItems = new FilterGroceryItem() {
         @Override
         public boolean isInFilter(GroceryItem item, User currentUser) {
@@ -170,5 +198,6 @@ public class GroceryItem implements Serializable {
         }
     };
 
+    //Static array of the filter instances
     public final static FilterGroceryItem[] mFilters = {mAllItems, mNotTakenItems, mTakenItems, mYourItems};
 }

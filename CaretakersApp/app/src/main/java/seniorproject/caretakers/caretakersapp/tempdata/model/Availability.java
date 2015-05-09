@@ -11,6 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Model which represents an Availability time period for a user.
+ */
 public class Availability {
 
     public int startDay;
@@ -20,6 +23,12 @@ public class Availability {
     public int endHour;
     public int endMinute;
 
+    /**
+     * Static method that parses an Availability object from JSON data
+     * @param object JSONObject that should be parsed
+     * @return The Availability object that was parsed out
+     * @throws JSONException Thrown if the JSONObject does not match the expected format
+     */
     public static Availability parseAvailability(JSONObject object) throws JSONException {
         Availability avail = new Availability();
         JSONObject startObject = object.getJSONObject("start");
@@ -35,6 +44,11 @@ public class Availability {
         return avail;
     }
 
+    /**
+     * Parse a time string into a Calendar instance
+     * @param time Time string to parse
+     * @return A Calendar instance
+     */
     private static Calendar parseTime(String time) {
         SimpleDateFormat format = new SimpleDateFormat(Event.ISO8601DATEFORMAT);
         Calendar cal = Calendar.getInstance();
@@ -63,6 +77,10 @@ public class Availability {
         return getTime(context, endHour, endMinute);
     }
 
+    /**
+     * Method to get a String representation of this object's day.
+     * @return String representation of this object's day
+     */
     public String getDisplayDay() {
         if(startDay == endDay) {
             return getStartDay();
@@ -71,10 +89,19 @@ public class Availability {
         }
     }
 
+    /**
+     * Method to get a String representation of this object's time.
+     * @return String representation of this object's time
+     */
     public String getDisplayTime(Context context) {
         return getStartTime(context) + " to " + getEndTime(context);
     }
 
+    /**
+     * Method to turn an Availability object into a JSONObject
+     * @return A JSONObject representing the Availability object
+     * @throws JSONException Should not be thrown
+     */
     public JSONObject toJson() throws JSONException {
         JSONObject object = new JSONObject();
         JSONObject start = new JSONObject();
@@ -95,6 +122,13 @@ public class Availability {
         return object;
     }
 
+    /**
+     * Static method to get a formatted time string from an hour and minute
+     * @param context Context in which to generate the time string
+     * @param hour Hour of time
+     * @param minute Minute of time
+     * @return Time string representing the time
+     */
     private static String getTime(Context context, int hour, int minute) {
         Date date = new Date();
         date.setMinutes(minute);
@@ -102,15 +136,11 @@ public class Availability {
         return DateUtils.formatDateTime(context, date.getTime(), DateUtils.FORMAT_SHOW_TIME);
     }
 
-    private static String addTimeDigitPadding(int time) {
-        String result = "";
-        if(time < 10) {
-            result += "0";
-        }
-        result += time;
-        return result;
-    }
-
+    /**
+     * Static method to get the String day of the week representation from the integer value
+     * @param day Integer representation of the day of the week
+     * @return The String value of the integer representation
+     */
     private static String getDayFromInt(int day) {
         switch(day) {
             case 1:

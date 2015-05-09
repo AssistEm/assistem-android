@@ -7,6 +7,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+/**
+ * Class which represents a Ping object
+ */
 public class Ping {
 
     public String id;
@@ -15,6 +18,12 @@ public class Ping {
     public Calendar time;
     public String patientName;
 
+    /**
+     * Static method to parse a JSON object into a Ping object
+     * @param obj JSON representation of the Ping object
+     * @return Ping representation of the parsed input
+     * @throws JSONException Thrown when the input is not of the expected format
+     */
     public static Ping parsePing(JSONObject obj) throws JSONException, ParseException {
         Ping ping = new Ping();
         ping.id = obj.getString("ping_id");

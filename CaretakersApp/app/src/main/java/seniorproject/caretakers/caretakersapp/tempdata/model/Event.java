@@ -20,8 +20,12 @@ import java.util.TimeZone;
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 
+/**
+ * Class that represents the Event model
+ */
 public class Event extends WeekViewEvent implements Serializable {
 
+    //Date format string for the ISO8601 standard for time strings
     public final static String ISO8601DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     private String mId;
@@ -51,6 +55,12 @@ public class Event extends WeekViewEvent implements Serializable {
         mRepeating = repeating;
     }
 
+    /**
+     * Static method to parse a JSON object into an Event object
+     * @param eventObject JSON representation of the Event object
+     * @return Event representation of the parsed input
+     * @throws JSONException Thrown when the input is not of the expected format
+     */
     public static Event parseEvent(JSONObject eventObject) throws JSONException {
         Log.i("EVENT OBJECT", eventObject.toString());
         String id = eventObject.getString("_id");
@@ -74,6 +84,11 @@ public class Event extends WeekViewEvent implements Serializable {
                 user, repeating);
     }
 
+    /**
+     * Static method to parse a time string into a Calendar instance
+     * @param time Time string to parse
+     * @return Calendar instance from the time string
+     */
     private static Calendar parseTime(String time) {
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault()) ;
         SimpleDateFormat dateFormat = new SimpleDateFormat(ISO8601DATEFORMAT, Locale.getDefault());
@@ -87,6 +102,11 @@ public class Event extends WeekViewEvent implements Serializable {
         return calendar;
     }
 
+    /**
+     * Method to get the name of the event, used for the Android Week View library to display
+     * titles for events
+     * @return String for the name of the event
+     */
     @Override
     public String getName() {
         String text = super.getName();
@@ -99,6 +119,11 @@ public class Event extends WeekViewEvent implements Serializable {
         return text;
     }
 
+    /**
+     * Method to get the color of the event, used for the Android Week View library to display
+     * the background color of the event
+     * @return The integer color representation
+     */
     @Override
     public int getColor() {
         if(AccountHandler.getExistingInstance() == null) {
