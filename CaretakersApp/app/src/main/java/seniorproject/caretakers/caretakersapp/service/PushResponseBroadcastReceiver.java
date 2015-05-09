@@ -7,8 +7,17 @@ import android.util.Log;
 
 import seniorproject.caretakers.caretakersapp.data.handlers.PingHandler;
 
+/**
+ * BroadcastReceiver for broadcasts generated when a user interacts with a notification in some
+ * form. By using a BroadcastReceiver, the app does not need to be open for interactions for Pinging.
+ */
 public class PushResponseBroadcastReceiver extends WakefulBroadcastReceiver {
 
+    /**
+     * Method called when a broadcast is received. Passes the action onto the PingHandler for parsing.
+     * @param context Context in which the broadcast is received
+     * @param intent Intent with which the broadcast is made
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
         String pingId = intent.getStringExtra("pingId");

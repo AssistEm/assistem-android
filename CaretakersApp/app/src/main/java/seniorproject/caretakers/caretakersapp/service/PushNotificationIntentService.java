@@ -18,10 +18,10 @@ import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.data.handlers.PingHandler;
 import seniorproject.caretakers.caretakersapp.ui.actvities.LoginActivity;
 
+/**
+ * IntentService that parses Pings as they arrive from GCM
+ */
 public class PushNotificationIntentService extends IntentService {
-    public static final int NOTIFICATION_ID = 1;
-
-    NotificationManager mNotificationManager;
 
     public PushNotificationIntentService() {
         super("PushNotificationService");
@@ -31,6 +31,11 @@ public class PushNotificationIntentService extends IntentService {
         super(name);
     }
 
+    /**
+     * Method called when the service is launched. Parses the type of message, and if it is
+     * not an error, it sends the data to the PingHandler for parsing.
+     * @param intent Intent with which the server is launched
+     */
     @Override
     protected void onHandleIntent(Intent intent) {
         Bundle extras = intent.getExtras();
