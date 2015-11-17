@@ -44,9 +44,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(toolbar != null) {
-            setSupportActionBar(toolbar);
-        }
+//        if(toolbar != null) {
+//            setSupportActionBar(toolbar);
+//        }
         mAccountHandler = AccountHandler.getInstance(this);
         mAccountHandler.addAccountListener(mAccountListener);
     }
