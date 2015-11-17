@@ -21,6 +21,7 @@ import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
+import android.support.v4.content.ContextCompat;
 
 import seniorproject.caretakers.caretakersapp.R;
 
@@ -61,8 +62,8 @@ public class FloatingActionButton  extends ImageButton {
     }
 
     void init(Context context, AttributeSet attributeSet) {
-        mColorNormal = getColor(android.R.color.holo_blue_dark);
-        mColorPressed = getColor(android.R.color.holo_blue_light);
+        mColorNormal = getColor(context, android.R.color.holo_blue_dark);
+        mColorPressed = getColor(context, android.R.color.holo_blue_light);
         mIcon = 0;
         mSize = SIZE_NORMAL;
         if (attributeSet != null) {
@@ -77,8 +78,8 @@ public class FloatingActionButton  extends ImageButton {
         updateBackground();
     }
 
-    int getColor(@ColorRes int id) {
-        return getResources().getColor(id);
+    int getColor(Context context, @ColorRes int id) {
+        return ContextCompat.getColor(context, id);
     }
 
     float getDimension(@DimenRes int id) {
@@ -89,8 +90,8 @@ public class FloatingActionButton  extends ImageButton {
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.FloatingActionButton, 0, 0);
         if (attr != null) {
             try {
-                mColorNormal = attr.getColor(R.styleable.FloatingActionButton_fab_colorNormal, getColor(android.R.color.holo_blue_dark));
-                mColorPressed = attr.getColor(R.styleable.FloatingActionButton_fab_colorPressed, getColor(android.R.color.holo_blue_light));
+                mColorNormal = attr.getColor(R.styleable.FloatingActionButton_fab_colorNormal, getColor(context, android.R.color.holo_blue_dark));
+                mColorPressed = attr.getColor(R.styleable.FloatingActionButton_fab_colorPressed, getColor(context, android.R.color.holo_blue_light));
                 mSize = attr.getInt(R.styleable.FloatingActionButton_fab_size, SIZE_NORMAL);
                 mIcon = attr.getResourceId(R.styleable.FloatingActionButton_fab_icon, 0);
             } finally {
