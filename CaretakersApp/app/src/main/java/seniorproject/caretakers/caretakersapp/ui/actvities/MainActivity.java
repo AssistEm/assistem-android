@@ -121,6 +121,7 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
      * @return If Play Services is available
      */
     private boolean checkPlayServices() {
+        Log.i("GCM", "CHECKING PLAY SERVICESSSSSSSS!!!!");
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
