@@ -533,7 +533,7 @@ public class AccountHandler {
     }
 
     /**
-     * Public method to being the GCM registration process
+     * Public method to begin the GCM registration process
      */
     public void registerGCM() {
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(mApplicationContext);

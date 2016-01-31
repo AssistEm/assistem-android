@@ -2,6 +2,7 @@ package seniorproject.caretakers.caretakersapp.tempdata.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.util.Log;
 
 /**
  * Community class that represents the Community model
@@ -29,6 +30,7 @@ public class Community {
         String id = communityObject.getString("_id");
         String name = communityObject.getString("name");
         String patientId = communityObject.getString("patient");
+        Log.d("COMMUNITY", communityObject.getString("caretakers"));
         return new Community(id, name, patientId);
     }
 

@@ -21,4 +21,6 @@ public class Community extends ApiItem {
     @SerializedName("privacy")
     boolean privacy;
 
+    @SerializedName("primary")
+    String caretakerId;
 }
