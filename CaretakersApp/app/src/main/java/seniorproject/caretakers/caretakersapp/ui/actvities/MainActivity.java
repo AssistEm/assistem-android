@@ -17,6 +17,7 @@ import seniorproject.caretakers.caretakersapp.ui.dialogs.PingDialog;
 import seniorproject.caretakers.caretakersapp.ui.fragments.CalendarFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.DrawerFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.GroceryTabsFragment;
+import seniorproject.caretakers.caretakersapp.ui.fragments.LocationFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.SettingsFragment;
 
 /**
@@ -74,6 +75,9 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
                 fragment = new GroceryTabsFragment();
                 break;
             case 2:
+                fragment = new LocationFragment();
+                break;
+            case 3:
                 if(AccountHandler.getInstance(this).getCurrentUser() instanceof Patient) {
                     PingDialog dialog = new PingDialog();
                     dialog.show(getSupportFragmentManager(), "ping_dialog");
@@ -82,7 +86,7 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
                     fragment = new SettingsFragment();
                 }
                 break;
-            case 3:
+            case 4:
                 fragment = new SettingsFragment();
                 break;
             default:

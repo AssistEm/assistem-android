@@ -15,7 +15,7 @@ import seniorproject.caretakers.caretakersapp.ui.views.DrawerRowTextView;
 public class DrawerAdapter extends BaseAdapter {
 
     private static final int[] DRAWER_SECTIONS = {
-            R.string.drawer_calendar, R.string.drawer_grocery_list, R.string.drawer_ping, R.string.drawer_settings
+            R.string.drawer_calendar, R.string.drawer_grocery_list, R.string.drawer_location, R.string.drawer_ping, R.string.drawer_settings
     };
 
     private Context mContext;
