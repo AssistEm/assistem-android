@@ -2,6 +2,10 @@
 *.apk
 *.ap_
 
+#develop environment/application
+*.iml
+*.idea
+
 # files for the dex VM
 *.dex
 
