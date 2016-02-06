@@ -57,7 +57,7 @@ public class AccountHandler {
     private static final String PROPERTY_APP_VERSION = "appVersion";
 
     //Sender ID for the Assist'em app
-    private static final String GCM_SENDER_ID = "5951439371s84";
+    private static final String GCM_SENDER_ID = "595143937184";
 
     static AccountHandler mInstance;
 
@@ -536,10 +536,8 @@ public class AccountHandler {
      * Public method to being the GCM registration process
      */
     public void registerGCM() {
-        Log.i("GCM", "registering gcm!!!");
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(mApplicationContext);
         String regId = getRegistrationId(mApplicationContext);
-        Log.i("GCM", "gcm id is" + regId);
         if(regId.isEmpty()) {
             registerInBackground();
         }
@@ -554,7 +552,6 @@ public class AccountHandler {
      * @param gcmId GCM id to send to server
      */
     private void sendGcmId(Context context, String gcmId) {
-        Log.i("GCM", "GCM ID IS" + gcmId);
         try {
             UserRestClient.setGcmId(context, gcmId, new GcmRegisterResponseHandler(gcmId));
         } catch (NoNetworkException e) {
