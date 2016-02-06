@@ -14,6 +14,8 @@
     <string name="last_name">Last Name</string>
     <string name="phone">Phone Number</string>
     <string name="caretaker">Caretaker</string>
+    <string name="caretakers">Caretakers</string>
+    <string name="primary_caretaker">Primary Caretaker</string>
     <string name="patient">Patient</string>
     <string name="create_a_community">Create a Community</string>
     <string name="find_a_community">Find a Community</string>

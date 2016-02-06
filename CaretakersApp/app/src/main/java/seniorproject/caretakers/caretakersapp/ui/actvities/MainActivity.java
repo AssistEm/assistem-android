@@ -59,7 +59,8 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
 
     /**
      * Callback for when an item is selected from the navigation drawer. Swaps the currently shown
-     * fragment out when necessary
+     * fragment out when necessary. This is hardcoded on the position that is selected and should
+     * be updated when more tabs are created.
      * @param position Position selected
      * @return If the event was handled and consumed and if the UI should update accordingly
      */
@@ -75,6 +76,9 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
                 fragment = new GroceryTabsFragment();
                 break;
             case 2:
+                fragment = new CommunityFragment();
+                break;
+            case 3:
                 if(AccountHandler.getInstance(this).getCurrentUser() instanceof Patient) {
                     PingDialog dialog = new PingDialog();
                     dialog.show(getSupportFragmentManager(), "ping_dialog");
@@ -83,11 +87,8 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
                     fragment = new SettingsFragment();
                 }
                 break;
-            case 3:
-                fragment = new SettingsFragment();
-                break;
             case 4:
-                fragment = new CommunityFragment();
+                fragment = new SettingsFragment();
                 break;
             default:
                 fragment = new CalendarFragment();

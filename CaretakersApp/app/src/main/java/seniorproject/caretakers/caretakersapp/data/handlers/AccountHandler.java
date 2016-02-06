@@ -21,6 +21,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -51,6 +53,7 @@ public class AccountHandler {
     private final static String COMMUNITY_ID_PREFS = "community_id";
     private final static String COMMUNITY_NAME_PREFS = "community_name";
     private final static String COMMUNITY_PATIENT_ID_PREFS = "community_patient";
+    private final static String COMMUNITY_CARETAKERS_PREFS = "community_caretakers";
 
     // Keys for data relating to GCM registration with the server for Pinging.
     public static final String PROPERTY_REG_ID = "registration_id";
@@ -120,9 +123,11 @@ public class AccountHandler {
                     .putString(PHONE_KEY_PREFS, mCurrentUser.getPhone())
                     .putString(TYPE_KEY_PREFS, mCurrentUser.getType());
             if(mCurrentCommunity != null) {
+                Set<String> caretakerSet = new HashSet<>(mCurrentCommunity.getCaretakers());
                 edit.putString(COMMUNITY_ID_PREFS, mCurrentCommunity.getId())
                         .putString(COMMUNITY_NAME_PREFS, mCurrentCommunity.getName())
-                        .putString(COMMUNITY_PATIENT_ID_PREFS, mCurrentCommunity.getPatientId());
+                        .putString(COMMUNITY_PATIENT_ID_PREFS, mCurrentCommunity.getPatientId())
+                        .putStringSet(COMMUNITY_CARETAKERS_PREFS, caretakerSet);
             }
             edit.commit();
         }
@@ -152,7 +157,11 @@ public class AccountHandler {
                 String communityId = mUserStore.getString(COMMUNITY_ID_PREFS, "");
                 String communityName = mUserStore.getString(COMMUNITY_NAME_PREFS, "");
                 String communityPatient = mUserStore.getString(COMMUNITY_PATIENT_ID_PREFS, "");
-                mCurrentCommunity = new Community(communityId, communityName, communityPatient);
+                Set<String> communityCaretakers = mUserStore.getStringSet(COMMUNITY_CARETAKERS_PREFS, new HashSet());
+                ArrayList<String> caretakers = new ArrayList<>(communityCaretakers);
+                caretakers.add("test");
+                Log.i("CARETAKERS", "HERE!");
+                mCurrentCommunity = new Community(communityId, communityName, communityPatient, caretakers);
             }
         }
     }
