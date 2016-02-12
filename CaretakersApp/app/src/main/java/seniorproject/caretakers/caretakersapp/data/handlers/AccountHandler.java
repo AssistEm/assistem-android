@@ -123,7 +123,7 @@ public class AccountHandler {
                     .putString(PHONE_KEY_PREFS, mCurrentUser.getPhone())
                     .putString(TYPE_KEY_PREFS, mCurrentUser.getType());
             if(mCurrentCommunity != null) {
-                Set<String> caretakerSet = new HashSet<>(mCurrentCommunity.getCaretakersJSONString());
+                Set<String> caretakerSet = new HashSet<>(mCurrentCommunity.getCaretakers());
                 edit.putString(COMMUNITY_ID_PREFS, mCurrentCommunity.getId())
                         .putString(COMMUNITY_NAME_PREFS, mCurrentCommunity.getName())
                         .putString(COMMUNITY_PATIENT_ID_PREFS, mCurrentCommunity.getPatientId())
@@ -159,7 +159,6 @@ public class AccountHandler {
                 String communityPatient = mUserStore.getString(COMMUNITY_PATIENT_ID_PREFS, "");
                 Set<String> communityCaretakers = mUserStore.getStringSet(COMMUNITY_CARETAKERS_PREFS, new HashSet());
                 ArrayList<String> caretakers = new ArrayList<>(communityCaretakers);
-                caretakers.add("test");
                 Log.i("CARETAKERS", "HERE!");
                 mCurrentCommunity = new Community(communityId, communityName, communityPatient, caretakers);
             }

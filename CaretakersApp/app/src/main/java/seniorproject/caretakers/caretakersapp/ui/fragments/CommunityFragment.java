@@ -40,7 +40,7 @@ public class CommunityFragment extends Fragment {
         Community currentCommunity = AccountHandler.getInstance(getActivity()).getCurrentCommunity();
         mCommunityName.setText(currentCommunity.getName());
         mPatient.setText(currentCommunity.getPatientId());
-        caretakers = currentCommunity.getCaretakersJSONString();
+        caretakers = currentCommunity.getCaretakers();
         Log.i("CARETAKERS", caretakers.get(0));
         //User currentUser = AccountHandler.getInstance(getActivity()).getCurrentUser();
         mPrimary.setText("PRIMARY");

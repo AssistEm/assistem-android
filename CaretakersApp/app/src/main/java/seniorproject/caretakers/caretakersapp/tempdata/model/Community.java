@@ -58,29 +58,7 @@ public class Community {
         return mName;
     }
 
-    public String getPatientId() {
-        return mPatientId;
-    }
+    public String getPatientId() { return mPatientId; }
 
-    public ArrayList<String> getCaretakersJSONString() { return mCaretakers; }
-
-    public ArrayList<User> parseCaretakers() {
-        ArrayList<User> userCaretakers = new ArrayList<>();
-        for (int i=0; i<mCaretakers.size(); i++) {
-            JSONObject JSONUser;
-            try{
-                JSONUser = new JSONObject(mCaretakers.get(i));
-                userCaretakers.add(User.parseUser(JSONUser));
-            }catch(org.json.JSONException e){
-                // how you handle the exception
-                e.printStackTrace();
-            }
-        }
-        return userCaretakers;
-    }
-
-    /*public ArrayList<String> getCaretakersName() {
-        ArrayList<User> userCaretakers = parseCaretakers();
-        userCaretakers
-    }*/
+    public ArrayList<String> getCaretakers() { return mCaretakers; }
 }
