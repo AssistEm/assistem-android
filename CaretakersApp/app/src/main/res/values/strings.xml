@@ -27,6 +27,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="drawer_calendar">Calendar</string>
     <string name="drawer_grocery_list">Grocery List</string>
+    <string name="drawer_location">Location</string>
     <string name="drawer_ping">Ping</string>
     <string name="drawer_settings">Settings</string>
     <string name="drawer_community">Community</string>
