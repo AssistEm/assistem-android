@@ -40,7 +40,8 @@ public class CommunityFragment extends Fragment {
         Community currentCommunity = AccountHandler.getInstance(getActivity()).getCurrentCommunity();
         mCommunityName.setText(currentCommunity.getName());
         mPatient.setText(currentCommunity.getPatientId());
-        caretakers = currentCommunity.getCaretakers();
+        caretakers = currentCommunity.getCaretakersJSONString();
+        Log.i("CARETAKERS", caretakers.get(0));
         //User currentUser = AccountHandler.getInstance(getActivity()).getCurrentUser();
         mPrimary.setText("PRIMARY");
     }
@@ -50,7 +51,7 @@ public class CommunityFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_community, group, false);
         findBaseViews(rootView);
         populateBaseViews();
-        mCaretakerArrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.fragment_community,
+        mCaretakerArrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.item_caretaker_list,
                 R.id.caretaker_name, caretakers);
         mCaretakers.setAdapter(mCaretakerArrayAdapter);
         return rootView;

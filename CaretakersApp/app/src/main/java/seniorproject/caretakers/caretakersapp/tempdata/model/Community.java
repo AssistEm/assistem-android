@@ -2,7 +2,10 @@ package seniorproject.caretakers.caretakersapp.tempdata.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.util.Log;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import org.json.JSONArray;
 
@@ -36,6 +39,7 @@ public class Community {
         String patientId = communityObject.getString("patient");
         ArrayList<String> caretakers = new ArrayList<>();
         JSONArray jsonArray = communityObject.getJSONArray("caretakers");
+        Log.i("CARETAKERs", jsonArray.toString());
         if (jsonArray != null) {
             int len = jsonArray.length();
             for (int i=0;i<len;i++){
@@ -58,5 +62,25 @@ public class Community {
         return mPatientId;
     }
 
-    public ArrayList<String> getCaretakers() { return mCaretakers; }
+    public ArrayList<String> getCaretakersJSONString() { return mCaretakers; }
+
+    public ArrayList<User> parseCaretakers() {
+        ArrayList<User> userCaretakers = new ArrayList<>();
+        for (int i=0; i<mCaretakers.size(); i++) {
+            JSONObject JSONUser;
+            try{
+                JSONUser = new JSONObject(mCaretakers.get(i));
+                userCaretakers.add(User.parseUser(JSONUser));
+            }catch(org.json.JSONException e){
+                // how you handle the exception
+                e.printStackTrace();
+            }
+        }
+        return userCaretakers;
+    }
+
+    /*public ArrayList<String> getCaretakersName() {
+        ArrayList<User> userCaretakers = parseCaretakers();
+        userCaretakers
+    }*/
 }

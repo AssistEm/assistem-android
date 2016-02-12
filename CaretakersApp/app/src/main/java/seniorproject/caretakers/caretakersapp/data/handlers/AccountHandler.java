@@ -123,7 +123,7 @@ public class AccountHandler {
                     .putString(PHONE_KEY_PREFS, mCurrentUser.getPhone())
                     .putString(TYPE_KEY_PREFS, mCurrentUser.getType());
             if(mCurrentCommunity != null) {
-                Set<String> caretakerSet = new HashSet<>(mCurrentCommunity.getCaretakers());
+                Set<String> caretakerSet = new HashSet<>(mCurrentCommunity.getCaretakersJSONString());
                 edit.putString(COMMUNITY_ID_PREFS, mCurrentCommunity.getId())
                         .putString(COMMUNITY_NAME_PREFS, mCurrentCommunity.getName())
                         .putString(COMMUNITY_PATIENT_ID_PREFS, mCurrentCommunity.getPatientId())
@@ -187,6 +187,7 @@ public class AccountHandler {
                 mCurrentUser = User.parseUser(user);
                 JSONArray community = response.getJSONArray("community");
                 if(community.length() > 0) {
+                    Log.i("ACCOUNTH", community.getJSONObject(0).toString());
                     mCurrentCommunity = Community.parseCommunity(community.getJSONObject(0));
                 }
                 setToStore();
