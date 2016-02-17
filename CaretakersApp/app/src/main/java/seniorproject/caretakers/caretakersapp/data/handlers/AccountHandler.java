@@ -60,7 +60,7 @@ public class AccountHandler {
     private static final String PROPERTY_APP_VERSION = "appVersion";
 
     //Sender ID for the Assist'em app
-    private static final String GCM_SENDER_ID = "202386854646";
+    private static final String GCM_SENDER_ID = "595143937184";
 
     static AccountHandler mInstance;
 
@@ -575,6 +575,9 @@ public class AccountHandler {
         String regId = getRegistrationId(mApplicationContext);
         if(regId.isEmpty()) {
             registerInBackground();
+        }
+        else {
+            sendGcmId(mApplicationContext, regId);
         }
     }
 
