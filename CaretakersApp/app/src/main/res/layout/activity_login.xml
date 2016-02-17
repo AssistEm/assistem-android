@@ -15,7 +15,7 @@
         android:gravity="center_horizontal"
         android:paddingBottom="@dimen/login_element_vertical_margin"
         android:textSize="24sp"
-        android:text="Caretaker's App"/>
+        android:text="Assist'Em"/>
 
     <LinearLayout
         android:id="@+id/fragment_holder"
