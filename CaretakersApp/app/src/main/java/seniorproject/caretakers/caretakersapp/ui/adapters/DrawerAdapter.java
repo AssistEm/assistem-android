@@ -14,8 +14,14 @@ import seniorproject.caretakers.caretakersapp.ui.views.DrawerRowTextView;
 
 public class DrawerAdapter extends BaseAdapter {
 
-    private static final int[] DRAWER_SECTIONS = {
-            R.string.drawer_calendar, R.string.drawer_grocery_list, R.string.drawer_location, R.string.drawer_ping, R.string.drawer_settings
+    private static final int[] DRAWER_SECTIONS_PATIENT = {
+            R.string.drawer_calendar, R.string.drawer_grocery_list, R.string.drawer_community, R.string.drawer_location, R.string.drawer_ping, R.string.drawer_settings
+
+    };
+
+    private static final int[] DRAWER_SECTIONS_CARETAKER = {
+            R.string.drawer_calendar, R.string.drawer_grocery_list, R.string.drawer_community, R.string.drawer_location, R.string.drawer_settings
+
     };
 
     private Context mContext;
@@ -27,21 +33,18 @@ public class DrawerAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         if(AccountHandler.getInstance(mContext).getCurrentUser() instanceof Patient) {
-            return DRAWER_SECTIONS.length;
+            return DRAWER_SECTIONS_PATIENT.length;
         } else {
-            return DRAWER_SECTIONS.length - 1;
+            return DRAWER_SECTIONS_CARETAKER.length;
         }
     }
 
     @Override
     public String getItem(int i) {
         if(AccountHandler.getInstance(mContext).getCurrentUser() instanceof Patient) {
-            return mContext.getResources().getString(DRAWER_SECTIONS[i]);
+            return mContext.getResources().getString(DRAWER_SECTIONS_PATIENT[i]);
         } else {
-            if(i == getCount() - 1) {
-                i++;
-            }
-            return mContext.getResources().getString(DRAWER_SECTIONS[i]);
+            return mContext.getResources().getString(DRAWER_SECTIONS_CARETAKER[i]);
         }
     }
 
