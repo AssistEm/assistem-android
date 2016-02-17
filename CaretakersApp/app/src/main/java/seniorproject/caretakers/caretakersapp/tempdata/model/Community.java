@@ -60,5 +60,5 @@ public class Community {
 
     public String getPatientId() { return mPatientId; }
 
-    public ArrayList<String> getCaretakers() { return mCaretakers; }
+    public ArrayList<String> getCaretakers() { Log.i("CARETAKER ID", mCaretakers.get(0)); return mCaretakers; }
 }

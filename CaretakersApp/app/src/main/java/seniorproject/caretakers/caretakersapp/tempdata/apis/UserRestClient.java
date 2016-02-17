@@ -101,6 +101,13 @@ public class UserRestClient extends RestClient {
         mClient.get(context, url, new Header[] {generateAuthHeader(context)}, new RequestParams(), handler);
     }
 
+    public static void getFullProfileUser(Context context, String databaseId, BaseJsonResponseHandler handler)
+            throws NoNetworkException {
+        checkNetwork(context);
+        String url = BASE_URL + USER + "/" + databaseId;
+        mClient.get(context, url, new Header[] {generateAuthHeader(context)}, new RequestParams(), handler);
+    }
+
     public static void setAvailability(Context context, List<Availability> availabilityList,
                                        BaseJsonResponseHandler handler) throws NoNetworkException {
         checkNetwork(context);

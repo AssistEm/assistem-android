@@ -159,7 +159,6 @@ public class AccountHandler {
                 String communityPatient = mUserStore.getString(COMMUNITY_PATIENT_ID_PREFS, "");
                 Set<String> communityCaretakers = mUserStore.getStringSet(COMMUNITY_CARETAKERS_PREFS, new HashSet());
                 ArrayList<String> caretakers = new ArrayList<>(communityCaretakers);
-                Log.i("CARETAKERS", "HERE!");
                 mCurrentCommunity = new Community(communityId, communityName, communityPatient, caretakers);
             }
         }
@@ -186,7 +185,6 @@ public class AccountHandler {
                 mCurrentUser = User.parseUser(user);
                 JSONArray community = response.getJSONArray("community");
                 if(community.length() > 0) {
-                    Log.i("ACCOUNTH", community.getJSONObject(0).toString());
                     mCurrentCommunity = Community.parseCommunity(community.getJSONObject(0));
                 }
                 setToStore();
@@ -252,6 +250,26 @@ public class AccountHandler {
         public void onSuccess(int statusCode, Header[] headers, JSONObject object) {
             if(mListener != null) {
                 mListener.onFullProfileFetched(object);
+            }
+        }
+    }
+
+
+    /**
+     * Callback class for parsing the response from a request for the full profile of the user.
+     * Includes an instance of an AccountListener observer to notify of the result of the request.
+     */
+    private class GetFullProfileUserInfoResponseHandler extends BaseJsonResponseHandler {
+        AccountListener mListener;
+
+        public GetFullProfileUserInfoResponseHandler(AccountListener listener) {
+            mListener = listener;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject object) {
+            if(mListener != null) {
+                mListener.onFullProfileUserFetched(object);
             }
         }
     }
@@ -402,13 +420,21 @@ public class AccountHandler {
     }
 
     /**
-     * Public method to get the full profile of the user.
+     * Public method to get the full profile of the current user.
      * @param context Context to execute call in
      * @param mListener AccountListener observer to notify of result.
      */
     public void getFullProfile(Context context, AccountListener mListener) {
         try {
             UserRestClient.getFullProfile(context, new GetFullProfileInfoResponseHandler(mListener));
+        } catch (NoNetworkException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getFullProfileUser(Context context, String databaseId, AccountListener mListener) {
+        try {
+            UserRestClient.getFullProfileUser(context, databaseId, new GetFullProfileUserInfoResponseHandler(mListener));
         } catch (NoNetworkException e) {
             e.printStackTrace();
         }
@@ -657,6 +683,7 @@ public class AccountHandler {
         public void onLogout() { }
         public void onAuthenticationError() { }
         public void onFullProfileFetched(JSONObject profile) { }
+        public void onFullProfileUserFetched(JSONObject profile) {}
         public void onAvailabilityFetched(List<Availability> availabilities) { }
         public void onAvailabilitySet() {}
         public void onCurrentAvailabilityFetched(boolean available) { }
