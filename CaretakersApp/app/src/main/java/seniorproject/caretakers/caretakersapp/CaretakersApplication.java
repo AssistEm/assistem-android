@@ -20,5 +20,3 @@ public class CaretakersApplication extends Application {
         RestClient.init(this);
     }
 }
-
-
