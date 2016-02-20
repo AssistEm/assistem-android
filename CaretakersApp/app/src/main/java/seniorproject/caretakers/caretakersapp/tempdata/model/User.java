@@ -92,5 +92,4 @@ public abstract class User implements Serializable {
     }
 
     public abstract String getType();
-
 }

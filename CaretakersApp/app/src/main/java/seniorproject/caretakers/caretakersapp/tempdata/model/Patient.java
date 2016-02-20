@@ -3,7 +3,7 @@ package seniorproject.caretakers.caretakersapp.tempdata.model;
 import java.io.Serializable;
 
 /**
- * Subclass of the User class which represents a Caretaker object
+ * Subclass of the User class which represents a Patient object
  */
 public class Patient extends User implements Serializable {
 

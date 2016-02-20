@@ -15,8 +15,10 @@ import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 import seniorproject.caretakers.caretakersapp.tempdata.model.Patient;
 import seniorproject.caretakers.caretakersapp.ui.dialogs.PingDialog;
 import seniorproject.caretakers.caretakersapp.ui.fragments.CalendarFragment;
+import seniorproject.caretakers.caretakersapp.ui.fragments.CommunityFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.DrawerFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.GroceryTabsFragment;
+import seniorproject.caretakers.caretakersapp.ui.fragments.LocationFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.SettingsFragment;
 
 /**
@@ -58,7 +60,8 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
 
     /**
      * Callback for when an item is selected from the navigation drawer. Swaps the currently shown
-     * fragment out when necessary
+     * fragment out when necessary. This is hardcoded on the position that is selected and should
+     * be updated when more tabs are created.
      * @param position Position selected
      * @return If the event was handled and consumed and if the UI should update accordingly
      */
@@ -74,6 +77,12 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
                 fragment = new GroceryTabsFragment();
                 break;
             case 2:
+                fragment = new CommunityFragment();
+                break;
+            case 3:
+                fragment = new LocationFragment();
+                break;
+            case 4:
                 if(AccountHandler.getInstance(this).getCurrentUser() instanceof Patient) {
                     PingDialog dialog = new PingDialog();
                     dialog.show(getSupportFragmentManager(), "ping_dialog");
@@ -82,7 +91,7 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
                     fragment = new SettingsFragment();
                 }
                 break;
-            case 3:
+            case 5:
                 fragment = new SettingsFragment();
                 break;
             default:
