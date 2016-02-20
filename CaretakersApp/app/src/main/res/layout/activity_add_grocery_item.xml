@@ -26,7 +26,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/add_grocery_item_title_hint"
                 android:textSize="36sp"
-                android:padding="15dp"/>
+                android:padding="15dp"
+                android:textColor="#000000"/>
 
             <EditText
                 android:id="@+id/description"
@@ -34,7 +35,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/add_grocery_item_description_hint"
                 android:layout_below="@id/title"
-                android:padding="15dp"/>
+                android:padding="15dp"
+                android:textColor="#000000"/>
 
             <EditText
                 android:id="@+id/time"
@@ -45,7 +47,8 @@
                 android:layout_toRightOf="@+id/time_image"
                 android:gravity="center"
                 android:padding="15dp"
-                android:hint="@string/add_grocery_item_time_hint"/>
+                android:hint="@string/add_grocery_item_time_hint"
+                android:textColor="#000000"/>
 
             <TextView
                 android:id="@+id/time_to"
@@ -57,7 +60,8 @@
                 android:paddingRight="5dp"
                 android:layout_toEndOf="@id/time"
                 android:layout_toRightOf="@id/time"
-                android:layout_alignBaseline="@id/time"/>
+                android:layout_alignBaseline="@id/time"
+                android:textColor="#000000"/>
 
             <ImageView
                 android:id="@+id/time_image"
@@ -79,7 +83,8 @@
                 android:layout_toEndOf="@+id/time_to"
                 android:layout_toRightOf="@+id/time_to"
                 android:hint="@string/add_grocery_item_date_hint"
-                android:padding="15dp"/>
+                android:padding="15dp"
+                android:textColor="#000000"/>
 
 
             <ImageView
@@ -102,7 +107,8 @@
                 android:layout_toEndOf="@+id/quantity_image"
                 android:layout_toRightOf="@+id/quantity_image"
                 android:hint="@string/add_grocery_item_quantity_hint"
-                android:padding="15dp"/>
+                android:padding="15dp"
+                android:textColor="#000000"/>
 
             <EditText
                 android:id="@+id/location"
@@ -112,7 +118,8 @@
                 android:layout_toEndOf="@+id/location_image"
                 android:layout_toRightOf="@+id/location_image"
                 android:hint="@string/add_event_location_hint"
-                android:padding="15dp"/>
+                android:padding="15dp"
+                android:textColor="#000000"/>
 
             <ImageView
                 android:id="@+id/location_image"

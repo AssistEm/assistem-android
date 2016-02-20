@@ -26,7 +26,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/add_event_title_hint"
                 android:textSize="36sp"
-                android:padding="15dp"/>
+                android:padding="15dp"
+                android:textColor="#000000"/>
 
             <EditText
                 android:id="@+id/description"
@@ -34,7 +35,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/add_event_description_hint"
                 android:layout_below="@id/title"
-                android:padding="15dp"/>
+                android:padding="15dp"
+                android:textColor="#000000"/>
 
             <EditText
                 android:id="@+id/start_time"
@@ -45,7 +47,8 @@
                 android:layout_toRightOf="@+id/time_image"
                 android:gravity="center"
                 android:padding="15dp"
-                android:hint="@string/add_event_start_time_hint"/>
+                android:hint="@string/add_event_start_time_hint"
+                android:textColor="#000000"/>
 
             <TextView
                 android:id="@+id/time_to"
@@ -57,7 +60,8 @@
                 android:paddingRight="5dp"
                 android:layout_toEndOf="@id/start_time"
                 android:layout_toRightOf="@id/start_time"
-                android:layout_alignBaseline="@id/start_time"/>
+                android:layout_alignBaseline="@id/start_time"
+                android:textColor="#000000"/>
 
             <EditText
                 android:id="@+id/end_time"
@@ -90,7 +94,8 @@
                 android:layout_toEndOf="@+id/date_image"
                 android:layout_toRightOf="@+id/date_image"
                 android:hint="@string/add_event_start_date_hint"
-                android:padding="15dp"/>
+                android:padding="15dp"
+                android:textColor="#000000"/>
 
             <TextView
                 android:id="@+id/date_to"
@@ -112,7 +117,8 @@
                 android:layout_toEndOf="@+id/date_to"
                 android:layout_toRightOf="@+id/date_to"
                 android:hint="@string/add_event_end_date_hint"
-                android:padding="15dp"/>
+                android:padding="15dp"
+                android:textColor="#000000"/>
 
             <ImageView
                 android:id="@+id/date_image"
@@ -134,7 +140,8 @@
                 android:layout_toEndOf="@+id/location_image"
                 android:layout_toRightOf="@+id/location_image"
                 android:hint="@string/add_event_location_hint"
-                android:padding="15dp"/>
+                android:padding="15dp"
+                android:textColor="#000000"/>
 
             <ImageView
                 android:id="@+id/location_image"
@@ -156,7 +163,8 @@
                 android:layout_toEndOf="@+id/category_image"
                 android:layout_toRightOf="@+id/category_image"
                 android:hint="@string/add_event_category_hint"
-                android:padding="15dp"/>
+                android:textColor="#000000"/>
+                android:padding="15dp"
 
             <ImageView
                 android:id="@+id/category_image"
