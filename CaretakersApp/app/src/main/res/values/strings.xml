@@ -116,5 +116,9 @@
     <string name="delete_repeating_question_full">This event is repeating. Would you like to delete just this event or all in the series?</string>
     <string name="delete_single">Single</string>
     <string name="delete_all">All</string>
+    <string name="calendar_today_view">Today</string>
+    <string name="calendar_day_view">Single day view</string>
+    <string name="calendar_three_day_view">3 days view</string>
+    <string name="calendar_week_view">Week view</string>
 
 </resources>
