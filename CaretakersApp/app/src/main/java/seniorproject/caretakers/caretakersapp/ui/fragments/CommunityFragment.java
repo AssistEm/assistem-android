@@ -49,7 +49,7 @@ public class CommunityFragment extends Fragment {
                     if (mCaretakerArrayAdapter.getPosition(firstName + " " + lastName) == -1) {
                         mCaretakerArrayAdapter.add(firstName +" "+ lastName);
                     } else {
-                        mPrimary.setText(firstName + lastName);
+                        mPrimary.setText(firstName + " " + lastName);
                     }
                 }
             } catch (JSONException e) {
