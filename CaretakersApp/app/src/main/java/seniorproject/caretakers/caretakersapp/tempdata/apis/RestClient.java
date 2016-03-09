@@ -17,8 +17,8 @@ import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 public abstract class RestClient {
 
     protected static BaseAsyncHttpClient mClient;
-    protected static final String STAGING_BASE_URL = "http://sca.jasonmsu.com/api/";
-    protected static final String PRODUCTION_BASE_URL = "http://ca.jasonmsu.com/api/";
+    protected static final String STAGING_BASE_URL = "http://10.0.2.2:80/api/";
+    protected static final String PRODUCTION_BASE_URL = "http://10.0.2.2:80/api/";
     protected static String BASE_URL;
 
     protected static final String CONTENT_TYPE = "application/json";

@@ -53,12 +53,12 @@ public class UserRestClient extends RestClient {
         JSONObject user = new JSONObject();
         JSONObject community = new JSONObject();
         try {
+            user.put("type", Patient.PATIENT_TYPE);
             user.put("email", email);
             user.put("password", password);
             user.put("first_name", firstName);
             user.put("last_name", lastName);
             user.put("phone", phone);
-            user.put("type", Patient.PATIENT_TYPE);
             community.put("name", communityName);
             community.put("privacy", privacy);
             body.put("user", user);
@@ -98,6 +98,13 @@ public class UserRestClient extends RestClient {
             throws NoNetworkException {
         checkNetwork(context);
         String url = BASE_URL + USER + "/" + ME;
+        mClient.get(context, url, new Header[] {generateAuthHeader(context)}, new RequestParams(), handler);
+    }
+
+    public static void getFullProfileUser(Context context, String databaseId, BaseJsonResponseHandler handler)
+            throws NoNetworkException {
+        checkNetwork(context);
+        String url = BASE_URL + USER + "/" + databaseId;
         mClient.get(context, url, new Header[] {generateAuthHeader(context)}, new RequestParams(), handler);
     }
 

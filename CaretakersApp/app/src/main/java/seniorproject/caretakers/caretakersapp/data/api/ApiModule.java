@@ -22,7 +22,7 @@ import seniorproject.caretakers.caretakersapp.ui.fragments.LoginFragment;
 public class ApiModule {
 
     // TODO: What is the endpoint?
-    private static final String API_URL = "http://sca.jasonmsu.com/api";
+    private static final String API_URL = "http://10.0.2.2:80";
 
     @Provides @Singleton
     Client provideClient() {
