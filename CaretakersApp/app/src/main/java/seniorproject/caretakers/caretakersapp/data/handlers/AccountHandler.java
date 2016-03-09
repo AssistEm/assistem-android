@@ -54,6 +54,7 @@ public class AccountHandler {
     private final static String COMMUNITY_NAME_PREFS = "community_name";
     private final static String COMMUNITY_PATIENT_ID_PREFS = "community_patient";
     private final static String COMMUNITY_CARETAKERS_PREFS = "community_caretakers";
+    private final static String COMMUNITY_PRIMARY_ID_PREFS = "primary_caretaker";
 
     // Keys for data relating to GCM registration with the server for Pinging.
     public static final String PROPERTY_REG_ID = "registration_id";
@@ -127,6 +128,7 @@ public class AccountHandler {
                 edit.putString(COMMUNITY_ID_PREFS, mCurrentCommunity.getId())
                         .putString(COMMUNITY_NAME_PREFS, mCurrentCommunity.getName())
                         .putString(COMMUNITY_PATIENT_ID_PREFS, mCurrentCommunity.getPatientId())
+                        .putString(COMMUNITY_PRIMARY_ID_PREFS, mCurrentCommunity.getPrimary())
                         .putStringSet(COMMUNITY_CARETAKERS_PREFS, caretakerSet);
             }
             edit.commit();
@@ -157,9 +159,10 @@ public class AccountHandler {
                 String communityId = mUserStore.getString(COMMUNITY_ID_PREFS, "");
                 String communityName = mUserStore.getString(COMMUNITY_NAME_PREFS, "");
                 String communityPatient = mUserStore.getString(COMMUNITY_PATIENT_ID_PREFS, "");
+                String communityPrimary = mUserStore.getString(COMMUNITY_PRIMARY_ID_PREFS, "");
                 Set<String> communityCaretakers = mUserStore.getStringSet(COMMUNITY_CARETAKERS_PREFS, new HashSet());
                 ArrayList<String> caretakers = new ArrayList<>(communityCaretakers);
-                mCurrentCommunity = new Community(communityId, communityName, communityPatient, caretakers);
+                mCurrentCommunity = new Community(communityId, communityName, communityPatient, communityPrimary, caretakers);
             }
         }
     }

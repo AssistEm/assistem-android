@@ -41,12 +41,16 @@ public class CommunityFragment extends Fragment {
         public void onFullProfileUserFetched(JSONObject profile) {
             try {
                 String type = profile.getString("type");
+                String firstName = profile.getString("first_name");
+                String lastName = profile.getString("last_name");
                 if (type.equals("patient")) {
-                    mPatient.setText(profile.getString("first_name") + " " + profile.getString("last_name"));
+                    mPatient.setText(firstName + " " + lastName);
                 } else {
-                    String caretakerFirstName = profile.getString("first_name");
-                    String caretakerLastName = profile.getString("last_name");
-                    mCaretakerArrayAdapter.add(caretakerFirstName + " " + caretakerLastName);
+                    if (mCaretakerArrayAdapter.getPosition(firstName + " " + lastName) == -1) {
+                        mCaretakerArrayAdapter.add(firstName +" "+ lastName);
+                    } else {
+                        mPrimary.setText(firstName + lastName);
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -62,13 +66,19 @@ public class CommunityFragment extends Fragment {
     }
 
     protected void populateBaseViews() {
-        Community currentCommunity = AccountHandler.getInstance(getActivity()).getCurrentCommunity();
-        mCommunityName.setText(currentCommunity.getName());
-        String patientId = currentCommunity.getPatientId();
-        caretakerIds = currentCommunity.getCaretakers();
         FragmentActivity activity = getActivity();
         AccountHandler handler = AccountHandler.getInstance(activity);
+
+        Community currentCommunity = handler.getCurrentCommunity();
+        mCommunityName.setText(currentCommunity.getName());
+
+        String patientId = currentCommunity.getPatientId();
         handler.getFullProfileUser(activity, patientId, mListener);
+
+        String primaryId = currentCommunity.getPrimary();
+        handler.getFullProfileUser(activity, primaryId, mListener);
+
+        caretakerIds = currentCommunity.getCaretakers();
         for (int i = 0; i < caretakerIds.size(); i++) {
             String caretaker = caretakerIds.get(i);
             handler.getFullProfileUser(activity, caretaker, mListener);
@@ -77,8 +87,10 @@ public class CommunityFragment extends Fragment {
         if (mPatient.getText() == null) {
             mPatient.setText(patientId);
         }
-        //User currentUser = AccountHandler.getInstance(getActivity()).getCurrentUser();
-        mPrimary.setText("PRIMARY");
+
+        if (mPrimary.getText() == null) {
+            mPrimary.setText(primaryId);
+        }
     }
 
     @Override
