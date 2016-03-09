@@ -2,8 +2,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="seniorproject.caretakers.caretakersapp.ui.actvities.CalendarActivity">
-    <item
-        android:id="@+id/menu_refresh"
-        android:title="@string/refresh"
-        app:showAsAction="always"/>
+    <item android:id="@+id/action_today"
+        android:title="@string/calendar_today_view"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"/>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/action_day_view"
+            android:title="@string/calendar_day_view"
+            android:orderInCategory="100"/>
+        <item android:id="@+id/action_three_day_view"
+            android:title="@string/calendar_three_day_view"
+            android:orderInCategory="100"
+            android:checked="true"/>
+        <item android:id="@+id/action_week_view"
+            android:title="@string/calendar_week_view"
+            android:orderInCategory="100"/>
+    </group>
 </menu>
