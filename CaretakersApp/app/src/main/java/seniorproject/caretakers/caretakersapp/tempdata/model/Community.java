@@ -17,14 +17,15 @@ public class Community {
     private String mId;
     private String mName;
     private String mPatientId;
-    private Patient mPatient;
+    private String mPrimaryId;
     private ArrayList<String> mCaretakers;
 
-    public Community(String id, String name, String patientId, ArrayList<String> caretakers) {
+    public Community(String id, String name, String patientId, String primaryId, ArrayList<String> caretakers) {
         mId = id;
         mName = name;
         mPatientId = patientId;
         mCaretakers = caretakers;
+        mPrimaryId = primaryId;
     }
 
     /**
@@ -39,20 +40,22 @@ public class Community {
         String patientId = communityObject.getString("patient");
         ArrayList<String> caretakers = new ArrayList<>();
         JSONArray jsonArray = communityObject.getJSONArray("caretakers");
-        Log.i("CARETAKERs", jsonArray.toString());
         if (jsonArray != null) {
             int len = jsonArray.length();
-            for (int i=0;i<len;i++){
+            for (int i = 0; i < len; i++) {
                 caretakers.add(jsonArray.get(i).toString());
             }
+        } else {
+            caretakers.add("No caretakers");
         }
-        Log.i("COMMUNITY", communityObject.getString("caretakers"));
-        return new Community(id, name, patientId, caretakers);
+        String primaryId = "No primary caretaker";
+        if (communityObject.has("primary_caretaker")) {
+            primaryId = communityObject.getString("primary_caretaker");
+        }
+        return new Community(id, name, patientId, primaryId, caretakers);
     }
 
-    public String getId() {
-        return mId;
-    }
+    public String getId() { return mId; }
 
     public String getName() {
         return mName;
@@ -60,5 +63,7 @@ public class Community {
 
     public String getPatientId() { return mPatientId; }
 
-    public ArrayList<String> getCaretakers() { Log.i("CARETAKER ID", mCaretakers.get(0)); return mCaretakers; }
+    public String getPrimary() { return mPrimaryId; }
+
+    public ArrayList<String> getCaretakers() { return mCaretakers; }
 }
