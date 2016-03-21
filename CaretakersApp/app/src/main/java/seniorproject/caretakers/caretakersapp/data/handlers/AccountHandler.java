@@ -30,6 +30,7 @@ import retrofit.client.Response;
 import seniorproject.caretakers.caretakersapp.tempdata.apis.BaseJsonResponseHandler;
 import seniorproject.caretakers.caretakersapp.tempdata.apis.NoNetworkException;
 import seniorproject.caretakers.caretakersapp.tempdata.apis.UserRestClient;
+import seniorproject.caretakers.caretakersapp.tempdata.apis.CommunityRestClient;
 import seniorproject.caretakers.caretakersapp.tempdata.model.Availability;
 import seniorproject.caretakers.caretakersapp.tempdata.model.Community;
 import seniorproject.caretakers.caretakersapp.tempdata.model.User;
@@ -124,7 +125,7 @@ public class AccountHandler {
                     .putString(PHONE_KEY_PREFS, mCurrentUser.getPhone())
                     .putString(TYPE_KEY_PREFS, mCurrentUser.getType());
             if(mCurrentCommunity != null) {
-                Set<String> caretakerSet = new HashSet<>(mCurrentCommunity.getCaretakers());
+                Set<String> caretakerSet = new HashSet<>(mCurrentCommunity.getCaretakerIds());
                 edit.putString(COMMUNITY_ID_PREFS, mCurrentCommunity.getId())
                         .putString(COMMUNITY_NAME_PREFS, mCurrentCommunity.getName())
                         .putString(COMMUNITY_PATIENT_ID_PREFS, mCurrentCommunity.getPatientId())
@@ -330,6 +331,25 @@ public class AccountHandler {
     }
 
     /**
+     * Callback class for parsing the response from a request for setting the primary caretaker of the
+     * community. Again includes an instance of an AccountListener for notifying the result.
+     */
+    private class SetPrimaryCaretakerResponseHandler extends BaseJsonResponseHandler {
+        AccountListener mListener;
+
+        public SetPrimaryCaretakerResponseHandler(AccountListener listener) {
+            mListener = listener;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject object) {
+            if(mListener != null) {
+                mListener.onPrimaryCaretakerSet();
+            }
+        }
+    }
+
+    /**
      * Callback class for fetching the current availability status of the user. AccountListener
      * included for notifying.
      */
@@ -467,6 +487,22 @@ public class AccountHandler {
         try {
             UserRestClient.setAvailability(context, availabilities,
                     new SetAvailabilityResponseHandler(mListener));
+        } catch (NoNetworkException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Public method to set the availability of the user
+     * @param context Context to execute call in
+     * @param mListener AccountListener observer to notify of result
+     *///TODO: finish won't get called unless keep this method but primaryid can be null!
+    public void setPrimaryCaretaker(Context context, String primaryCaretaker,
+                                AccountListener mListener) {
+        String communityId = AccountHandler.getInstance(context).getCurrentCommunity().getId();
+        try {
+            CommunityRestClient.setPrimaryCaretaker(context, communityId, primaryCaretaker,
+                    new SetPrimaryCaretakerResponseHandler(mListener));
         } catch (NoNetworkException e) {
             e.printStackTrace();
         }
@@ -692,6 +728,7 @@ public class AccountHandler {
         public void onFullProfileUserFetched(JSONObject profile) {}
         public void onAvailabilityFetched(List<Availability> availabilities) { }
         public void onAvailabilitySet() {}
+        public void onPrimaryCaretakerSet() {}
         public void onCurrentAvailabilityFetched(boolean available) { }
     }
 }

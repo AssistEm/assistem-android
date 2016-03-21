@@ -86,8 +86,10 @@
     <string name="family_members">Family Members</string>
     <string name="availability">Availability</string>
     <string name="modify_availiability">Modify Availability</string>
+    <string name="modify_primary_caretaker">Change Primary Caretaker</string>
     <string name="title_activity_modify_availability">Modify Availability</string>
-    <string name="modify_availiability_submit">Submit</string>
+    <string name="title_activity_modify_primary_caretaker">Change Primary Caretaker</string>
+    <string name="modify_submit">Submit</string>
     <string name="add_availability_start">Start</string>
     <string name="add_availability_end">End</string>
     <string name="add_availability_day">Day of Week</string>
@@ -96,6 +98,7 @@
     <string name="dialog_add">Add</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="no_availability">No Availability Set</string>
+    <string name="no_primary_caretaker">No Primary Caretaker Set</string>
     <string name="profile_edit">Edit</string>
     <string name="profile_submit">Submit</string>
     <string name="ping_title">Title</string>

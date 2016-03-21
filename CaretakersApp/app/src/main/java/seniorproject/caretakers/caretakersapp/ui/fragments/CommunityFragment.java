@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.data.handlers.AccountHandler;
 import seniorproject.caretakers.caretakersapp.tempdata.model.Community;
-import seniorproject.caretakers.caretakersapp.tempdata.model.User;
 import android.support.v4.app.FragmentActivity;
 
 /**
@@ -78,7 +77,7 @@ public class CommunityFragment extends Fragment {
         String primaryId = currentCommunity.getPrimary();
         handler.getFullProfileUser(activity, primaryId, mListener);
 
-        caretakerIds = currentCommunity.getCaretakers();
+        caretakerIds = currentCommunity.getCaretakerIds();
         for (int i = 0; i < caretakerIds.size(); i++) {
             String caretaker = caretakerIds.get(i);
             handler.getFullProfileUser(activity, caretaker, mListener);
