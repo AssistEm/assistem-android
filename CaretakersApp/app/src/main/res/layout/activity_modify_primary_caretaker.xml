@@ -7,7 +7,7 @@
         layout="@layout/actionbar" />
 
     <ListView
-        android:id="@+id/availability_list"
+        android:id="@+id/primary_caretaker_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
@@ -25,21 +25,11 @@
         android:text="@string/modify_submit"/>
 
     <TextView
-        android:id="@+id/empty_view"
+        android:id="@+id/primary_empty_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/no_availability"
+        android:text="@string/no_primary_caretaker"
         android:visibility="gone"
         android:layout_centerInParent="true"/>
-
-    <seniorproject.caretakers.caretakersapp.ui.views.AddFloatingActionButton
-        android:id="@+id/add_availability_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        app:fab_colorNormal="@color/calendar_add_event_button"
-        app:fab_colorPressed="@color/calendar_add_event_button_pressed" />
 
 </RelativeLayout>

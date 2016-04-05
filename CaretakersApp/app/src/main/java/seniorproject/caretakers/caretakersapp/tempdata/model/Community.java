@@ -18,13 +18,13 @@ public class Community {
     private String mName;
     private String mPatientId;
     private String mPrimaryId;
-    private ArrayList<String> mCaretakers;
+    private ArrayList<String> mcaretakerIds;
 
-    public Community(String id, String name, String patientId, String primaryId, ArrayList<String> caretakers) {
+    public Community(String id, String name, String patientId, String primaryId, ArrayList<String> caretakerIds) {
         mId = id;
         mName = name;
         mPatientId = patientId;
-        mCaretakers = caretakers;
+        mcaretakerIds = caretakerIds;
         mPrimaryId = primaryId;
     }
 
@@ -38,21 +38,21 @@ public class Community {
         String id = communityObject.getString("_id");
         String name = communityObject.getString("name");
         String patientId = communityObject.getString("patient");
-        ArrayList<String> caretakers = new ArrayList<>();
+        ArrayList<String> caretakerIds = new ArrayList<>();
         JSONArray jsonArray = communityObject.getJSONArray("caretakers");
         if (jsonArray != null) {
             int len = jsonArray.length();
             for (int i = 0; i < len; i++) {
-                caretakers.add(jsonArray.get(i).toString());
+                caretakerIds.add(jsonArray.get(i).toString());
             }
         } else {
-            caretakers.add("No caretakers");
+            caretakerIds.add("No caretakers");
         }
         String primaryId = "No primary caretaker";
         if (communityObject.has("primary_caretaker")) {
             primaryId = communityObject.getString("primary_caretaker");
         }
-        return new Community(id, name, patientId, primaryId, caretakers);
+        return new Community(id, name, patientId, primaryId, caretakerIds);
     }
 
     public String getId() { return mId; }
@@ -65,5 +65,9 @@ public class Community {
 
     public String getPrimary() { return mPrimaryId; }
 
-    public ArrayList<String> getCaretakers() { return mCaretakers; }
+    public void setPrimary(String primaryId) {
+        mPrimaryId = primaryId;
+    }
+
+    public ArrayList<String> getCaretakerIds() { return mcaretakerIds; }
 }

@@ -16,6 +16,7 @@ import seniorproject.caretakers.caretakersapp.tempdata.model.Patient;
 import seniorproject.caretakers.caretakersapp.ui.dialogs.PingDialog;
 import seniorproject.caretakers.caretakersapp.ui.fragments.CalendarFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.CommunityFragment;
+import seniorproject.caretakers.caretakersapp.ui.fragments.CommunityPatientFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.DrawerFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.GroceryTabsFragment;
 import seniorproject.caretakers.caretakersapp.ui.fragments.LocationFragment;
@@ -77,7 +78,11 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
                 fragment = new GroceryTabsFragment();
                 break;
             case 2:
-                fragment = new CommunityFragment();
+                if(AccountHandler.getInstance(this).getCurrentUser() instanceof Patient) {
+                    fragment = new CommunityPatientFragment();
+                } else {
+                    fragment = new CommunityFragment();
+                }
                 break;
             case 3:
                 fragment = new LocationFragment();
