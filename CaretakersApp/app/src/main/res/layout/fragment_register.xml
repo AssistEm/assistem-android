@@ -58,6 +58,18 @@
         android:hint="@string/confirm_password"
         android:inputType="textPassword"/>
 
+    <ImageView
+        android:id="@+id/image_preview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/take_picture"
+        android:text="Take Picture"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_preview" />
+
     <EditText
         android:id="@+id/user_first_name"
         android:layout_width="match_parent"

@@ -86,11 +86,11 @@ public class LocationFragment extends Fragment {
         map.getUiSettings().setMyLocationButtonEnabled(false);
         map.setMyLocationEnabled(true);
 
-        try{
-            MapsInitializer.initialize(this.getActivity());
-        }catch (GooglePlayServicesNotAvailableException e){
-            e.printStackTrace();
-        }
+//        try{
+        MapsInitializer.initialize(this.getActivity());
+//        }catch (GooglePlayServicesNotAvailableException e){
+//            e.printStackTrace();
+//        }
 
         Location testLocation = new Location("");
         testLocation.setLatitude(39.7392138);

@@ -40,6 +40,7 @@ public class LoginActivity extends ActionBarActivity {
         }
     };
 
+
     /**
      * Callback for when an activity is created. Attaches the AccountListener to the AccountHandler
      * to allow for callbacks for login or registration status
