@@ -13,21 +13,25 @@ import java.util.List;
 
 import seniorproject.caretakers.caretakersapp.R;
 import seniorproject.caretakers.caretakersapp.tempdata.model.User;
+import seniorproject.caretakers.caretakersapp.ui.views.DrawerRowTextView;
 
 /**
- * Created by sarah on 3/18/16.
+ * Created by sarah on 3/18/16. Adapter for the modification of the primary caretaker by the patient
  */
 public class PrimaryCaretakerAdapter extends BaseAdapter {
 
     List<User> mCaretakerList;
     User mPrimaryCaretaker;
+    int mSelectedPosition;
 
     Context mContext;
 
+    //Update the primary caretaker
     private View.OnClickListener mSetPrimaryClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             int position = (int) view.getTag();
+            mSelectedPosition = position;
             mPrimaryCaretaker = mCaretakerList.get(position); //change list to dictionary with id's and make this
             notifyDataSetChanged();
         }
@@ -37,6 +41,7 @@ public class PrimaryCaretakerAdapter extends BaseAdapter {
         mContext = context;
         mCaretakerList = new ArrayList<>();
         mPrimaryCaretaker = null;
+        mSelectedPosition = -1;
     }
 
     public void addCaretaker(User caretaker) {
@@ -83,20 +88,25 @@ public class PrimaryCaretakerAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.item_caretaker_list_modify_primary, viewGroup, false);
             holder = new ViewHolder();
             holder.mName = (TextView) view.findViewById(R.id.caretaker_name);
-            holder.mDeleteImage = (ImageView) view.findViewById(R.id.remove);
-            holder.mDeleteImage.setOnClickListener(mSetPrimaryClickListener);
+            holder.mName.setOnClickListener(mSetPrimaryClickListener);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
+        if (mSelectedPosition == i) {
+            view.setSelected(true);
+            view.setBackgroundResource(R.color.drawer_background_selected);
+        } else {
+            view.setSelected(false);
+            view.setBackgroundResource(R.color.white);
+        }
         User caretaker = getItem(i);
         holder.mName.setText(caretaker.getDisplayName());
-        holder.mDeleteImage.setTag(i);
+        holder.mName.setTag(i);
         return view;
     }
 
     private class ViewHolder {
         TextView mName;
-        ImageView mDeleteImage;
     }
 }

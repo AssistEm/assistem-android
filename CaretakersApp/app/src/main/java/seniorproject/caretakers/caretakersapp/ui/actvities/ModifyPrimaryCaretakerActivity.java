@@ -1,11 +1,10 @@
 package seniorproject.caretakers.caretakersapp.ui.actvities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +17,7 @@ import seniorproject.caretakers.caretakersapp.tempdata.model.Community;
 import seniorproject.caretakers.caretakersapp.tempdata.model.User;
 import seniorproject.caretakers.caretakersapp.ui.adapters.PrimaryCaretakerAdapter;
 /**
- * Created by sarah on 3/10/16. MAY NEED TO ADD AN ADAPTER
+ * Created by sarah on 3/10/16. An activity for the patient to modify the primary caretaker in the community tab
  */
 public class ModifyPrimaryCaretakerActivity extends BaseActivity {
 
@@ -46,6 +45,12 @@ public class ModifyPrimaryCaretakerActivity extends BaseActivity {
 
         @Override
         public void onPrimaryCaretakerSet() {
+            //Send the updated primary caretaker back to the fragment
+            Intent data = new Intent();
+            data.putExtra("primary", mPrimaryCaretakerAdapter.getPrimaryCaretaker().getId());
+            int resultCode = 2;
+            setResult(resultCode, data);
+            //Close the activity
             finish();
         }
     };

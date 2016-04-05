@@ -493,10 +493,10 @@ public class AccountHandler {
     }
 
     /**
-     * Public method to set the availability of the user
+     * Public method to set the primary caretaker of the user
      * @param context Context to execute call in
      * @param mListener AccountListener observer to notify of result
-     *///TODO: finish won't get called unless keep this method but primaryid can be null!
+     *                  */
     public void setPrimaryCaretaker(Context context, String primaryCaretaker,
                                 AccountListener mListener) {
         String communityId = AccountHandler.getInstance(context).getCurrentCommunity().getId();

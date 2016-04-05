@@ -58,10 +58,4 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"/>
 
-    <Button
-        android:id="@+id/modify_primary_caretaker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/modify_primary_caretaker"/>
-
 </LinearLayout>

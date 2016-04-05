@@ -65,5 +65,9 @@ public class Community {
 
     public String getPrimary() { return mPrimaryId; }
 
+    public void setPrimary(String primaryId) {
+        mPrimaryId = primaryId;
+    }
+
     public ArrayList<String> getCaretakerIds() { return mcaretakerIds; }
 }
