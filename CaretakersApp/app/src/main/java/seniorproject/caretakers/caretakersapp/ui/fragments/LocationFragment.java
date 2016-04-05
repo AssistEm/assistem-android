@@ -53,15 +53,20 @@ public class LocationFragment extends Fragment {
     TextView text;
     double longitude;
     double latitude;
+    LocationManager lm;
+
 
     MapView mapView;
     GoogleMap map;
 
-    LocationListener locationListener = new LocationListener() {
+    private final class MyLocationListener implements LocationListener{
         @Override
         public void onLocationChanged(Location location) {
-            CameraUpdate center = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 10);
-            map.animateCamera(center);
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 10);
+            map.animateCamera(cameraUpdate);
+
         }
 
         @Override
@@ -98,10 +103,9 @@ public class LocationFragment extends Fragment {
             e.printStackTrace();
         }
 
-        LocationManager locationManager = (LocationManager) inflater.getContext().getSystemService(Context.LOCATION_SERVICE);
-
-
-
+        lm = (LocationManager) inflater.getContext().getSystemService(Context.LOCATION_SERVICE);
+        LocationListener locationListener = new MyLocationListener();
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 10, locationListener);
 
         Location testLocation = new Location("");
 //        testLocation.setLatitude(39.7392138);
@@ -112,14 +116,14 @@ public class LocationFragment extends Fragment {
         text = (TextView) rootView.findViewById(R.id.test_location);
         ((Button)rootView.findViewById(R.id.test_button)).setOnClickListener(mLocationClickListener);*/
 
-
         //LocationManager locationManager = (LocationManager) rootView.getContext().getSystemService(Context.LOCATION_SERVICE);
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location = lm.getLastKnownLocation("gps");
 
         longitude = location.getLongitude();
         latitude = location.getLatitude();
 
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 10);
+//        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 10);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 10);
         map.animateCamera(cameraUpdate);
 
         return rootView;
