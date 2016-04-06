@@ -73,6 +73,12 @@
             android:theme="@style/AppTheme.EditText"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".ui.actvities.ModifyPrimaryCaretakerActivity"
+            android:label="@string/title_activity_modify_primary_caretaker"
+            android:theme="@style/AppTheme.EditText"
+            android:screenOrientation="portrait">
+        </activity>
 
         <receiver android:name=".service.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
