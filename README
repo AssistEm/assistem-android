@@ -1,3 +1,5 @@
 Assist’em Android Repository
 
+Please switch to the assistem2.0 branch, the most updated code is there.
+
 Built for Android SDK versions 9 and up with Android Studio and Gradle. To build, clone repo, import into Android Studio, and perform a Gradle sync. This sync should pull all the necessary libraries from Maven repos, and no further libraries should need to be included. Once the Gradle sync is done, launch an Android emulator or plug an Android device into the computer, and run the app.
